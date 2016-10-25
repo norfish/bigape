@@ -1,0 +1,40 @@
+#!/usr/bin/env node
+var startTime = Date.now();
+require('../global');
+var multiprocess = require('@qnpm/q-multiprocess');
+var qmonitor = require('@qnpm/q-monitor');
+var app = require('../app');
+var config = require('../config');
+
+var mock = require('../__test__/mock')
+
+// 启动
+app.set('port', process.env.PORT || '1337');
+var opts = {
+    // CPU核数
+    numCPUs: require('os').cpus().length,
+    // 端口
+    port: app.get('port'),
+    // 子进程收到父进程消息后父进程执行方法
+    workerMessage: function (msg, workers) {
+        qmonitor.messageHandler(msg, workers);
+    },
+    ready: function(workers) {
+        initMonitor();
+        var startupTime = Date.now() - startTime;
+        qmonitor.addTime('startupTime', startupTime);
+        console.log('startupTime', startupTime)
+    }
+};
+
+function initMonitor() {
+    var env = app.get('env');
+    var monitorConfig = config.monitor;
+    var envConfg = monitorConfig.env[env] || monitorConfig.env['default'];
+
+    if (envConfg) {
+        qmonitor.initMonitor(envConfg.host, envConfg.port, envConfg.category + monitorConfig.prefix, envConfg.rate);
+    }
+}
+
+multiprocess.listen(app, opts);

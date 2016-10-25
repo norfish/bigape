@@ -19,8 +19,6 @@ var qmonitor = require('@qnpm/q-monitor');
 var logger = require('@qnpm/q-logger');
 var Promise = require('bluebird');
 var Store = require('./Store');
-var ErrorPagelet = require('./errorPagelet');
-var util = require('./util');
 
 function BigPipe(name, options) {
 
@@ -43,9 +41,6 @@ function BigPipe(name, options) {
     // layout bootstrap
     this.layout = options.layout || options.bootstrap || {};
 
-    // 错误module
-    this.errorPagelet = options.errorPagelet || ErrorPagelet;
-
     // monitor key
     this.qmonitor = options.qmonitor;
 
@@ -54,9 +49,6 @@ function BigPipe(name, options) {
 
     // 实例化的页面片段集合
     this._pagelets = [];
-
-    // errorpagelet 实例
-    this._errorPagelet = null;
 
     // 需要flush到客户端的片段集合
     this._queue = [];
@@ -117,7 +109,6 @@ BigPipe.prototype = {
     clear: function() {
         this.store.clear();
         this._pageletCache = {};
-        this._queue = [];
     },
 
     start: function() {
@@ -129,13 +120,10 @@ BigPipe.prototype = {
             });
         });
 
-        bigpipe._layout.ready('done');
-        bigpipe._errorPagelet.ready('done');
-
         this.once('page:error', function(err) {
-            logger.info('出现错误, 需要终止页面渲染', err, '\n');
+            logger.info('出现错误, 需要终止页面渲染', err);
             bigpipe.renderError(err);
-        });
+        })
     },
 
     /**
@@ -238,8 +226,8 @@ BigPipe.prototype = {
 
         // 确保不会在 end 之后再 write chunk
         if(this._res.finished) {
-            // logger.error('Response was closed, unable to flush content');
-            this.emit('end', new Error('Response was closed, unable to flush content'));
+            logger.error('Response was closed, unable to flush content');
+            this.emit('done', new Error('Response was closed, unable to flush content'));
             // return;
         }
 
@@ -292,19 +280,17 @@ BigPipe.prototype = {
         var bigpipe = this;
         var _pagelets = this._pagelets = [];
         var allPagelets = this._getAllPagelets();
-        var options = {
-            req: bigpipe._req,
-            res: bigpipe._res,
-            next: bigpipe._next,
-            query: bigpipe._query,
-            layout: bigpipe._layout,
-            bigpipe: bigpipe
-        };
-
-        // create error pagelet
-        this._errorPagelet = this.errorPagelet.create('error', options);
 
         _.forIn(allPagelets, function(pagelet, name) {
+            var options = {
+                req: bigpipe._req,
+                res: bigpipe._res,
+                next: bigpipe._next,
+                query: bigpipe._query,
+                layout: bigpipe._layout,
+                bigpipe: bigpipe
+            }
+
             var newPagelet = pagelet.create(name, options);
             bigpipe._pageletCache[name] = newPagelet;
             _pagelets.push(newPagelet);
@@ -317,30 +303,29 @@ BigPipe.prototype = {
 
     },
 
-    /**
-     * 获取pagelet and name
-     * pagelet的名字如果没有指定的话则使用声明时候的name，如果在使用的时候有指定则覆盖
-     * @return {Object} {pageletName: pageletClass}
-     */
     _getAllPagelets: function() {
 
-        var pagelets = this.pagelets;
-
-        if(_.isArray(pagelets)) {
-            return pagelets.reduce(function(pre, pagelet) {
-                var pgClass = pagelet.prototype;
-                pre[pgClass.name] = pagelet;
-
-                pgClass.wait.length && pgClass.wait.reduce(function(preWait, cur) {
-                    preWait[cur.prototype.name] = cur;
-                    return preWait;
-                }, pre);
-
-                return pre;
-            }, {});
+        // TODO 为了兼容之前的API，需要后期统一成数组
+        if(_.isPlainObject(this.pagelets)) {
+            var temp = [];
+            _.forIn(this.pagelets, function(pagelet){
+                temp.push(pagelet);
+            });
+            this.pagelets = temp;
         }
 
-        return this.pagelets;
+
+        return this.pagelets.reduce(function(pre, pagelet) {
+            var pgClass = pagelet.prototype;
+            pre[pgClass.name] = pagelet;
+
+            pgClass.wait.length && pgClass.wait.reduce(function(preWait, cur) {
+                preWait[cur.prototype.name] = cur;
+                return preWait;
+            }, pre);
+
+            return pre;
+        }, {});
     },
 
     /**
@@ -398,11 +383,9 @@ BigPipe.prototype = {
                     return chunk;
                 }, function (errData) {
                     logger.error('render Async failed', errData);
-                    throw errData;
-                })
-                .catch(function(error) {
+                    // render error
+                }).catch(function(error) {
                     logger.error( 'render Async error', error);
-                    throw error;
                 });
 
             }).then(function(data) {
@@ -416,8 +399,6 @@ BigPipe.prototype = {
             bigpipe.catch(err);
         });
     },
-
-    render: this.renderAsync,
 
     /**
      * 同步渲染 pagelet 模块
@@ -452,7 +433,7 @@ BigPipe.prototype = {
              * [{key1: '..'}, {key1: '..'}]
              */
             return mod.get().then(function (data) {
-                return {[mod.name]: data};
+                return data;
             });
 
 
@@ -463,7 +444,7 @@ BigPipe.prototype = {
             logger.record('获取API接口数据失败');
         }).catch(function(error) {
             logger.error('处理JSON数据接口错误', error);
-            var errObj = bigpipe.getErrObj(error);
+            var errObj = bigpipe._getErrObj(error);
             bigpipe._json(errObj);
         });
 
@@ -487,7 +468,7 @@ BigPipe.prototype = {
             bigpipe._jsonSuc(data);
         }).catch(function(error) {
             logger.error('处理JSON数据接口错误', error);
-            var errObj = bigpipe.getErrObj(error);
+            var errObj = bigpipe._getErrObj(error);
             bigpipe._json(errObj);
         });
 
@@ -519,9 +500,16 @@ BigPipe.prototype = {
             module.end(snippet);
         }).catch(function(error) {
             logger.error('处理snippet数据错误', error);
-            var errObj = bigpipe.getErrObj(error);
+            var errObj = bigpipe._getErrObj(error);
             bigpipe._json(errObj);
         });
+    },
+
+    // 用户完全自定义的renderService
+    render: function() {
+        /**
+         * do something
+         */
     },
 
     _jsonSuc: function(json) {
@@ -557,37 +545,25 @@ BigPipe.prototype = {
      * @param  {Object} error error stack 或者Object
      * @return {Object}       error json
      */
-    getErrObj: function (error) {
+    _getErrObj: function (error) {
         return {
             status: error.status || 502,
-            message: (typeof error.status == 'undefined') ?
-                '系统繁忙,请稍后重试' : (error.message || '系统繁忙,请稍后重试')
+            message: error.message || '系统繁忙,请稍后重试'
         }
-    },
-
-    /**
-     * catch error
-     * @param  {[type]} error [description]
-     * @return {[type]}       [description]
-     */
-    catch: function(error) {
-        if(this.isErrorFatal) {
-            this.bigpipe.emit('page:error', error);
-        }
-        logger.error('catch error', error, '\n');
-        return this.getErrObj(error);
     },
 
     renderError: function(error) {
-        logger.error('终止pagelet end', error);
-        var html = this._errorPagelet.renderSyncWithData(error)
-        this._errorPagelet.end(html, true);
+        var _html = '<h1>'+ error.status +'</h1><p>'+ error.message +'</p>';
+        this._res.end(_html);
     },
 
-    destroy: function() {
-        for(var k in this) {
-            this.k = null;
-        }
+    /**
+     * 统一异常处理
+     * @param  {Object} err error stack Object 或者是error Object
+     * @return {[type]}     [description]
+     */
+    catch: function(err) {
+        logger.error('catch error::', err)
     }
 };
 

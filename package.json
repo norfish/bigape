@@ -26,7 +26,8 @@
     "@qnpm/q-version": "~1.0.2",
     "bluebird": "^3.4.1",
     "debug": "~2.2.0",
-    "lodash": "^4.14.0"
+    "lodash": "^4.14.0",
+    "co": "^4.6.0"
   },
   "author": "norfish <easumlee@gmail.com> (http://jspie.com/)",
   "license": "MIT",

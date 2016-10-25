@@ -37,6 +37,12 @@ module.exports = {
     method: 'GET',
 
     /**
+     * 延迟时间
+     * @type {Number}
+     */
+    delay: 0,
+
+    /**
      * 超时时间
      * @type {Number}
      */
@@ -57,7 +63,7 @@ module.exports = {
      * 初始化
      */
     init: function(){
-        return this;
+
     },
 
     /**
@@ -67,16 +73,7 @@ module.exports = {
      * @returns {string}
      */
     getParams: function(req, res){
-        if(this.params) {
-            return this.params;
-        }
-        if(!_.isEmpty(req.query)) {
-            return req.query;
-        }
-        if(!_.isEmpty(req.body)) {
-            return req.body;
-        }
-        return {};
+        return this.params;
     },
 
     /**
@@ -133,10 +130,8 @@ module.exports = {
     },
 
     // 接口代理
-    proxy: function (req, res, options) {
-        options = _.pick(options || {}, ['url', 'params', 'method', 'timeout', 'validData']);
-        _.extend(this, options);
-        return this.json(req, res);
+    proxy: function (req, res) {
+
     },
 
     json: function (req, res) {

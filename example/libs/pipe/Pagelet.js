@@ -3,7 +3,19 @@
  * @authors: yongxiang.li
  * @date: 2016-08-03 20:32:19
  *
+ * getService
  *
+ *
+ * lifecycle
+ *
+ * getService
+ * onServiceDone(json)
+ * afterRender({
+ * 	html: html,
+ * 	renderData: renderData
+ * })
+ *
+ * getPipeData(json) renderData
  */
 
 'use strict';
@@ -11,11 +23,10 @@
 var EventEmitter = require('events').EventEmitter;
 var _ = require('lodash');
 var co = require('co');
-var qtemplate = require('jnpm-template');
+var qtemplate = require('@qnpm/q-template');
 var qmonitor = require('@qnpm/q-monitor');
 var logger = require('@qnpm/q-logger');
 var Promise = require('bluebird');
-var util = require('./util');
 
 function Pagelet(name, options) {
     // pagelet uid
@@ -31,7 +42,7 @@ function Pagelet(name, options) {
     this.bigpipe = options.bigpipe;
 
     // 脚手架模块实例
-    this._bootstrap = options.layout || options.bootstrap;
+    this._bootstrap = options.layout;
 
     // 初始化
     this.initialize.apply(this);
@@ -52,7 +63,7 @@ Pagelet.prototype = {
     // template
     template: '',
 
-    // 渲染模式 append html prepend layout remove
+    // 渲染模式 html json
     mode: 'html',
 
     // 脚本x`x``
@@ -69,9 +80,6 @@ Pagelet.prototype = {
 
     // 是否是关键性的模块, 如果出错了是否立即终止请求，并返回错误
     isErrorFatal: false,
-
-    // 发生错误时候渲染错误页面的模板
-    errorTemplate: 'partials/error',
 
     /**
      * 获取渲染的原始数据 可以被覆盖，默认是通过service取接口数据，返回promise
@@ -117,7 +125,7 @@ Pagelet.prototype = {
             .then(function(data) {
                 data = pagelet.onServiceDone(data);
                 pagelet.setCache(data);
-                logger.info('数据处理成功，触发事件['+ pagelet.name +':done]', data);
+                logger.info('数据处理成功，触发事件['+ pagelet.name +':done]'/*, data*/);
                 pagelet.bigpipe.emit(pagelet.name + ':done', data);
                 return data;
             })
@@ -166,19 +174,14 @@ Pagelet.prototype = {
 
         logger.info('开始渲染Pagelet模块['+ pagelet.name +']@', new Date());
 
-        if(renderData) {
-            this.setCache(renderData);
-        }
-
         return this.getRenderHtml()
             .then(function(source) {
                 return pagelet.createChunk(source);
             })
             // handle error
             .catch(function(err) {
-
                 logger.error('Pagelet render error::', err);
-                return pagelet.catch(err);
+                pagelet.catch(err);
             });
     },
 
@@ -187,12 +190,8 @@ Pagelet.prototype = {
      * @param  {String} html render result
      * @return {String}      处理之后的数据
      */
-    renderSnippet: function(renderData) {
+    renderSnippet: function() {
         var pagelet = this;
-
-        if(renderData) {
-            this.setCache(renderData);
-        }
 
         return this.getRenderHtml()
             .then(function(html) {
@@ -201,12 +200,8 @@ Pagelet.prototype = {
             // handle error
             .catch(function(err) {
                 logger.error('Pagelet render snippet error::', err);
-                return pagelet.catch(err);
+                pagelet.catch(err);
             });
-    },
-
-    renderSyncWithData: function (data) {
-        return qtemplate.renderSync(this.getTemplatePath(), data);
     },
 
     /**
@@ -214,6 +209,7 @@ Pagelet.prototype = {
      * @return {Object} parsed pagelet data {name: data}  function(data){}
      */
     getServiceData: function() {
+
         var pagelet = this;
 
         logger.info('开始获取数据['+ pagelet.name +']');
@@ -229,7 +225,7 @@ Pagelet.prototype = {
         var getOriginData = this.getService();
 
         // 如果数据可以同步, 直接返回同步数据
-        if(!util.isPromise(getOriginData)) {
+        if(!this.isPromise(getOriginData)) {
             // logger.info('使用同步方式获取数据['+ pagelet.name +']');
             logger.record('获取模块数据成功['+ pagelet.name +']');
             getOriginData = Promise.resolve(getOriginData);
@@ -256,20 +252,21 @@ Pagelet.prototype = {
      */
     getRenderHtml: function() {
         var pagelet = this;
+        var renderData;
 
         return this.get()
             .then(function(parsed) {
-                // 统一为渲染数据增加locals参数
-                return qtemplate.render(
-                    pagelet.getTemplatePath(),
-                    pagelet.getActRenderData(parsed)
-                );
+                renderData = Object.assign({}, parsed);
+                // ext data
+                pagelet.addExtRenderData(parsed);
+
+                return qtemplate.render(pagelet.getTemplatePath(), parsed);
 
             // 模板渲染reject时候，渲染错误信息
             }, function(error) {
                 logger.error('渲染pagelet失败', pagelet.name, error);
                 var errorObj = pagelet.getErrObj(error);
-                return qtemplate.render(pagelet.errorTemplate, errorObj);
+                return qtemplate.render('partials/error', errorObj);
             })
             .then(function(html) {
                 return pagelet.afterRender(html);
@@ -277,7 +274,7 @@ Pagelet.prototype = {
             .catch(function(error) {
                 qmonitor.addCount('module_render_error');
                 logger.error('渲染pagelet异常', pagelet.name, error);
-                return qtemplate.render(pagelet.errorTemplate, pagelet.getErrObj(error));
+                return pagelet.getErrObj(error);
             });
     },
 
@@ -290,11 +287,11 @@ Pagelet.prototype = {
         }
     },
 
-    getActRenderData: function(parsed) {
-        return {
-            [this.name]: parsed || null,
+    // 统一为渲染数据增加额外的数据
+    addExtRenderData: function(parsed) {
+        return _.assign(parsed, {
             locals: this.res.locals
-        }
+        });
     },
 
     /**
@@ -315,7 +312,6 @@ Pagelet.prototype = {
             styles: this.styles,
             domID: this.domID,
             modID: this.name,
-            mode: this.mode,
             dataKey: this.dataKey || this.name,
             dataEventName: this.dataEventName || this.dataKey || this.name,
             pageletEventName: this.pageletEventName || this.domID
@@ -362,19 +358,18 @@ Pagelet.prototype = {
     /**
      * end flush
      * @param  {[type]} chunk [description]
-     * @param  {Boolean} force 是否强制结束
      * @return {[type]}       [description]
      */
-    end: function(chunk, force) {
+    end: function(chunk) {
 
         var pagelet = this;
 
         if (chunk) this.write(chunk);
 
         //
-        // Do not close the connection before all pagelets are send unless force end.
+        // Do not close the connection before all pagelets are send.
         //
-        if (this.bigpipe.length > 0 && !force) {
+        if (this.bigpipe.length > 0) {
             return false;
         }
 
@@ -391,19 +386,6 @@ Pagelet.prototype = {
     },
 
     /**
-     * 根据error Object 获取error json
-     * @param  {Object} error error stack 或者Object
-     * @return {Object}       error json
-     */
-    getErrObj: function (error) {
-        return {
-            status: error.status || 502,
-            message: (typeof error.status == 'undefined') ?
-                '系统繁忙,请稍后重试' : (error.message || '系统繁忙,请稍后重试')
-        }
-    },
-
-    /**
      * catch error
      * @param  {[type]} error [description]
      * @return {[type]}       [description]
@@ -412,8 +394,20 @@ Pagelet.prototype = {
         if(this.isErrorFatal) {
             this.bigpipe.emit('page:error', error);
         }
-        logger.error('catch error', error, '\n');
+        logger.error('catch error', error);
         return this.getErrObj(error);
+    },
+
+    /**
+     * 根据error Object 获取error json
+     * @param  {Object} error error stack 或者Object
+     * @return {Object}       error json
+     */
+    getErrObj: function (error) {
+        return {
+            status: error.status || 502,
+            message: error.message || '系统繁忙,请稍后重试'
+        }
     },
 
     getStore: function() {
@@ -432,6 +426,10 @@ Pagelet.prototype = {
 
     setCache: function(data) {
         return this.setStore(this.name, data);
+    },
+
+    isPromise: function(fn) {
+        return fn && typeof fn.then !== 'undefined';
     }
 }
 
@@ -487,12 +485,19 @@ var extend = function(props) {
     return child;
 };
 
+var _pagelets = {};
+function extendPagelet(props) {
+    var child = extend.apply(this, arguments);
+    _pagelets[props.name] = child;
+    return child;
+}
+
 // extend eventEmitter
 // util.inherits(Pagelet, EventEmitter);
 // extend eventEmitter
 _.extend(Pagelet.prototype, EventEmitter.prototype);
 
-Pagelet.extend = extend;
+Pagelet.extend = extendPagelet;
 
 Pagelet.create = (function() {
     var __instance = {};
