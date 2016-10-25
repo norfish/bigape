@@ -2,6 +2,8 @@
 > 目前该模块依赖一些内部的module，暂时不适合开放使用，如果有兴趣可以自行改造
 > 目前我也在加紧改造中，希望能尽快开放
 
+> 欢迎提issue和pull request
+
 ### Bigpipe 声明
 ```
 var BigPipe = require('bigape').BigPipe;
