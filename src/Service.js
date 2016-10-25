@@ -89,15 +89,6 @@ module.exports = {
         return this.url;
     },
 
-    _getURL: function(req, res) {
-        var url = this.getURL(req, res);
-
-        if (url.indexOf('?') > -1) {
-            return url + '&' + '_channel=' + (req.cookies['_plat_source'] || '');
-        }
-        return url + '?' + '_channel=' + (req.cookies['_plat_source'] || '');
-    },
-
     /**
      * 获取监控名称
      * @param req
@@ -151,16 +142,6 @@ module.exports = {
     },
 
     /**
-     * 配置通用参数
-     * @private
-     */
-    _getParams: function(req, res) {
-        return _.extend({
-             //_channel: req.cookies['_plat_source']
-        }, this.getParams(req, res))
-    },
-
-    /**
      * 从后端加载数据
      * @param req
      * @param res
@@ -170,9 +151,9 @@ module.exports = {
         var self = this;
 
         return qRequest(
-            this._getURL(req, res),
+            this.getURL(req, res),
             {
-                data : this._getParams(req, res),
+                data : this.getParams(req, res),
                 qmonitor: this.getQMonitor(req, res),
                 method: this.method,
                 postType: 'json',
