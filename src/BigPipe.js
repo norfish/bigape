@@ -319,6 +319,7 @@ BigPipe.prototype = {
 
     /**
      * 获取pagelet and name
+     * TODO 递归遍历找到所有的依赖pagelets
      * pagelet的名字如果没有指定的话则使用声明时候的name，如果在使用的时候有指定则覆盖
      * @return {Object} {pageletName: pageletClass}
      */
@@ -326,21 +327,26 @@ BigPipe.prototype = {
 
         var pagelets = this.pagelets;
 
-        if(_.isArray(pagelets)) {
-            return pagelets.reduce(function(pre, pagelet) {
-                var pgClass = pagelet.prototype;
-                pre[pgClass.name] = pagelet;
-
-                pgClass.wait.length && pgClass.wait.reduce(function(preWait, cur) {
-                    preWait[cur.prototype.name] = cur;
-                    return preWait;
-                }, pre);
-
-                return pre;
-            }, {});
+        // TODO 为了兼容之前的API，需要后期统一成数组
+        if(_.isPlainObject(this.pagelets)) {
+               var temp = [];
+               _.forIn(this.pagelets, function(pagelet){
+                   temp.push(pagelet);
+               });
+               this.pagelets = pagelets = temp;
         }
 
-        return this.pagelets;
+        return this.pagelets.reduce(function(pre, pagelet) {
+            var pgClass = pagelet.prototype;
+            pre[pgClass.name] = pagelet;
+
+            pgClass.wait.length && pgClass.wait.reduce(function(preWait, cur) {
+                preWait[cur.prototype.name] = cur;
+                return preWait;
+            }, pre);
+
+            return pre;
+        }, {});
     },
 
     /**
