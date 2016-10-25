@@ -13,7 +13,7 @@
     "@qnpm/q-monitor": "~1.0.8",
     "@qnpm/q-multiprocess": "~1.0.3",
     "@qnpm/q-request": "0.0.4",
-    "@qnpm/q-template": "^2.1.0",
+    "jnpm-template": "^1.0.2",
     "@qnpm/q-version": "~1.0.2",
     "bluebird": "^3.4.6",
     "body-parser": "~1.13.2",
