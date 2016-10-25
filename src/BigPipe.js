@@ -484,7 +484,7 @@ BigPipe.prototype = {
         var mod = bigpipe._pageletCache[modName];
 
         return mod.get().then(function(data) {
-            bigpipe._jsonSuc(data);
+            bigpipe._json(data);
         }).catch(function(error) {
             logger.error('处理JSON数据接口错误', error);
             var errObj = bigpipe.getErrObj(error);
@@ -522,14 +522,6 @@ BigPipe.prototype = {
             var errObj = bigpipe.getErrObj(error);
             bigpipe._json(errObj);
         });
-    },
-
-    _jsonSuc: function(json) {
-        return this._json({
-            status: 0,
-            message: 'success',
-            data: json
-        })
     },
 
     /**
