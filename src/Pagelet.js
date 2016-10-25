@@ -293,7 +293,9 @@ Pagelet.prototype = {
     getActRenderData: function(parsed) {
         return {
             [this.name]: parsed || null,
-            locals: this.res.locals
+            locals: this.res.locals,
+            // 页面统一增加 process env
+            NODE_ENV: process.env.NODE_ENV
         }
     },
 
