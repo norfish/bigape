@@ -4,6 +4,9 @@
 
 > 欢迎提issue和pull request
 
+> this module depend on some private module, so it can not used for public
+> the public common module is under working now, please wait for a few days
+
 ### Bigpipe 声明
 ```
 var BigPipe = require('bigape').BigPipe;
