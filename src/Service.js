@@ -172,13 +172,34 @@ module.exports = {
     },
 
     _getHeaders: function (req, res) {
+        // var cookies = req.cookies,
+        //     headers = req.headers;
+        //
+        // return {
+        //     uid: cookies['_uc_uid'],
+        //     channel: cookies['_plat_source'] || 'jiulvxing',
+        //     ip: (headers['x-real-ip'] || headers['ip'] || '').replace('::ffff:', ''),
+        //     plat: 'touch'
+        // }
+        //
         var cookies = req.cookies,
             headers = req.headers;
 
+        var sourceObj;
+
+        try {
+            sourceObj = JSON.parse(cookies['_plat_source']);
+        } catch (e) {
+            sourceObj = {
+                value: 'jiulvxing'
+            };
+        }
         return {
             uid: cookies['_uc_uid'],
-            channel: cookies['_plat_source'] || 'jiulvxing',
-            ip: (headers['x-real-ip'] || headers['ip'] || '').replace('::ffff:', ''),
+            channel: sourceObj.value || 'jiulvxing',
+            ip: (headers['x-real-ip'] || headers['ip']).replace('::ffff:', ''),
+            frontHeadExt: cookies['_frontHeadExt'],
+            openDomain: req.hostname,
             plat: 'touch'
         }
     },
