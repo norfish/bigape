@@ -117,7 +117,7 @@ Pagelet.prototype = {
             .then(function(data) {
                 data = pagelet.onServiceDone(data);
                 pagelet.setCache(data);
-                logger.info('数据处理成功，触发事件['+ pagelet.name +':done]', data);
+                logger.info('数据处理成功，触发事件['+ pagelet.name +':done]，data::', data);
                 pagelet.bigpipe.emit(pagelet.name + ':done', data);
                 return data;
             })

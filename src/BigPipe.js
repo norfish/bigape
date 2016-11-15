@@ -5,8 +5,6 @@
  *
  * TODO
  * 1. static module
- * --2. pagelet-data support--
- * 3. error catch
  */
 
 'use strict';
