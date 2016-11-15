@@ -49,10 +49,6 @@ module.exports = {
         return true;
     },
 
-    beforeQueryValid: function(req, res) {
-        return true;
-    },
-
     /**
      * 初始化
      */
@@ -106,11 +102,11 @@ module.exports = {
 
         // 有异步校验
         if(this.isPromise(beforeLoadValid)) {
-            console.log('进行请求前校验');
+            logger.info('进行请求前校验');
             return beforeLoadValid.then(function() {
                 return self._load(req, res);
             }).catch(function(error) {
-                console.log('请求接口前校验失败或数据异常', error);
+                logger.info('请求接口前校验失败或数据异常', error);
                 throw error;
             });
         }
@@ -130,6 +126,11 @@ module.exports = {
         return this.json(req, res);
     },
 
+    /**
+     * 响应接口数据，reponse.json
+     * @param  {Object} req http request
+     * @param  {Object} res http response
+     */
     json: function (req, res) {
         var self = this;
         this.load(req, res).then(function(data) {
@@ -159,29 +160,19 @@ module.exports = {
                 postType: 'json',
                 // proxy: 'http://127.0.0.1:8888',
                 timeout: this.timeout || 30000,
-                headers: this._getHeaders(req, res),
+                headers: this.getHeaders(req, res),
                 jsonValid: function(data) {
                     return self.validData(data, req, res);
                 }
             }
         ).then(function(json){
-            return self._preParse(json);
+            return self.preParse(json);
         }, function(json) {
             return self.reload(req, res, json);
         });
     },
 
-    _getHeaders: function (req, res) {
-        // var cookies = req.cookies,
-        //     headers = req.headers;
-        //
-        // return {
-        //     uid: cookies['_uc_uid'],
-        //     channel: cookies['_plat_source'] || 'jiulvxing',
-        //     ip: (headers['x-real-ip'] || headers['ip'] || '').replace('::ffff:', ''),
-        //     plat: 'touch'
-        // }
-        //
+    getHeaders: function (req, res) {
         var cookies = req.cookies,
             headers = req.headers;
 
@@ -205,7 +196,7 @@ module.exports = {
     },
 
     // 数据格式预处理
-    _preParse: function(json) {
+    preParse: function(json) {
         var bstatus = json.bstatus;
         if(bstatus) {
             return {
