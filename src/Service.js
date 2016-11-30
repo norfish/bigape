@@ -172,17 +172,6 @@ module.exports = {
     },
 
     _getHeaders: function (req, res) {
-        debugger
-        // var cookies = req.cookies,
-        //     headers = req.headers;
-        //
-        // return {
-        //     uid: cookies['_uc_uid'],
-        //     channel: cookies['_plat_source'] || 'jiulvxing',
-        //     ip: (headers['x-real-ip'] || headers['ip'] || '').replace('::ffff:', ''),
-        //     plat: 'touch'
-        // }
-        //
         var cookies = req.cookies,
             headers = req.headers;
 
