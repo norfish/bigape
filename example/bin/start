@@ -6,7 +6,7 @@ var qmonitor = require('@qnpm/q-monitor');
 var app = require('../app');
 var config = require('../config');
 
-var mock = require('../__test__/mock')
+// var mock = require('../__test__/mock')
 
 // 启动
 app.set('port', process.env.PORT || '1337');

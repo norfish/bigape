@@ -15,8 +15,8 @@
 ##### 新特性
 - pagelet 增加 noLog 配置，允许 pagelet 不输出logs √
 - 允许指定pagelet渲染数据的key，如果不指定还是默认取name值
-- service 允许自定义header
-- service 允许自定义proxy代理
+- service 允许自定义header, 新增 getHeaders 方法 √
+- service 允许自定义proxy代理 √
 - 增加renderAsync 的别名 render方法
 
 ##### bugfix
