@@ -1,12 +1,12 @@
 /**
  * Description:
- * Created by yongxiang.li
- * Email yongxiang.li@qunar.com
+ * Created by Yex
+ * Email Yex@qunar.com
  * Date: 2016/9/26 21:52
  */
 
 
-var Pagelet = require('../../../../src/Pagelet');
+var Pagelet = require('../../../../../src/Pagelet');
 
 module.exports = Pagelet.extend({
     name: 'staticA',

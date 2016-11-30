@@ -20,7 +20,7 @@ module.exports = {
         replaceConsole: true
     },
     monitor: {
-        'prefix': 'bigpipe',
+        'prefix': 'Bigpipe',
         'env': {
             'production': {
                 host: 'qmon-fe.corp.qunar.com',

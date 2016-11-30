@@ -1,6 +1,6 @@
 /**
  * @desc: errorPagelet common
- * @authors: yongxiang.li
+ * @authors: Yex
  * @date: 2016-10-24 17:40:39
  */
 

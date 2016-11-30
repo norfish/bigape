@@ -1,6 +1,6 @@
 /**
  * @desc: Pagelets
- * @authors: yongxiang.li
+ * @authors: Yex
  * @date: 2016-08-03 20:32:19
  *
  *
@@ -33,11 +33,11 @@ function Pagelet(name, options) {
     // 脚手架模块实例
     this._bootstrap = options.layout || options.bootstrap;
 
-    // 初始化
-    this.initialize.apply(this);
-
     // 适配
     this.adapt();
+
+    // 生命周期 created
+    this.onCreated();
 }
 
 Pagelet.prototype = {
@@ -73,7 +73,17 @@ Pagelet.prototype = {
     // 发生错误时候渲染错误页面的模板
     errorTemplate: 'partials/error',
 
+    // 不输出该模块的logs，主要是数据logs
+    noLog: false,
+
     /**
+     * 生命周期函数 pagelet 实例初始化之后
+     * @return {[type]} [description]
+     */
+    onCreated: function() {},
+
+    /**
+     * 钩子函数（hook function），获取 pagelet 的原始数据
      * 获取渲染的原始数据 可以被覆盖，默认是通过service取接口数据，返回promise
      * 支持返回同步数据或者Promise异步
      * @return {[type]} [description]
@@ -82,12 +92,8 @@ Pagelet.prototype = {
         return null;
     },
 
-    initialize: function() {
-        return this;
-    },
-
     /**
-     * 适配器，为了兼容老的api
+     * 适配器，为了兼容老的(1.0.x)api
      */
     adapt: function() {
         this.dataKey = this.pageletDataKey || this.dataKey;
@@ -117,7 +123,10 @@ Pagelet.prototype = {
             .then(function(data) {
                 data = pagelet.onServiceDone(data);
                 pagelet.setCache(data);
-                logger.info('数据处理成功，触发事件['+ pagelet.name +':done]', data);
+                logger.info(
+                    '数据处理成功，触发事件['+ pagelet.name +':done]',
+                    pagelet.noLog ? '{noLog}' : JSON.stringify(data)
+                );
                 pagelet.bigpipe.emit(pagelet.name + ':done', data);
                 return data;
             })
@@ -145,6 +154,7 @@ Pagelet.prototype = {
     },
 
     /**
+     * 生命周期，获取原始数据成功之后，一般用来处理原始数据，并返回
      * 处理通过getService获取的原始数据
      * @param  {Object} json 原始数据
      * @return {Object}      处理之后的数据
@@ -153,6 +163,11 @@ Pagelet.prototype = {
         return json;
     },
 
+    /**
+     * 生命周期函数，渲染 html 片段完成之后
+     * @param  {string} html html string
+     * @return {string}      html string
+     */
     afterRender: function(html) {
         return html;
     },
@@ -216,7 +231,7 @@ Pagelet.prototype = {
     getServiceData: function() {
         var pagelet = this;
 
-        logger.info('开始获取数据['+ pagelet.name +']');
+        // logger.info('开始获取数据['+ pagelet.name +']');
 
         // 优先使用缓存数据
         // 避免重复获取数据
@@ -326,7 +341,12 @@ Pagelet.prototype = {
         return '<script>BigPipe.onArrive('+ JSON.stringify(chunkObj) +')</script>'
     },
 
-    getPipeData: function (cache) {
+    /**
+     * 钩子函数（hook function），获取传递给客户端的数据，默认返回空
+     * @param  {Object} modData 本模块的数据
+     * @return {*}     返回给客户端的数据
+     */
+    getPipeData: function (modData) {
         return null;
     },
 
@@ -441,60 +461,10 @@ Pagelet.prototype = {
  * 类继承
  *##########################*/
 
-/**
- * extend
- * @param  {Object} props  子类属性
- *                 constructor: 构造器属性
- *                 static: 静态属性
- * @return {Object}        子类
- */
-var extend = function(props) {
-
-    var parent = this;
-    var child;
-
-    if(props && props.hasOwnProperty('constructor')) {
-        child = function(){
-            parent.apply(this, arguments);
-            props.constructor.apply(this, arguments);
-        }
-
-        //delete props.constructor;
-    } else {
-        child = function() {
-            return parent.apply(this, arguments);
-        }
-    }
-
-    // staticProps
-    Object.assign(child, parent);
-    if(props && props.hasOwnProperty('static')) {
-        Object.assign(child, props.static);
-        delete props.static;
-    };
-
-    // extend
-    child.prototype = Object.create(this.prototype);
-
-    // child props
-    if(props) {
-        Object.assign(child.prototype, props);
-    }
-
-    // inject props
-    // injectChild(child);
-
-    child.__super__ = parent.prototype;
-
-    return child;
-};
-
-// extend eventEmitter
-// util.inherits(Pagelet, EventEmitter);
 // extend eventEmitter
 _.extend(Pagelet.prototype, EventEmitter.prototype);
 
-Pagelet.extend = extend;
+Pagelet.extend = util.extend;
 
 Pagelet.create = (function() {
     var __instance = {};

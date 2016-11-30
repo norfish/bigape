@@ -1,11 +1,11 @@
 /**
  * @desc: modC
- * @authors: yongxiang.li
+ * @authors: Yex
  * @date: 2016-09-12 19:49:42
  */
 
 
-var Pagelet = require('../../../src/Pagelet');
+var Pagelet = require('../../../../src/Pagelet');
 
 module.exports = Pagelet.extend({
     name: 'modC',

@@ -1,12 +1,8 @@
 /**
  * @desc: Bigpipe
- * @authors: yongxiang.li
+ * @authors: Yex
  * @date: 2016-08-03 20:32:03
  *
- * TODO
- * 1. static module
- * --2. pagelet-data support--
- * 3. error catch
  */
 
 'use strict';
@@ -14,7 +10,6 @@
 var _ = require('lodash');
 var EventEmitter = require('events').EventEmitter;
 var Pagelet = require('./Pagelet');
-var co = require('co');
 var qmonitor = require('@qnpm/q-monitor');
 var logger = require('@qnpm/q-logger');
 var Promise = require('bluebird');
@@ -160,7 +155,7 @@ BigPipe.prototype = {
         Promise.map(waitModNames, function(modName) {
             return bigpipe.waitFor(modName);
         }).then(function() {
-            logger.info('analyze module done', pagelet.name);
+            // logger.info('analyze module done', pagelet.name);
             done.call(pagelet, pagelet);
         });
     },

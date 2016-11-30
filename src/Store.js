@@ -1,6 +1,6 @@
 /**
  * @desc: Store
- * @authors: yongxiang.li
+ * @authors: Yex
  * @date: 2016-10-18 17:51:48
  */
 

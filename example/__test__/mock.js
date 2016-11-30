@@ -1,11 +1,15 @@
 /**
  * @desc: mock
- * @authors: yongxiang.li
+ * @authors: Yex
  * @date: 2016-09-12 19:12:53
  */
 
 var nock = require('nock');
 var demoData = require('./data/demoData');
+
+nock('http://user.jiulvxing.com/')
+    .get('/ucenter/verify')
+    .reply(200, demoData.data1);
 
 nock('http://user.jiulvxing.com/ucenter/verify')
     .get('/a')

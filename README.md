@@ -7,6 +7,29 @@
 > this module depend on some private module, so it can not used for public
 > the public common module is under working now, please wait for a few days
 
+
+## release
+
+### 1.1.0
+
+##### 新特性
+- pagelet 增加 noLog 配置，允许 pagelet 不输出logs √
+- 允许指定pagelet渲染数据的key，如果不指定还是默认取name值
+- service 允许自定义header
+- service 允许自定义proxy代理
+- 增加renderAsync 的别名 render方法
+
+##### bugfix
+- pagelet 多层数据依赖
+- log日志输出，对于json，会stringify格式化输出 √
+
+
+### 1.0.x
+
+- pagelet 模块基本
+- bigpipe 基本模块
+- service 原始wiki
+
 ### Bigpipe 声明
 ```
 var BigPipe = require('bigape').BigPipe;

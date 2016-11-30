@@ -1,6 +1,6 @@
 {
   "name": "bigape",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": false,
   "scripts": {
     "start": "node ./bin/start"
@@ -13,7 +13,6 @@
     "@qnpm/q-monitor": "~1.0.8",
     "@qnpm/q-multiprocess": "~1.0.3",
     "@qnpm/q-request": "0.0.4",
-    "jnpm-template": "^1.0.2",
     "@qnpm/q-version": "~1.0.2",
     "bluebird": "^3.4.6",
     "body-parser": "~1.13.2",
@@ -23,13 +22,14 @@
     "debug": "~2.2.0",
     "eventemitter3": "^2.0.0",
     "express": "~4.13.3",
+    "jnpm-template": "^1.0.2",
     "serve-favicon": "~2.3.0"
   },
   "devDependencies": {
     "nock": "^8.0.0"
   },
   "keywords": [
-    "bigpipe, express, server, bigape"
+    "Bigpipe, express, server, bigape"
   ],
   "author": "norfish <easumlee@gmail.com> (http://jspie.com/)",
   "license": "ISC",

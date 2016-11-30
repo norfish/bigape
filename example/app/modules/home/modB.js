@@ -1,11 +1,11 @@
 /**
  * @desc: modB
- * @authors: yongxiang.li
+ * @authors: Yex
  * @date: 2016-09-12 19:49:28
  */
 
 
-var Pagelet = require('../../../src/Pagelet');
+var Pagelet = require('../../../../src/Pagelet');
 var modC = require('./modC');
 var modA = require('./modA');
 

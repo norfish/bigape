@@ -14,7 +14,7 @@ var exception = require('@qnpm/q-exception');
 var config = require('./config');
 
 // 路由
-var routes = require('./routes/index');
+var routes = require('./app/controllers/index');
 
 // 初始化express
 var app = express();

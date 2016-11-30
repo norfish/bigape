@@ -1,5 +1,5 @@
 # bigape
-nodejs bigpipe server depend on express
+nodejs Bigpipe server depend on express
 
 ## APIs - doc
 > TODO

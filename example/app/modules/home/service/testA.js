@@ -1,4 +1,4 @@
-var Service = require('../../../../src/Service');
+var Service = require('../../../../../src/Service');
 var _ = require('lodash');
 
 var service = Service.create({

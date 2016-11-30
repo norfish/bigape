@@ -1,10 +1,10 @@
 /**
  * @desc: layout
- * @authors: yongxiang.li
+ * @authors: Yex
  * @date: 2016-08-31 21:25:11
  */
 
-var Pagelet = require('../../../src/Pagelet');
+var Pagelet = require('../../../../src/Pagelet');
 
 var Layout = Pagelet.extend({
     name: 'layout',

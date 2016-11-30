@@ -1,6 +1,6 @@
 /**
  * @desc: Service 基本数据服务
- * @authors: yongxiang.li
+ * @authors: Yex
  * @date: 2016-08-03 21:08:11
  */
 
@@ -172,6 +172,7 @@ module.exports = {
     },
 
     _getHeaders: function (req, res) {
+        debugger
         // var cookies = req.cookies,
         //     headers = req.headers;
         //
@@ -197,7 +198,7 @@ module.exports = {
         return {
             uid: cookies['_uc_uid'],
             channel: sourceObj.value || 'jiulvxing',
-            ip: (headers['x-real-ip'] || headers['ip']).replace('::ffff:', ''),
+            ip: (headers['x-real-ip'] || headers['ip'] || '').replace('::ffff:', ''),
             frontHeadExt: cookies['_frontHeadExt'],
             openDomain: req.hostname,
             plat: 'touch'

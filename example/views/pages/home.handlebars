@@ -56,7 +56,7 @@
         dom.className = domCls;
     }
 
-    window.BigPipe = {
+    window.Bigpipe = window.BigPipe = {
         setData : function(key, value, eventName){
             eventName = (eventName || key) + '-data-ready';
             _data[key] = value;
@@ -122,44 +122,6 @@
             trigger(pageletEventName + '-ready');
         }
     };
-    })(window);
-
-    ;
-    (function(window) {
-
-        // TODO 命名空间和使用优化
-        // 环境变量
-        window.__RELEASE_TYPE__ = '{{NODE_ENV}}';
-
-        var bugtagsUrl = 'https://dn-bts.qbox.me/sdk/bugtags-1.0.3.js';
-
-        setTimeout(function() {
-            if(__RELEASE_TYPE__ !== 'production') {
-                loadScript(bugtagsUrl, initBugTag);
-            }
-        }, 1000);
-
-        function loadScript(src, callback) {
-            var node = document.createElement('script');
-            node.setAttribute('type', 'text/javascript');
-
-            //callback
-            if(typeof callback === 'function') {
-                node.onload = function() {
-                    callback();
-                };
-            }
-
-            node.src = src;
-            document.head.appendChild(node);
-        }
-
-        // bugtags
-        function initBugTag() {
-            // VERSION_NAME 替换为项目的版本，VERSION_CODE 替换为项目的子版本
-            new Bugtags('c25f52822ac8e0c89825681ea4fffec2', 'TOUCH', '1.0.0');
-        }
-
     })(window);
     </script>
 </html>
