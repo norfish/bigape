@@ -18,20 +18,20 @@ module.exports = Pagelet.extend({
 
     wait: [modA, modC],
 
-    beforeRender: function(data) {
-        var store = this.getStore();
-        return {
-            msg: 'parsed mod-b' + data.info,
-            dep: store.modA.msg + '||' + store.modC.msg,
-            info: store.modA.info
-        }
-    },
-
     getService: function() {
         return new Promise(function(resolve, reject) {
             setTimeout(function() {
                 resolve('Async mod-B data');
-            }, 500)
+            }, 300)
         })
-    }
+    },
+
+    onServiceDone: function(data) {
+        var store = this.getStore();
+        return {
+            msg: 'parsed mod-b' + data.info,
+            dep: store.modA.info + '||' + store.modC.msg + '||' + store.modA.msg,
+            info: store.modA.info
+        }
+    },
 });

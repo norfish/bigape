@@ -9,6 +9,8 @@ var Pagelet = require('../../../../src/Pagelet');
 //
 // var Pagelet = require('bigape').Pagelet;
 var serviceA = require('./service/testA');
+var modA_a =  require('./modA_a');
+var modA_b =  require('./modA_b');
 
 var mockA = {
     ret: true,
@@ -25,7 +27,9 @@ module.exports = Pagelet.extend({
 
     template: 'modA',
 
-    noLog: true,
+    // noLog: true,
+
+    wait: [modA_a, modA_b],
 
     // isErrorFatal: true,
 
@@ -34,24 +38,19 @@ module.exports = Pagelet.extend({
         return new Promise(function(resolve, reject) {
             setTimeout(function() {
                 resolve(mockA);
-            }, 500)
+            }, 100)
         })
     },
 
     onServiceDone: function(data) {
+        data = data.data;
+        var modA_a = this.getStore('modA_a');
+        data.msg = modA_a.msg;
         return data;
     },
 
-    getPipeData: function(cache) {
-        return cache;
+    getPipeData: function(modData) {
+        return modData;
     },
 
-    // beforeRender: function(data) {
-    //     var store = this.getStore();
-    //     return {
-    //         msg: 'parsed mod-a' + data.message,
-    //         // dep: store.modC.msg,
-    //         info: data
-    //     }
-    // }
 });

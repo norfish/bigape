@@ -26,14 +26,11 @@ function BigPipe(name, options) {
 
     this.options = options;
 
-    // pagelet 缓存
-    this._pageletCache = {};
-
     // pagelet cache data
     this.store = new Store(options.storeID || 'store');
 
-    // pagelet module list
-    this.pagelets = options.pagelets || {};
+    // first-class pagelet module list
+    this.pagelets = options.pagelets || [];
 
     // layout bootstrap
     this.layout = options.layout || options.bootstrap || {};
@@ -44,11 +41,17 @@ function BigPipe(name, options) {
     // monitor key
     this.qmonitor = options.qmonitor;
 
+    // 实例化的一级 first-class pagelets
+    this._pagelets = [];
+
     // 实例化的layout页面
     this._layout = null;
 
     // 实例化的页面片段集合
-    this._pagelets = [];
+    this._pageletList = [];
+
+    // pagelet 缓存
+    this._pageletMap = {};
 
     // errorpagelet 实例
     this._errorPagelet = null;
@@ -79,17 +82,17 @@ BigPipe.prototype = {
 
     /**
      * 覆盖bigpipe的pagelet模块
-     * @param  {Object} pageletsObj 模块map
+     * @param  {Array} pageletsArray 模块map
      * @return {this}
      */
-    usePagelets: function (pageletsObj) {
-        this.pagelets = pageletsObj;
+    usePagelets: function (pageletsArray) {
+        this.pagelets = pageletsArray;
         return this;
     },
 
     // same with usePagelets
-    pipe: function(pageletsObj) {
-        this.pagelets = pageletsObj;
+    pipe: function(pageletsArray) {
+        this.pagelets = pageletsArray;
         return this;
     },
 
@@ -111,14 +114,16 @@ BigPipe.prototype = {
 
     clear: function() {
         this.store.clear();
-        this._pageletCache = {};
+        this._pageletMap = {};
+        this._pageletList = [];
+        this._pagelets = [];
         this._queue = [];
     },
 
     start: function() {
         var bigpipe = this;
 
-        bigpipe._pagelets.forEach(function(pagelet, i) {
+        bigpipe._pageletList.forEach(function(pagelet, i) {
             bigpipe.analyze(pagelet, function () {
                 pagelet.ready('ready');
             });
@@ -143,6 +148,7 @@ BigPipe.prototype = {
 
         var bigpipe = this;
         var waitMods = pagelet.wait || [];
+
         var waitModNames = waitMods.map(function(mod) {
             if(typeof mod === 'string') {
                 return mod;
@@ -155,7 +161,7 @@ BigPipe.prototype = {
         Promise.map(waitModNames, function(modName) {
             return bigpipe.waitFor(modName);
         }).then(function() {
-            // logger.info('analyze module done', pagelet.name);
+            logger.info('analyze module done', pagelet.name);
             done.call(pagelet, pagelet);
         });
     },
@@ -168,7 +174,7 @@ BigPipe.prototype = {
     waitFor: function(modName) {
         var bigpipe = this;
         // 首先需要触发pagelet的start
-        bigpipe._pageletCache[modName].get();
+        bigpipe._pageletMap[modName].get();
 
         return new Promise(function(resolve, reject) {
             // pagelet load and parse data ready
@@ -285,7 +291,9 @@ BigPipe.prototype = {
      */
     createPagelets: function() {
         var bigpipe = this;
-        var _pagelets = this._pagelets = [];
+        var _pageletList = this._pageletList;
+        var _pageletMap = this._pageletMap;
+        var _pagelets = this._pagelets;
         var allPagelets = this._getAllPagelets();
         var options = {
             req: bigpipe._req,
@@ -301,14 +309,19 @@ BigPipe.prototype = {
 
         _.forIn(allPagelets, function(pagelet, name) {
             var newPagelet = pagelet.create(name, options);
-            bigpipe._pageletCache[name] = newPagelet;
-            _pagelets.push(newPagelet);
+            _pageletMap[name] = newPagelet;
+            _pageletList.push(newPagelet);
+        });
+
+        // first-class pagelets
+        this.pagelets.forEach(function(pg) {
+            _pagelets.push( _pageletMap[pg.prototype.name] );
         });
 
         //refresh length + layout
         bigpipe.length = bigpipe.pagelets.length;
 
-        return _pagelets;
+        return _pageletList;
 
     },
 
@@ -322,6 +335,8 @@ BigPipe.prototype = {
 
         var pagelets = this.pagelets;
 
+        var allPageletObj = {};
+
         // TODO 为了兼容之前的API，需要后期统一成数组
         if(_.isPlainObject(this.pagelets)) {
                var temp = [];
@@ -331,17 +346,43 @@ BigPipe.prototype = {
                this.pagelets = pagelets = temp;
         }
 
-        return this.pagelets.reduce(function(pre, pagelet) {
+        // return this.pagelets.reduce(function(pre, pagelet) {
+        //     var pgClass = pagelet.prototype;
+        //     pre[pgClass.name] = pagelet;
+        //
+        //     pgClass.wait.length && pgClass.wait.reduce(function(preWait, cur) {
+        //         preWait[cur.prototype.name] = cur;
+        //         return preWait;
+        //     }, pre);
+        //
+        //     return pre;
+        // }, {});
+        //
+
+        this.pagelets.forEach(function(pagelet) {
+            getDepends(pagelet);
+        });
+
+        return allPageletObj;
+
+        function getDepends(pagelet) {
+            if(!pagelet) {
+                return;
+            }
+
             var pgClass = pagelet.prototype;
-            pre[pgClass.name] = pagelet;
+            if(allPageletObj[pgClass.name]) {
+                logger.error('捉到重名的pagelet一只，请注意::', pgClass.name);
+            }
 
-            pgClass.wait.length && pgClass.wait.reduce(function(preWait, cur) {
-                preWait[cur.prototype.name] = cur;
-                return preWait;
-            }, pre);
+            allPageletObj[pgClass.name] = pagelet;
 
-            return pre;
-        }, {});
+            if(pgClass.wait.length) {
+                pgClass.wait.forEach(function(pageletItem){
+                    getDepends(pageletItem);
+                });
+            }
+        }
     },
 
     /**
@@ -448,7 +489,7 @@ BigPipe.prototype = {
 
         Promise.map(modules, function(modName) {
 
-            var mod = bigpipe._pageletCache[modName];
+            var mod = bigpipe._pageletMap[modName];
             /**
              * [{key1: '..'}, {key1: '..'}]
              */
@@ -482,7 +523,7 @@ BigPipe.prototype = {
 
         logger.info('开始处理JSON接口数据, 模块['+ modName +']');
 
-        var mod = bigpipe._pageletCache[modName];
+        var mod = bigpipe._pageletMap[modName];
 
         return mod.get().then(function(data) {
             bigpipe._jsonSuc(data);
@@ -512,7 +553,7 @@ BigPipe.prototype = {
 
         logger.info('开始处理html snippet接口数据, 模块['+ moduleName +']');
 
-        var module = this._pageletCache[moduleName];
+        var module = this._pageletMap[moduleName];
 
         // bigpipe._res.set('Content-Type', 'text/html; charset=utf-8');
         module.renderSnippet().then(function(snippet) {

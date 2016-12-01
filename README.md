@@ -20,7 +20,7 @@
 - 增加renderAsync 的别名 render方法
 
 ##### bugfix
-- pagelet 多层数据依赖
+- pagelet 多层数据依赖 √
 - log日志输出，对于json，会stringify格式化输出 √
 
 
@@ -32,7 +32,7 @@
 
 ### Bigpipe 声明
 ```
-var BigPipe = require('bigape').BigPipe;
+var Bigpipe = require('bigape').Bigpipe;
 var layout = require('./layout');
 var modA = require('./modA');
 var modB = require('./modB');
@@ -40,7 +40,7 @@ var modC = require('./modC');
 
 // var errorPagelet = require('./errorPagelet');
 
-var HomeAction = BigPipe.create('home', {
+var HomeAction = Bigpipe.create('home', {
     bootstrap: layout,
 
     pagelets: [modA, modB, modC],
@@ -161,7 +161,7 @@ module.exports = Pagelet.extend({
 
 ### Controller
 ```
-var BigPipe = require('../../libs/pipe/BigPipe');
+var Bigpipe = require('../../libs/pipe/Bigpipe');
 var DemoAction = require(__project.modules + '/demo');
 var modA = require(__project.modules + '/modA');
 var modB = require(__project.modules + '/modB');

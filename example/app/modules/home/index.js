@@ -11,10 +11,23 @@ var modA = require('./modA');
 var modB = require('./modB');
 var modC = require('./modC');
 
+/**
+ * modB
+ * |- modA
+ * 		|--modA_a
+ * 		     |--modA_a_a
+ * 		|--modA_b
+ * |- modB
+ */
+
 var HomeAction = Bigpipe.create('home', {
     bootstrap: layout,
 
-    pagelets: [modA, modB, modC]
+    pagelets: [
+        // modA,
+        modB,
+        // modC
+    ]
 });
 
 module.exports = HomeAction;

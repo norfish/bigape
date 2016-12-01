@@ -15,23 +15,13 @@ var modC = require('../modules/home/modC');
 
 router.get('/', function(req, res, next) {
     return HomeAction
-            // .usePagelets({
-            //     modA: modA,
-            //     modB: modB,
-            //     modC: modC
-            // })
-            .pipe([modA, modB, modC])
+            .pipe([modB])
             .router(req, res, next)
             .renderAsync();
 });
 
 router.get('/api', function(req, res, next) {
     return HomeAction
-        // .usePagelets({
-        //     modA: modA,
-        //     modB: modB,
-        //     modC: modC
-        // })
         .pipe([modA, modB])
         .router(req, res, next)
         .renderJSON(['modA', 'modB']);
@@ -39,9 +29,6 @@ router.get('/api', function(req, res, next) {
 
 router.get('/snippet', function(req, res, next) {
     return HomeAction
-        // .usePagelets({
-        //     modC: modC
-        // })
         .pipe([modC])
         .router(req, res, next)
         .renderSnippet('modC');

@@ -7,8 +7,7 @@
 exports.data1 = {
     ret: true,
     data: {
-        info: 'demo data 1',
-        message:' '
+        info: 'demo data 1'
     }
 };
 

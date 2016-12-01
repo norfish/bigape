@@ -5,6 +5,8 @@ var service = Service.create({
 
     qmonitor: 'login_validate_api',
 
+    // proxy: 'http://127.0.0.1:8888',
+
     getURL: function() {
         return 'http://user.jiulvxing.com/ucenter/verify';
         // return URL('ONE_WAY_LIST');
