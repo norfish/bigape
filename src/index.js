@@ -11,7 +11,7 @@ var Service = require('./Service');
 module.exports = {
     // 为了兼容1.0.x的版本
     BigPipe: Bigpipe,
-    Bigpipe: Bigpie,
+    Bigpipe: Bigpipe,
     Pagelet: Pagelet,
     Service: Service
 };

@@ -43,7 +43,7 @@ module.exports = {
     timeout: 30000,
 
     // 接口代理地址
-    proxy: null,
+    proxySet: null,
 
     /**
      * 接口请求前校验，如果失败则停止请求
@@ -160,7 +160,7 @@ module.exports = {
                 qmonitor: this.getQMonitor(req, res),
                 method: this.method,
                 postType: 'json',
-                proxy: this.proxy, //'http://127.0.0.1:8888',
+                proxy: this.proxySet, //'http://127.0.0.1:8888',
                 timeout: this.timeout || 30000,
                 headers: this.getHeaders(req, res),
                 jsonValid: function(data) {

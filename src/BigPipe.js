@@ -35,7 +35,7 @@ function BigPipe(name, options) {
     // layout bootstrap
     this.layout = options.layout || options.bootstrap || {};
 
-    // 错误module
+    // 错误 module
     this.errorPagelet = options.errorPagelet || ErrorPagelet;
 
     // monitor key
@@ -446,7 +446,9 @@ BigPipe.prototype = {
         });
     },
 
-    render: this.renderAsync,
+    render: function() {
+        return this.renderAsync.apply(this, arguments);
+    },
 
     /**
      * 同步渲染 pagelet 模块

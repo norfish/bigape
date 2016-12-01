@@ -10,7 +10,7 @@
 
 ## release
 
-### 1.1.0
+### 1.2.0
 
 ##### 新特性
 - pagelet 增加 noLog 配置，允许 pagelet 不输出logs √
@@ -23,6 +23,8 @@
 - pagelet 多层数据依赖 √
 - log日志输出，对于json，会stringify格式化输出 √
 
+### 1.1.0
+- 故障fix
 
 ### 1.0.x
 
