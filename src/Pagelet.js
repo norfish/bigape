@@ -76,6 +76,9 @@ Pagelet.prototype = {
     // 不输出该模块的logs，主要是数据logs
     noLog: false,
 
+    // pagelet data 的 key， 默认为name
+    dataKey: '',
+
     /**
      * 生命周期函数 pagelet 实例初始化之后
      * @return {[type]} [description]
