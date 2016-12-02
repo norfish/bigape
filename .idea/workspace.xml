@@ -3,11 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="75621d28-510c-454f-ac24-d76d6afe57d6" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/app/controllers/test.js" afterPath="$PROJECT_DIR$/example/app/controllers/test.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/app/modules/home/index.js" afterPath="$PROJECT_DIR$/example/app/modules/home/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/app/modules/home/modA_b.js" afterPath="$PROJECT_DIR$/example/app/modules/home/modA_b.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/views/pages/home.handlebars" afterPath="$PROJECT_DIR$/example/views/pages/home.handlebars" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BigPipe.js" afterPath="$PROJECT_DIR$/src/BigPipe.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Pagelet.js" afterPath="$PROJECT_DIR$/src/Pagelet.js" />
     </list>
     <ignored path="bigape.iws" />
@@ -35,7 +30,7 @@
         <entry file="file://$PROJECT_DIR$/src/BigPipe.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="273">
-              <caret line="427" column="40" selection-start-line="427" selection-start-column="40" selection-end-line="427" selection-end-column="40" />
+              <caret line="435" column="32" selection-start-line="435" selection-start-column="32" selection-end-line="435" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -157,8 +152,8 @@
         <option value="$PROJECT_DIR$/example/app/controllers/test.js" />
         <option value="$PROJECT_DIR$/example/app.js" />
         <option value="$PROJECT_DIR$/src/Service.js" />
-        <option value="$PROJECT_DIR$/src/BigPipe.js" />
         <option value="$PROJECT_DIR$/src/Pagelet.js" />
+        <option value="$PROJECT_DIR$/src/BigPipe.js" />
       </list>
     </option>
   </component>
@@ -367,12 +362,12 @@
       <updated>1479209172439</updated>
       <workItem from="1479209173834" duration="4006000" />
       <workItem from="1479283869040" duration="49000" />
-      <workItem from="1480497798963" duration="3473000" />
+      <workItem from="1480497798963" duration="4620000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7528000" />
+    <option name="totallyTimeSpent" value="8675000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1440" height="826" extended-state="6" />
@@ -387,7 +382,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329235" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.40190735" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.40190735" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -584,7 +579,7 @@
     <entry file="file://$PROJECT_DIR$/src/BigPipe.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="273">
-          <caret line="427" column="40" selection-start-line="427" selection-start-column="40" selection-end-line="427" selection-end-column="40" />
+          <caret line="435" column="32" selection-start-line="435" selection-start-column="32" selection-end-line="435" selection-end-column="32" />
           <folding />
         </state>
       </provider>
