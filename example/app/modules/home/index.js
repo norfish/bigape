@@ -10,6 +10,7 @@ var layout = require('./layout');
 var modA = require('./modA');
 var modB = require('./modB');
 var modC = require('./modC');
+var modD = require('./modD');
 
 /**
  * modB

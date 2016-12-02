@@ -12,12 +12,21 @@ var HomeAction = require('../modules/home');
 var modA = require('../modules/home/modA');
 var modB = require('../modules/home/modB');
 var modC = require('../modules/home/modC');
+var modD = require('../modules/home/modD');
 
 router.get('/', function(req, res, next) {
     return HomeAction
-            .pipe([modB])
+            .pipe([modB, modD, modA])
             .router(req, res, next)
-            .renderAsync();
+            .render();
+});
+
+// 异步渲染，顺序输出到客户端
+router.get('/pipeline', function(req, res, next) {
+    return HomeAction
+            .pipe([modA, modB, modD])
+            .router(req, res, next)
+            .renderPipeline();
 });
 
 router.get('/api', function(req, res, next) {

@@ -24,3 +24,12 @@ module.exports = Pagelet.extend({
         })
     }
 });
+
+/**
+ * in order
+ *
+ * get order
+ *
+ * 每次render结束
+ *
+ */

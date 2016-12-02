@@ -10,21 +10,26 @@
 
 ## release
 
-### 1.2.x
+### 1.2.4
+- 增加 renderAsync 的别名 render方法 √
+- 增加 renderPipeline 方法，异步渲染，按顺序输出 √
+
+
+### 1.2.0 - 1.2.3
 
 ##### 新特性
 - pagelet 增加 noLog 配置，允许 pagelet 不输出logs √
 - 允许指定pagelet渲染数据的key，如果不指定还是默认取name值 √
 - service 允许自定义header, 新增 getHeaders 方法 √
 - service 允许自定义proxy代理 √
-- 增加renderAsync 的别名 render方法
+
 
 ##### bugfix
 - pagelet 多层数据依赖 √
 - log日志输出，对于json，会stringify格式化输出 √
 
 ### 1.1.0
-- 故障fix
+- 故障fix √
 
 ### 1.0.x
 
@@ -173,23 +178,22 @@ exports.render = function(req, res, next) {
     return DemoAction
             // 可以不写pipe，这样会使用Bigpipe声明的pagelets
             // 如果有写pipe则会覆盖pagelets
-            // 可以使用array 或者 Object， Object的key为pagelet的name，会覆盖声明的值
-            //  .pipe({
-            //    modA: modA,
-            //    modB: modB,
-            //    modC: modC
-            // })
             // .pipe([modA, modB, modC])
             .router(req, res, next)
-            .renderAsync();
+            .render();  // same as: renderAsync();
+};
+
+// 异步渲染模块，顺序输出
+exports.renderPipeline = function(req, res, next) {
+    return DemoAction
+        .pipe([modB, modA, modC])
+        .router(req, res, next)
+        .renderPipeline();
 };
 
 exports.renderJSON = function(req, res, next) {
     return DemoAction
-        .pipe({
-            modA: modA,
-            modB: modB
-        })
+        .pipe([modA, modB])
         .router(req, res, next)
         .renderJSON(['modA', 'modB']);
 };

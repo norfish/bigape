@@ -358,8 +358,10 @@ BigPipe.prototype = {
             }
 
             var pgClass = pagelet.prototype;
+            // 已经解析过
             if(allPageletObj[pgClass.name]) {
-                logger.error('捉到重名的pagelet一只，请注意::', pgClass.name);
+                // logger.info('捉到重名的pagelet一只，请注意::', pgClass.name);
+                return;
             }
 
             allPageletObj[pgClass.name] = pagelet;
@@ -412,7 +414,7 @@ BigPipe.prototype = {
     },
 
     /**
-     * 异步渲染pagelets
+     * 异步渲染pagelets, flush chunk to client as soon as possible without order
      * @return {Object} Promise
      */
     renderAsync: function() {
@@ -456,6 +458,61 @@ BigPipe.prototype = {
      */
     renderSync: function() {
 
+    },
+
+    /**
+     * 按照指定的pagelet的顺序输出到客户端，异步渲染，flush chunk to client as soon as possible with order
+     * @return {} [description]
+     */
+    renderPipeline: function() {
+        var bigpipe = this;
+        var layout = this._layout;
+
+        var pageletOrder = [];
+        var pageletOrderMap = {};
+
+        this.renderLayout().then(function() {
+
+            bigpipe._pagelets.forEach(function(pagelet) {
+                pageletOrder.push(pagelet.name);
+
+                pagelet.once('active', function(chunk) {
+                    pageletOrderMap[pagelet.name] = {
+                        name: pagelet.name,
+                        ready: true,
+                        flushed: false,
+                        chunk: chunk
+                    };
+
+                    flushPagelets();
+                });
+
+                pagelet.render();
+            });
+
+            function flushPagelets() {
+                for(var i = 0, len = pageletOrder.length; i < len; i++) {
+                    var pl = pageletOrderMap[ pageletOrder[i] ];
+
+                    // haven't render ready
+                    if(!pl || !pl.ready) {
+                        break;
+                    }
+
+                    // flush once
+                    if(!pl.flushed) {
+                        bigpipe.queue(pl.name, pl.chunk).flush();
+                        pl.flushed = true;
+                    }
+
+                    // last one
+                    if(i === (len - 1)) {
+                        layout.end();
+                    }
+                }
+            }
+
+        });
     },
 
     /**

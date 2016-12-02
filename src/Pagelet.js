@@ -190,14 +190,17 @@ Pagelet.prototype = {
 
         return this.getRenderHtml()
             .then(function(source) {
-                return pagelet.createChunk(source);
+                var chunk = pagelet.createChunk(source);
+                pagelet.emit('active', chunk);
+                return chunk;
             })
-            // handle error
             .catch(function(err) {
-
+                var msg = '系统繁忙，请稍后重试' + err.message;
                 logger.error('Pagelet render error::', err);
-                return pagelet.catch(err);
-            });
+                pagelet.catch(err);
+                pagelet.emit('active', msg);
+                return msg;
+            })
     },
 
     /**
