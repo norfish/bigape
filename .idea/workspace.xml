@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="75621d28-510c-454f-ac24-d76d6afe57d6" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BigPipe.js" afterPath="$PROJECT_DIR$/src/BigPipe.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/index.js" afterPath="$PROJECT_DIR$/src/index.js" />
     </list>
     <ignored path="bigape.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -56,13 +53,13 @@
             <state relative-caret-position="2">
               <caret line="166" column="7" selection-start-line="166" selection-start-column="7" selection-end-line="166" selection-end-column="7" />
               <folding>
-                <marker date="1480504862000" expanded="true" signature="258:281" ph="/** 请求地址 ...*/" />
-                <marker date="1480504862000" expanded="true" signature="300:323" ph="/** 请求参数 ...*/" />
-                <marker date="1480504862000" expanded="true" signature="345:368" ph="/** 监控名称 ...*/" />
-                <marker date="1480504862000" expanded="true" signature="392:447" ph="/** 接口请求失败后的重试次数, 如果不为0, 后端接口返回异常会重新请求接口 ...*/" />
-                <marker date="1480504862000" expanded="true" signature="472:526" ph="/** 接口请求方式，默认是GET ...*/" />
-                <marker date="1480504862000" expanded="true" signature="551:596" ph="/** 超时时间 ...*/" />
-                <marker date="1480504862000" expanded="true" signature="3589:4192" ph="{...}" />
+                <marker date="1480597075000" expanded="true" signature="258:281" ph="/** 请求地址 ...*/" />
+                <marker date="1480597075000" expanded="true" signature="300:323" ph="/** 请求参数 ...*/" />
+                <marker date="1480597075000" expanded="true" signature="345:368" ph="/** 监控名称 ...*/" />
+                <marker date="1480597075000" expanded="true" signature="392:447" ph="/** 接口请求失败后的重试次数, 如果不为0, 后端接口返回异常会重新请求接口 ...*/" />
+                <marker date="1480597075000" expanded="true" signature="472:526" ph="/** 接口请求方式，默认是GET ...*/" />
+                <marker date="1480597075000" expanded="true" signature="551:596" ph="/** 超时时间 ...*/" />
+                <marker date="1480597075000" expanded="true" signature="3595:4198" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -650,13 +647,13 @@
         <state relative-caret-position="2">
           <caret line="166" column="7" selection-start-line="166" selection-start-column="7" selection-end-line="166" selection-end-column="7" />
           <folding>
-            <marker date="1480504862000" expanded="true" signature="258:281" ph="/** 请求地址 ...*/" />
-            <marker date="1480504862000" expanded="true" signature="300:323" ph="/** 请求参数 ...*/" />
-            <marker date="1480504862000" expanded="true" signature="345:368" ph="/** 监控名称 ...*/" />
-            <marker date="1480504862000" expanded="true" signature="392:447" ph="/** 接口请求失败后的重试次数, 如果不为0, 后端接口返回异常会重新请求接口 ...*/" />
-            <marker date="1480504862000" expanded="true" signature="472:526" ph="/** 接口请求方式，默认是GET ...*/" />
-            <marker date="1480504862000" expanded="true" signature="551:596" ph="/** 超时时间 ...*/" />
-            <marker date="1480504862000" expanded="true" signature="3589:4192" ph="{...}" />
+            <marker date="1480597075000" expanded="true" signature="258:281" ph="/** 请求地址 ...*/" />
+            <marker date="1480597075000" expanded="true" signature="300:323" ph="/** 请求参数 ...*/" />
+            <marker date="1480597075000" expanded="true" signature="345:368" ph="/** 监控名称 ...*/" />
+            <marker date="1480597075000" expanded="true" signature="392:447" ph="/** 接口请求失败后的重试次数, 如果不为0, 后端接口返回异常会重新请求接口 ...*/" />
+            <marker date="1480597075000" expanded="true" signature="472:526" ph="/** 接口请求方式，默认是GET ...*/" />
+            <marker date="1480597075000" expanded="true" signature="551:596" ph="/** 超时时间 ...*/" />
+            <marker date="1480597075000" expanded="true" signature="3595:4198" ph="{...}" />
           </folding>
         </state>
       </provider>

@@ -300,6 +300,10 @@ Pagelet.prototype = {
     },
 
     getTemplatePath: function() {
+        if(!this.template) {
+            return 'index';
+        }
+
         if(this.isBootstrap()) {
             return this.template;
             // return 'pages/' + this.template;
@@ -310,7 +314,7 @@ Pagelet.prototype = {
 
     getActRenderData: function(parsed) {
         return {
-            [this.name]: parsed || null,
+            [this.dataKey || this.name]: parsed || null,
             locals: this.res.locals,
             // 页面统一增加 process env
             NODE_ENV: process.env.NODE_ENV
@@ -338,7 +342,7 @@ Pagelet.prototype = {
             mode: this.mode,
             dataKey: this.dataKey || this.name,
             dataEventName: this.dataEventName || this.dataKey || this.name,
-            pageletEventName: this.pageletEventName || this.domID
+            pageletEventName: this.pageletEventName || this.domID || this.name
         };
 
         return '<script>BigPipe.onArrive('+ JSON.stringify(chunkObj) +')</script>'
