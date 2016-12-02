@@ -1,6 +1,6 @@
 {
   "name": "bigape",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "an bigpipe inpired node structure based on express",
   "main": "src/index.js",
   "scripts": {
@@ -16,7 +16,8 @@
     "node",
     "mvc",
     "node",
-    "structure"
+    "structure",
+    "server render"
   ],
   "dependencies": {
     "@qnpm/q-monitor": "~1.0.8",
