@@ -1,6 +1,6 @@
 {
   "name": "bigape",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "an bigpipe inpired node structure based on express",
   "main": "src/index.js",
   "scripts": {
