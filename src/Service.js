@@ -193,7 +193,8 @@ module.exports = {
             ip: (headers['x-real-ip'] || headers['ip'] || '').replace('::ffff:', ''),
             frontHeadExt: cookies['_frontHeadExt'],
             openDomain: req.hostname,
-            plat: 'touch'
+            plat: 'touch',
+            dist: cookies._plat_dist || 'h5' //分发渠道
         }
     },
 
