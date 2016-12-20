@@ -429,9 +429,9 @@ Pagelet.prototype = {
      */
     getErrObj: function (error) {
         return {
-            status: error.status || 502,
-            message: (typeof error.status == 'undefined') ?
-                '系统繁忙,请稍后重试' : (error.message || '系统繁忙,请稍后重试')
+            status: error.status || error.code || 502,
+            message: (error.status || error.code) ?
+                (error.message || '系统繁忙,请稍后重试') : '系统繁忙,请稍后重试',
         }
     },
 
