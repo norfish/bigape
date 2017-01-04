@@ -102,6 +102,8 @@ Pagelet.prototype = {
         this.dataKey = this.pageletDataKey || this.dataKey;
         this.getService = this.getRenderData || this.getService;
         this.onServiceDone = this.beforeRender || this.onServiceDone;
+        this.name = this.name || this.id;
+        this.template = this.template || this.templateID;
     },
 
     bootstrap: function(value) {

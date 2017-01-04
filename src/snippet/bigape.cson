@@ -1,0 +1,87 @@
+'.source.js':
+  'bigape index':
+    'prefix': 'bpi'
+    'body': """
+        var BigPipe = require('bigape').BigPipe;
+        var layout = require('./layout');
+        var $1 = require('./$1');
+
+        var Action = Bigpipe.create('$2', {
+
+            bootstrap: layout,
+
+            pagelets: [
+                $1
+            ],
+        });
+
+        module.exports = Action;
+    """
+  'bigape layout':
+    'prefix': 'bpl'
+    'body': """
+        var Pagelet = require('bigape').Pagelet;
+
+        var Layout = Pagelet.extend({
+            name: 'layout',
+
+            template: 'pages/$1',
+        });
+
+        module.exports = Layout;
+    """
+  'bigape pagelet':
+    'prefix': 'bpp'
+    'body': """
+        var Pagelet = require('bigape').Pagelet;
+        var $1 = require('./$1');
+
+        module.exports = Pagelet.extend({
+            name: '$2',
+
+            domID: '$3',
+
+            template: '$2',
+
+            getService: function() {
+                $1.load(this.req, this.res);
+            },
+
+            onServiceDone: function(data) {
+                return {
+                    msg: 'parsed mod-C'
+                }
+            },
+
+            // getPipeData: function(modData) {
+            //    return modData;
+            // },
+        });
+    """
+  'bigape service':
+    'prefix': 'bps'
+    'body': """
+        var Service = require('bigape').Service;
+        var _ = require('lodash');
+
+        var service = Service.create({
+
+            qmonitor: '$1',
+
+            getURL: function() {
+                return '$2';
+            },
+
+            method: 'POST',
+
+            validData: function (data) {
+                return true;
+            },
+
+            getParams: function(req, res) {
+                return {};
+            }
+        });
+
+        module.exports = service;
+    """
