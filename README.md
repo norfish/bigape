@@ -10,6 +10,15 @@
 
 ## release
 
+### 1.2.7
+- add: BigPipe 增加了init属性，支持给bigpipe增加自定义实例属性
+- add: 支持init里指定渲染方法
+- add: renderSnippet/renderJSON 支持直接传入module原型
+
+*bugfix：*
+- fix: renderSnippet/renderJSON 方法只传入module或者moduleName，不重新指定pipe，导致无法flush到客户端的bug
+
+
 ### 1.2.4
 - 增加 renderAsync 的别名 render方法 √
 - 增加 renderPipeline 方法，异步渲染，按顺序输出 √

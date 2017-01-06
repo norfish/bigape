@@ -67,7 +67,7 @@ function BigPipe(name, options) {
     // 所有的一级 pagelet 数量
     this.length = 1; //Object.keys(options.pagelets).length || 1;
 
-    // this.initialize.apply(this, options);
+    this.initialize.call(this, options);
 }
 
 BigPipe.prototype = {
@@ -77,6 +77,17 @@ BigPipe.prototype = {
     charset: 'utf-8',
 
     initialize: function(options) {
+        if(!options) return this;
+
+        var initProps = options.init || {};
+
+        var bigpipe = this;
+        _.forIn(initProps, function(value, key) {
+            if(!bigpipe.hasOwnProperty(key)) {
+                bigpipe[key] = value;
+                console.log('add props', key);
+            }
+        });
         return this;
     },
 
@@ -523,6 +534,7 @@ BigPipe.prototype = {
     renderJSON: function(modules) {
 
         var bigpipe = this;
+        bigpipe.length = modules.length;
         if(!modules || !modules.length) {
             logger.error('处理失败,没有传入需要处理的模块');
             bigpipe._json({
@@ -534,6 +546,10 @@ BigPipe.prototype = {
         logger.info('开始处理JSON接口数据, 模块['+ modules.join(' | ') +']');
 
         Promise.map(modules, function(modName) {
+
+            if(_.isFunction(modName)) {
+                modName = modName.prototype.name;
+            }
 
             var mod = bigpipe._pageletMap[modName];
             /**
@@ -559,12 +575,18 @@ BigPipe.prototype = {
 
     renderSingleJSON: function (modName) {
         var bigpipe = this;
+        bigpipe.length = 1;
+
         if(!modName) {
             logger.error('处理失败,没有传入需要处理的模块');
             bigpipe._json({
                 status: 500,
                 message: '未获取到数据'
             });
+        }
+
+        if(_.isFunction(modName)) {
+            modName = modName.prototype.name;
         }
 
         logger.info('开始处理JSON接口数据, 模块['+ modName +']');
@@ -588,6 +610,7 @@ BigPipe.prototype = {
      */
     renderSnippet: function(moduleName) {
         var bigpipe = this;
+        bigpipe.length = 1;
 
         if(!moduleName) {
             logger.error('处理失败,没有传入需要处理的模块');
@@ -595,6 +618,10 @@ BigPipe.prototype = {
                 status: 500,
                 message: '未获取到数据'
             });
+        }
+
+        if(_.isFunction(moduleName)) {
+            moduleName = moduleName.prototype.name;
         }
 
         logger.info('开始处理html snippet接口数据, 模块['+ moduleName +']');
