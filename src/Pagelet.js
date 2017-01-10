@@ -321,6 +321,7 @@ Pagelet.prototype = {
         return {
             [this.renderDataKey || this.name]: parsed || null,
             locals: this.res.locals,
+            query: this.req.query,
             // 页面统一增加 process env
             NODE_ENV: process.env.NODE_ENV
         }

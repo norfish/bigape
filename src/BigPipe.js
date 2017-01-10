@@ -85,7 +85,7 @@ BigPipe.prototype = {
         _.forIn(initProps, function(value, key) {
             if(!bigpipe.hasOwnProperty(key)) {
                 bigpipe[key] = value;
-                console.log('add props', key);
+                // console.log('add props', key);
             }
         });
         return this;
