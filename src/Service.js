@@ -210,7 +210,7 @@ module.exports = {
             }
         }
         return {
-            status: json.status || json.code || 0,
+            status: json.status || json.code || (json.ret ? 0 : -1) || 0,
             message: json.message || json.des || json.msg || 'success',
             data: json.data
         }
