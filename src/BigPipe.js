@@ -68,6 +68,9 @@ function BigPipe(name, options) {
     this.length = 1; //Object.keys(options.pagelets).length || 1;
 
     this.initialize.call(this, options);
+
+    // emitter
+    this.setMaxListeners(0);
 }
 
 BigPipe.prototype = {
@@ -186,6 +189,12 @@ BigPipe.prototype = {
         var bigpipe = this;
         // 首先需要触发pagelet的start
         bigpipe._pageletMap[modName].get();
+
+        // for(var i=0; i<20; i++) {
+        //     bigpipe.on('testEvt', function() {
+        //         console.log('testEvt');
+        //     });
+        // }
 
         return new Promise(function(resolve, reject) {
             // pagelet load and parse data ready

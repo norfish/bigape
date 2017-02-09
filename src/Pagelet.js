@@ -38,6 +38,9 @@ function Pagelet(name, options) {
 
     // 生命周期 created
     this.onCreated();
+
+    // emitter
+    this.setMaxListeners(0);
 }
 
 Pagelet.prototype = {
