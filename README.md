@@ -10,6 +10,12 @@
 
 ## release
 
+### 1.2.9
+- emitter.setMaxListeners to unlimit
+
+### 1.2.8
+- service response data 类型增加ret的支持
+
 ### 1.2.7
 - add: BigPipe 增加了init属性，支持给bigpipe增加自定义实例属性
 - add: 支持init里指定渲染方法
