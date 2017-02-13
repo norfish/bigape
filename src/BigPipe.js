@@ -190,12 +190,6 @@ BigPipe.prototype = {
         // 首先需要触发pagelet的start
         bigpipe._pageletMap[modName].get();
 
-        // for(var i=0; i<20; i++) {
-        //     bigpipe.on('testEvt', function() {
-        //         console.log('testEvt');
-        //     });
-        // }
-
         return new Promise(function(resolve, reject) {
             // pagelet load and parse data ready
             bigpipe.once(modName + ':done', function(data) {
@@ -259,9 +253,9 @@ BigPipe.prototype = {
 
         // 确保不会在 end 之后再 write chunk
         if(this._res.finished) {
-            // logger.error('Response was closed, unable to flush content');
+            logger.error('Response was closed, unable to flush content');
             this.emit('end', new Error('Response was closed, unable to flush content'));
-            // return;
+            return; // TODO 正常情况下会多一次flush，导致在end之后还会flush一次
         }
 
         var data = new Buffer(this.join(), this.charset);
