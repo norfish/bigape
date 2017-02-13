@@ -70,7 +70,7 @@ function BigPipe(name, options) {
     this.initialize.call(this, options);
 
     // emitter
-    this.setMaxListeners(0);
+    this.setMaxListeners(100);
 }
 
 BigPipe.prototype = {
@@ -198,7 +198,7 @@ BigPipe.prototype = {
 
         return new Promise(function(resolve, reject) {
             // pagelet load and parse data ready
-            bigpipe.on(modName + ':done', function(data) {
+            bigpipe.once(modName + ':done', function(data) {
                 bigpipe.store.set(modName, data);
                 resolve({
                     name: modName,
@@ -207,7 +207,7 @@ BigPipe.prototype = {
             });
 
             // pagelet处理数据失败
-            bigpipe.on(modName + ':fail', function(data) {
+            bigpipe.once(modName + ':fail', function(data) {
                 bigpipe.store.set(modName, data);
                 reject({
                     name: modName,
@@ -722,6 +722,7 @@ BigPipe.create = (function() {
     var __instance = {};
 
     return function(name, options) {
+
         if(!options) {
             options = name || {};
             name = 'defaults';

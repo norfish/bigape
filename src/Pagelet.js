@@ -40,7 +40,7 @@ function Pagelet(name, options) {
     this.onCreated();
 
     // emitter
-    this.setMaxListeners(0);
+    this.setMaxListeners(100);
 }
 
 Pagelet.prototype = {

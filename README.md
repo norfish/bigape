@@ -10,6 +10,9 @@
 
 ## release
 
+### 1.3.0
+- fixed: emitter.setMaxListeners to unlimit 导致机器负载飙升
+
 ### 1.2.9
 - emitter.setMaxListeners to unlimit
 
