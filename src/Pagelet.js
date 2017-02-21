@@ -138,6 +138,10 @@ Pagelet.prototype = {
                 pagelet.bigpipe.emit(pagelet.name + ':done', data);
                 return data;
             })
+            .catch(function(error) {
+                logger.error('数据处理异常', error);
+                pagelet.catch(error);
+            });
     },
 
     /**
@@ -301,6 +305,7 @@ Pagelet.prototype = {
                 return pagelet.afterRender(html);
             })
             .catch(function(error) {
+                debugger
                 qmonitor.addCount('module_render_error');
                 logger.error('渲染pagelet异常', pagelet.name, error);
                 return qtemplate.render(pagelet.errorTemplate, pagelet.getErrObj(error));

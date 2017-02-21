@@ -247,8 +247,10 @@ BigPipe.prototype = {
 
         this.once('done', done);
 
+        // end 的时候也触发了次flush,避免再次response到客户端
         if (!this._queue.length) {
             this.emit('done');
+            return;
         }
 
         // 确保不会在 end 之后再 write chunk
