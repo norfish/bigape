@@ -257,7 +257,7 @@ BigPipe.prototype = {
         if(this._res.finished) {
             logger.error('Response was closed, unable to flush content');
             this.emit('end', new Error('Response was closed, unable to flush content'));
-            return; // TODO 正常情况下会多一次flush，导致在end之后还会flush一次
+            return; 
         }
 
         var data = new Buffer(this.join(), this.charset);

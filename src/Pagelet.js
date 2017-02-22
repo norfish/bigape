@@ -14,7 +14,8 @@ var co = require('co');
 var qtemplate = require('jnpm-template');
 var qmonitor = require('@qnpm/q-monitor');
 var logger = require('@qnpm/q-logger');
-var Promise = require('bluebird');
+// TODO: when use bluebird, when write after end error occured, cpu will increase to 100%, use default promise will be ok
+// var Promise = require('bluebird');
 var util = require('./util');
 
 function Pagelet(name, options) {
