@@ -2,8 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="75621d28-510c-454f-ac24-d76d6afe57d6" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Pagelet.js" afterPath="$PROJECT_DIR$/src/Pagelet.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/app/controllers/index.js" afterPath="$PROJECT_DIR$/example/app/controllers/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/app/controllers/test.js" afterPath="$PROJECT_DIR$/example/app/controllers/test.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/app/modules/home/modA.js" afterPath="$PROJECT_DIR$/example/app/modules/home/modA.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/app/modules/home/modB.js" afterPath="$PROJECT_DIR$/example/app/modules/home/modB.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/app/modules/home/modC.js" afterPath="$PROJECT_DIR$/example/app/modules/home/modC.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/app/modules/home/modD.js" afterPath="$PROJECT_DIR$/example/app/modules/home/modD.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BigPipe.js" afterPath="$PROJECT_DIR$/src/BigPipe.js" />
     </list>
     <ignored path="bigape.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,8 +36,59 @@
       <file leaf-file-name="BigPipe.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/BigPipe.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
-              <caret line="435" column="32" selection-start-line="435" selection-start-column="32" selection-end-line="435" selection-end-column="32" />
+            <state relative-caret-position="17">
+              <caret line="17" column="14" selection-start-line="17" selection-start-column="14" selection-end-line="17" selection-end-column="14" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="start" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/example/bin/start">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="10" selection-start-line="0" selection-start-column="10" selection-end-line="0" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/example/app/controllers/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="260">
+              <caret line="16" column="10" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Pagelet.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Pagelet.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="178">
+              <caret line="261" column="29" selection-start-line="261" selection-start-column="29" selection-end-line="261" selection-end-column="29" />
+              <folding>
+                <marker date="1487750162000" expanded="true" signature="7835:8063" ph="{...}" />
+                <marker date="1487750162000" expanded="true" signature="7835:8071" ph="{...}" />
+                <marker date="1487750162000" expanded="true" signature="8666:8718" ph="/** 生成数据块 ...*/" />
+                <marker date="1487750162000" expanded="true" signature="9442:9570" ph="/** 钩子函数（hook function），获取传递给客户端的数据，默认返回空 ...*/" />
+                <marker date="1487750162000" expanded="true" signature="9642:9693" ph="/** 是否是基础模块 ...*/" />
+                <marker date="1487750162000" expanded="true" signature="9802:9864" ph="/** flush ...*/" />
+                <marker date="1487750162000" expanded="true" signature="9931:10087" ph="/** flush ...*/" />
+                <marker date="1487750162000" expanded="true" signature="10272:10426" ph="/** end flush ...*/" />
+                <marker date="1487750162000" expanded="true" signature="11077:11215" ph="/** 根据error Object 获取error json ...*/" />
+                <marker date="1487750162000" expanded="true" signature="11460:11578" ph="/** catch error ...*/" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/example/app/controllers/test.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="374">
+              <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -39,65 +97,9 @@
       <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/example/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="8">
-              <caret line="51" column="23" selection-start-line="51" selection-start-column="23" selection-end-line="51" selection-end-column="23" />
+            <state relative-caret-position="136">
+              <caret line="57" column="0" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Service.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Service.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2">
-              <caret line="166" column="7" selection-start-line="166" selection-start-column="7" selection-end-line="166" selection-end-column="7" />
-              <folding>
-                <marker date="1480597075000" expanded="true" signature="258:281" ph="/** 请求地址 ...*/" />
-                <marker date="1480597075000" expanded="true" signature="300:323" ph="/** 请求参数 ...*/" />
-                <marker date="1480597075000" expanded="true" signature="345:368" ph="/** 监控名称 ...*/" />
-                <marker date="1480597075000" expanded="true" signature="392:447" ph="/** 接口请求失败后的重试次数, 如果不为0, 后端接口返回异常会重新请求接口 ...*/" />
-                <marker date="1480597075000" expanded="true" signature="472:526" ph="/** 接口请求方式，默认是GET ...*/" />
-                <marker date="1480597075000" expanded="true" signature="551:596" ph="/** 超时时间 ...*/" />
-                <marker date="1480597075000" expanded="true" signature="3595:4198" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Pagelet.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Pagelet.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="18">
-              <caret line="296" column="14" selection-start-line="296" selection-start-column="14" selection-end-line="296" selection-end-column="14" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="testA.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/example/app/modules/home/service/testA.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-              <folding>
-                <marker date="1480562634000" expanded="true" signature="110:514" ph="{...}" />
-                <marker date="1480562634000" expanded="true" signature="213:318" ph="{...}" />
-                <marker date="1480562634000" expanded="true" signature="372:400" ph="{...}" />
-                <marker date="1480562634000" expanded="true" signature="437:512" ph="{...}" />
-                <marker date="1480562634000" expanded="true" signature="454:506" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="layout.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/example/app/modules/home/layout.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <marker date="1480496218000" expanded="true" signature="0:34" ph="/** @desc: layout ...*/" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -105,12 +107,9 @@
       <file leaf-file-name="modA.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/example/app/modules/home/modA.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="561">
-              <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
-              <folding>
-                <marker date="1480580250000" expanded="true" signature="0:32" ph="/** @desc: modA ...*/" />
-                <marker date="1480580250000" expanded="true" signature="1038:1040" ph="{&quot;name&quot;: 'modA'...}" />
-              </folding>
+            <state relative-caret-position="340">
+              <caret line="48" column="53" selection-start-line="48" selection-start-column="65" selection-end-line="48" selection-end-column="67" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -118,10 +117,10 @@
       <file leaf-file-name="modB.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/example/app/modules/home/modB.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="21" column="36" selection-start-line="21" selection-start-column="36" selection-end-line="21" selection-end-column="36" />
+            <state relative-caret-position="289">
+              <caret line="24" column="18" selection-start-line="24" selection-start-column="18" selection-end-line="24" selection-end-column="18" />
               <folding>
-                <marker date="1480580487000" expanded="true" signature="0:32" ph="/** @desc: modB ...*/" />
+                <marker date="1487753219000" expanded="true" signature="0:69" ph="/** @desc: modB ...*/" />
               </folding>
             </state>
           </provider>
@@ -131,10 +130,9 @@
         <entry file="file://$PROJECT_DIR$/example/app/modules/home/modC.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="357">
-              <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+              <caret line="21" column="18" selection-start-line="21" selection-start-column="18" selection-end-line="21" selection-end-column="18" />
               <folding>
-                <marker date="1480580406000" expanded="true" signature="0:32" ph="/** @desc: modC ...*/" />
-                <marker date="1480580406000" expanded="true" signature="155:527" ph="{&quot;name&quot;: 'modC'...}" />
+                <marker date="1487750486000" expanded="true" signature="0:69" ph="/** @desc: modC ...*/" />
               </folding>
             </state>
           </provider>
@@ -148,10 +146,14 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/example/app/modules/home/modA.js" />
-        <option value="$PROJECT_DIR$/example/app/controllers/test.js" />
-        <option value="$PROJECT_DIR$/example/app.js" />
         <option value="$PROJECT_DIR$/src/Service.js" />
+        <option value="$PROJECT_DIR$/example/app/controllers/index.js" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/example/app/controllers/test.js" />
+        <option value="$PROJECT_DIR$/example/app/modules/home/modA.js" />
+        <option value="$PROJECT_DIR$/example/app/modules/home/modB.js" />
+        <option value="$PROJECT_DIR$/example/app/modules/home/modC.js" />
+        <option value="$PROJECT_DIR$/example/app.js" />
         <option value="$PROJECT_DIR$/src/Pagelet.js" />
         <option value="$PROJECT_DIR$/src/BigPipe.js" />
       </list>
@@ -166,9 +168,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="47" />
     <option name="y" value="22" />
-    <option name="width" value="1440" />
-    <option name="height" value="826" />
+    <option name="width" value="1393" />
+    <option name="height" value="822" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -195,6 +198,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -285,44 +290,12 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="modules" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="home" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="service" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bigape" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bigape" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="example" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="controllers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -332,19 +305,19 @@
     <property name="nodejs_interpreter_path" value="$USER_HOME$/.nvm/versions/node/v4.5.0/bin/node" />
     <property name="restartRequiresConfirmation" value="false" />
   </component>
-  <component name="RunManager" selected="Node.js.Unnamed">
+  <component name="RunManager" selected="Node.js.example">
     <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" working-dir="">
       <method />
     </configuration>
-    <configuration default="false" name="Unnamed" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" path-to-js-file="example/bin/start" application-parameters="-l example/logs" working-dir="$PROJECT_DIR$">
-      <profiling v8-profiler-path="" />
+    <configuration default="false" name="example" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" path-to-js-file="example/bin/start" application-parameters="-l example/logs" working-dir="$PROJECT_DIR$">
+      <profiling log-folder="example/logs" v8-profiler-path="" />
       <EXTENSION ID="com.jetbrains.nodejs.run.NodeJSProfilingRunConfigurationExtension">
-        <profiling v8-profiler-path="" />
+        <profiling log-folder="example/logs" v8-profiler-path="" />
       </EXTENSION>
       <method />
     </configuration>
     <list size="1">
-      <item index="0" class="java.lang.String" itemvalue="Node.js.Unnamed" />
+      <item index="0" class="java.lang.String" itemvalue="Node.js.example" />
     </list>
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
@@ -363,26 +336,28 @@
       <workItem from="1479209173834" duration="4006000" />
       <workItem from="1479283869040" duration="49000" />
       <workItem from="1480497798963" duration="4620000" />
+      <workItem from="1487678007998" duration="10350000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="8675000" />
+    <option name="totallyTimeSpent" value="19025000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1440" height="826" extended-state="6" />
-    <editor active="true" />
+    <frame x="47" y="22" width="1393" height="822" extended-state="0" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24947146" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24927114" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="V8 CPU Profiling" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.6547945" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32882273" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329235" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.40190735" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40136987" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -404,10 +379,109 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/BigPipe.js</url>
+          <line>492</line>
+          <properties />
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="6" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/BigPipe.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="867">
+          <caret line="51" column="23" selection-start-line="51" selection-start-column="23" selection-end-line="51" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Service.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2822">
+          <caret line="166" column="7" selection-start-line="166" selection-start-column="7" selection-end-line="166" selection-end-column="7" />
+          <folding>
+            <marker date="1487750034000" expanded="true" signature="0:79" ph="/** @desc: Service 基本数据服务 ...*/" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Pagelet.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5032">
+          <caret line="296" column="14" selection-start-line="296" selection-start-column="14" selection-end-line="296" selection-end-column="14" />
+          <folding>
+            <marker date="1487750162000" expanded="true" signature="7835:8063" ph="{...}" />
+            <marker date="1487750162000" expanded="true" signature="7835:8071" ph="{...}" />
+            <marker date="1487750162000" expanded="true" signature="8666:8718" ph="/** 生成数据块 ...*/" />
+            <marker date="1487750162000" expanded="true" signature="9442:9570" ph="/** 钩子函数（hook function），获取传递给客户端的数据，默认返回空 ...*/" />
+            <marker date="1487750162000" expanded="true" signature="9642:9693" ph="/** 是否是基础模块 ...*/" />
+            <marker date="1487750162000" expanded="true" signature="9802:9864" ph="/** flush ...*/" />
+            <marker date="1487750162000" expanded="true" signature="9931:10087" ph="/** flush ...*/" />
+            <marker date="1487750162000" expanded="true" signature="10272:10426" ph="/** end flush ...*/" />
+            <marker date="1487750162000" expanded="true" signature="11077:11215" ph="/** 根据error Object 获取error json ...*/" />
+            <marker date="1487750162000" expanded="true" signature="11460:11578" ph="/** catch error ...*/" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/app/modules/home/service/testA.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/app/modules/home/layout.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/app/modules/home/modA.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="731">
+          <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/app/modules/home/modB.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="36" selection-start-line="21" selection-start-column="36" selection-end-line="21" selection-end-column="36" />
+          <folding>
+            <marker date="1487753219000" expanded="true" signature="0:69" ph="/** @desc: modB ...*/" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/app/modules/home/modC.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <folding>
+            <marker date="1487750486000" expanded="true" signature="0:69" ph="/** @desc: modC ...*/" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/BigPipe.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7463">
@@ -428,13 +502,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="10" column="6" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
-          <folding>
-            <marker date="1480562634000" expanded="true" signature="110:514" ph="{...}" />
-            <marker date="1480562634000" expanded="true" signature="213:318" ph="{...}" />
-            <marker date="1480562634000" expanded="true" signature="372:400" ph="{...}" />
-            <marker date="1480562634000" expanded="true" signature="437:512" ph="{...}" />
-            <marker date="1480562634000" expanded="true" signature="454:506" ph="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -442,9 +510,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1480496218000" expanded="true" signature="0:34" ph="/** @desc: layout ...*/" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -452,10 +518,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="459">
           <caret line="27" column="10" selection-start-line="27" selection-start-column="10" selection-end-line="27" selection-end-column="10" />
-          <folding>
-            <marker date="1480580250000" expanded="true" signature="0:32" ph="/** @desc: modA ...*/" />
-            <marker date="1480580250000" expanded="true" signature="1038:1040" ph="{&quot;name&quot;: 'modA'...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -464,7 +527,7 @@
         <state relative-caret-position="357">
           <caret line="21" column="36" selection-start-line="21" selection-start-column="36" selection-end-line="21" selection-end-column="36" />
           <folding>
-            <marker date="1480580487000" expanded="true" signature="0:32" ph="/** @desc: modB ...*/" />
+            <marker date="1487753219000" expanded="true" signature="0:69" ph="/** @desc: modB ...*/" />
           </folding>
         </state>
       </provider>
@@ -474,31 +537,16 @@
         <state relative-caret-position="374">
           <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
           <folding>
-            <marker date="1480580406000" expanded="true" signature="0:32" ph="/** @desc: modC ...*/" />
-            <marker date="1480580406000" expanded="true" signature="155:527" ph="{&quot;name&quot;: 'modC'...}" />
+            <marker date="1487750486000" expanded="true" signature="0:69" ph="/** @desc: modC ...*/" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/example/app/controllers/test.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" column="35" selection-start-line="21" selection-start-column="35" selection-end-line="21" selection-end-column="35" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/example/app/modules/home/service/testA.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
+        <state relative-caret-position="238">
           <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding>
-            <marker date="1480562634000" expanded="true" signature="110:514" ph="{...}" />
-            <marker date="1480562634000" expanded="true" signature="213:318" ph="{...}" />
-            <marker date="1480562634000" expanded="true" signature="372:400" ph="{...}" />
-            <marker date="1480562634000" expanded="true" signature="437:512" ph="{...}" />
-            <marker date="1480562634000" expanded="true" signature="454:506" ph="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -506,29 +554,42 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Service.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2822">
+          <caret line="167" column="7" selection-start-line="167" selection-start-column="7" selection-end-line="167" selection-end-column="7" />
           <folding>
-            <marker date="1480496218000" expanded="true" signature="0:34" ph="/** @desc: layout ...*/" />
+            <marker date="1487750034000" expanded="true" signature="0:79" ph="/** @desc: Service 基本数据服务 ...*/" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="47" selection-start-line="17" selection-start-column="47" selection-end-line="17" selection-end-column="47" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/example/app/modules/home/modA.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
-          <folding>
-            <marker date="1480580250000" expanded="true" signature="0:32" ph="/** @desc: modA ...*/" />
-            <marker date="1480580250000" expanded="true" signature="1038:1040" ph="{&quot;name&quot;: 'modA'...}" />
-          </folding>
+        <state relative-caret-position="340">
+          <caret line="48" column="53" selection-start-line="48" selection-start-column="65" selection-end-line="48" selection-end-column="67" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/example/app/modules/home/modB.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" column="36" selection-start-line="21" selection-start-column="36" selection-end-line="21" selection-end-column="36" />
+        <state relative-caret-position="289">
+          <caret line="24" column="18" selection-start-line="24" selection-start-column="18" selection-end-line="24" selection-end-column="18" />
           <folding>
-            <marker date="1480580487000" expanded="true" signature="0:32" ph="/** @desc: modB ...*/" />
+            <marker date="1487753219000" expanded="true" signature="0:69" ph="/** @desc: modB ...*/" />
           </folding>
         </state>
       </provider>
@@ -536,50 +597,84 @@
     <entry file="file://$PROJECT_DIR$/example/app/modules/home/modC.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
-          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <caret line="21" column="18" selection-start-line="21" selection-start-column="18" selection-end-line="21" selection-end-column="18" />
           <folding>
-            <marker date="1480580406000" expanded="true" signature="0:32" ph="/** @desc: modC ...*/" />
-            <marker date="1480580406000" expanded="true" signature="155:527" ph="{&quot;name&quot;: 'modC'...}" />
+            <marker date="1487750486000" expanded="true" signature="0:69" ph="/** @desc: modC ...*/" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/@qnpm/q-logger/node_modules/fs-extra/node_modules/jsonfile/node_modules/graceful-fs/fs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="18" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/@qnpm/q-logger/node_modules/fs-extra/node_modules/graceful-fs/fs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/bin/start">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="10" selection-start-line="0" selection-start-column="10" selection-end-line="0" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/app/controllers/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="16" column="10" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/app/controllers/test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/example/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8">
-          <caret line="51" column="23" selection-start-line="51" selection-start-column="23" selection-end-line="51" selection-end-column="23" />
+        <state relative-caret-position="136">
+          <caret line="57" column="0" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Service.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2">
-          <caret line="166" column="7" selection-start-line="166" selection-start-column="7" selection-end-line="166" selection-end-column="7" />
-          <folding>
-            <marker date="1480597075000" expanded="true" signature="258:281" ph="/** 请求地址 ...*/" />
-            <marker date="1480597075000" expanded="true" signature="300:323" ph="/** 请求参数 ...*/" />
-            <marker date="1480597075000" expanded="true" signature="345:368" ph="/** 监控名称 ...*/" />
-            <marker date="1480597075000" expanded="true" signature="392:447" ph="/** 接口请求失败后的重试次数, 如果不为0, 后端接口返回异常会重新请求接口 ...*/" />
-            <marker date="1480597075000" expanded="true" signature="472:526" ph="/** 接口请求方式，默认是GET ...*/" />
-            <marker date="1480597075000" expanded="true" signature="551:596" ph="/** 超时时间 ...*/" />
-            <marker date="1480597075000" expanded="true" signature="3595:4198" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Pagelet.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="296" column="14" selection-start-line="296" selection-start-column="14" selection-end-line="296" selection-end-column="14" />
-          <folding />
+        <state relative-caret-position="178">
+          <caret line="261" column="29" selection-start-line="261" selection-start-column="29" selection-end-line="261" selection-end-column="29" />
+          <folding>
+            <marker date="1487750162000" expanded="true" signature="7835:8063" ph="{...}" />
+            <marker date="1487750162000" expanded="true" signature="7835:8071" ph="{...}" />
+            <marker date="1487750162000" expanded="true" signature="8666:8718" ph="/** 生成数据块 ...*/" />
+            <marker date="1487750162000" expanded="true" signature="9442:9570" ph="/** 钩子函数（hook function），获取传递给客户端的数据，默认返回空 ...*/" />
+            <marker date="1487750162000" expanded="true" signature="9642:9693" ph="/** 是否是基础模块 ...*/" />
+            <marker date="1487750162000" expanded="true" signature="9802:9864" ph="/** flush ...*/" />
+            <marker date="1487750162000" expanded="true" signature="9931:10087" ph="/** flush ...*/" />
+            <marker date="1487750162000" expanded="true" signature="10272:10426" ph="/** end flush ...*/" />
+            <marker date="1487750162000" expanded="true" signature="11077:11215" ph="/** 根据error Object 获取error json ...*/" />
+            <marker date="1487750162000" expanded="true" signature="11460:11578" ph="/** catch error ...*/" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/BigPipe.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="435" column="32" selection-start-line="435" selection-start-column="32" selection-end-line="435" selection-end-column="32" />
+        <state relative-caret-position="17">
+          <caret line="17" column="14" selection-start-line="17" selection-start-column="14" selection-end-line="17" selection-end-column="14" />
           <folding />
         </state>
       </provider>
