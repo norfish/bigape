@@ -31,5 +31,8 @@
   "bugs": {
     "url": "https://github.com/norfish/bigape/issues"
   },
-  "homepage": "https://github.com/norfish/bigape#readme"
+  "homepage": "https://github.com/norfish/bigape#readme",
+  "devDependencies": {
+    "debug": "^2.2.0"
+  }
 }

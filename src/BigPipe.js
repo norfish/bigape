@@ -12,6 +12,7 @@ var EventEmitter = require('events').EventEmitter;
 var Pagelet = require('./Pagelet');
 var qmonitor = require('@qnpm/q-monitor');
 var logger = require('@qnpm/q-logger');
+var debug = require('debug')('bigape:bigpipe');
 var Promise = require('bluebird');
 var Store = require('./Store');
 var ErrorPagelet = require('./errorPagelet');
@@ -257,7 +258,7 @@ BigPipe.prototype = {
         if(this._res.finished) {
             logger.error('Response was closed, unable to flush content');
             this.emit('end', new Error('Response was closed, unable to flush content'));
-            return; 
+            return;
         }
 
         var data = new Buffer(this.join(), this.charset);
