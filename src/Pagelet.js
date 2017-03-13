@@ -236,6 +236,41 @@ Pagelet.prototype = {
             });
     },
 
+    /**
+     * 渲染静态html
+     * @return {[type]} [description]
+     */
+    renderStaticHtml: function() {
+        var pagelet = this;
+
+        logger.info('开始渲染Pagelet模块['+ pagelet.name +']@', new Date());
+
+        if(renderData) {
+            this.setCache(renderData);
+        }
+
+        return this.getRenderHtml()
+            .then(function(source) {
+                pagelet.emit('active', sourceObj);
+
+                if(pagelet.isBootstrap) {
+                    return source;
+                }
+
+                return {
+                    domID: pagelet.domID,
+                    html: source
+                }
+            })
+            .catch(function(err) {
+                var msg = '系统繁忙，请稍后重试' + err.message;
+                logger.error('Pagelet render error::', err);
+                pagelet.catch(err);
+                pagelet.emit('active', msg);
+                return msg;
+            })
+    },
+
     renderSyncWithData: function (data) {
         return qtemplate.renderSync(this.getTemplatePath(), data);
     },
@@ -306,7 +341,6 @@ Pagelet.prototype = {
                 return pagelet.afterRender(html);
             })
             .catch(function(error) {
-                debugger
                 qmonitor.addCount('module_render_error');
                 logger.error('渲染pagelet异常', pagelet.name, error);
                 return qtemplate.render(pagelet.errorTemplate, pagelet.getErrObj(error));

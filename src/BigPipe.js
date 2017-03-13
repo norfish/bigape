@@ -16,6 +16,7 @@ var Promise = require('bluebird');
 var Store = require('./Store');
 var ErrorPagelet = require('./errorPagelet');
 var util = require('./util');
+var htmlParser = require('./htmlParser');
 
 function BigPipe(name, options) {
 
@@ -257,7 +258,7 @@ BigPipe.prototype = {
         if(this._res.finished) {
             logger.error('Response was closed, unable to flush content');
             this.emit('end', new Error('Response was closed, unable to flush content'));
-            return; 
+            return;
         }
 
         var data = new Buffer(this.join(), this.charset);
@@ -473,7 +474,38 @@ BigPipe.prototype = {
      * @return {[type]} [description]
      */
     renderSync: function() {
+        var bigpipe = this;
+        var staticHtml = this.staticHtml = htmlParser(this.length);
 
+        bigpipe._layout.getRenderHtml()
+            .then(function(html) {
+                staticHtml.setLayout(html);
+
+                return Promise.map(bigpipe._pagelets, function(pagelet) {
+                    // render Promise
+                    return pagelet.getRenderHtml().then(function (html) {
+                        staticHtml.setPagelet(pagelet.domID, html);
+                        return html;
+
+                    }, function (errData) {
+                        logger.error('render sync failed', errData);
+                        throw errData;
+                    })
+                    .catch(function(error) {
+                        logger.error( 'render sync error', error);
+                        throw error;
+                    });
+
+                }).then(function(data) {
+                    bigpipe._layout.end(staticHtml.getHtml(), true);
+                }).catch(function(err) {
+                    return bigpipe.catch(err);
+                });
+            })
+            .catch(function(err) {
+                qmonitor.addCount(bigpipe.monitorKey + '_rendlayout_error');
+                bigpipe.catch(err);
+            });
     },
 
     /**

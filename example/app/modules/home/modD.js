@@ -18,7 +18,7 @@ module.exports = Pagelet.extend({
         return new Promise(function(resolve, reject) {
             setTimeout(function() {
                 resolve('Async mod-D data');
-            }, 100)
+            }, 10)
         })
     },
 

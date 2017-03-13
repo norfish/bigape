@@ -145,6 +145,7 @@ var modA = require(__project.modules + '/modA');
 var modB = require(__project.modules + '/modB');
 var modC = require(__project.modules + '/modC');
 
+// 异步渲染，异步输出
 exports.render = function(req, res, next) {
     return DemoAction
             // 可以不写pipe，这样会使用Bigpipe声明的pagelets
@@ -161,6 +162,14 @@ exports.renderPipeline = function(req, res, next) {
         .router(req, res, next)
         .renderPipeline();
 };
+
+// 异步渲染，在服务拼接好所有的pagelet之后再返回客户端，for seo
+exports.renderSync = function(req, res, next) {
+    return DemoAction
+        .pipe([modB, modA, modC])
+        .router(req, res, next)
+        .renderSync();
+}
 
 exports.renderJSON = function(req, res, next) {
     return DemoAction

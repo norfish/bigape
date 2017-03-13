@@ -6,6 +6,7 @@
 
 
 var Pagelet = require('../../../../src/Pagelet');
+var _uid = 1;
 
 module.exports = Pagelet.extend({
     name: 'modC',
@@ -18,11 +19,12 @@ module.exports = Pagelet.extend({
         return new Promise(function(resolve, reject) {
             setTimeout(function() {
                 resolve('Async mod-C data');
-            }, 600)
+            }, 10)
         })
     },
 
     onServiceDone: function(data) {
+        console.log(this.name, '::', this.req.query, '::', _uid++);
         return {
             msg: 'parsed mod-C'
         }

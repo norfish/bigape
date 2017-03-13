@@ -1,5 +1,8 @@
 ## release
 
+### 1.3.3
+- 增加renderSync 方法，支持服务端渲染ssr
+
 ### 1.3.1
 - fixed: isErrorFatal 的时候异常没有捕获fixed
 - 正常render时候总是报write after end fixed

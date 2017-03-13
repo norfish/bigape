@@ -12,9 +12,13 @@ var test = require('./test');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    res.render('index', {
-        title: 'hello Qxf'
-    });
+    // res.render('index', {
+    //     title: 'hello Qxf'
+    // });
+    res.write('send type 1');
+    res.write('send type 2');
+    res.end('send type 3');
+    res.write('send type 4');
 });
 
 router.use('/test', test);

@@ -24,17 +24,25 @@ router.get('/', function(req, res, next) {
 // 异步渲染，顺序输出到客户端
 router.get('/pipeline', function(req, res, next) {
     return HomeAction
-            .pipe([modA, modB, modD])
+            .pipe([modA, modB, modC])
             .router(req, res, next)
             .renderPipeline();
 });
 
+// 同步渲染，顺序输出到客户端
+router.get('/sync', function(req, res, next) {
+    return HomeAction
+            .pipe([modA, modB, modC])
+            .router(req, res, next)
+            .renderSync();
+});
+
 router.get('/api', function(req, res, next) {
     return HomeAction
-        .pipe([modA, modB])
+        .pipe([modC, modD])
         .router(req, res, next)
-        .renderJSON(['modA', 'modB']);
-})
+        .renderJSON(['modC', 'modD']);
+});
 
 router.get('/snippet', function(req, res, next) {
     return HomeAction
@@ -42,5 +50,6 @@ router.get('/snippet', function(req, res, next) {
         .router(req, res, next)
         .renderSnippet('modC');
 })
+
 
 module.exports = router;
