@@ -1,5 +1,10 @@
 ## release
 
+### 1.3.4
+- 增加SEO优化开关
+- Service 增加全局配置方法 $setProxy $setGlobal
+- 增加新的 lifeCycle 方法，onBeforeRender(parsedData)，可以通过此方法在渲染前加钩子，比如想根据处理数据更改模板
+
 ### 1.3.3
 - 增加renderSync 方法，支持服务端渲染ssr
 

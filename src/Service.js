@@ -45,6 +45,21 @@ module.exports = {
     // 接口代理地址
     proxySet: null,
 
+    // 为所有的service统一设置proxy代理
+    $setProxy: function(proxy) {
+        if(!proxy) return;
+        this.proxySet = proxy;
+    },
+
+    // service 原型统一开关
+    $setGlobal: function(key, value) {
+        if(!key || typeof value === 'undefined') {
+            return;
+        }
+
+        this[key] = value;
+    },
+
     /**
      * 接口请求前校验，如果失败则停止请求
      */

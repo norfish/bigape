@@ -18,6 +18,9 @@ var ErrorPagelet = require('./errorPagelet');
 var util = require('./util');
 var htmlParser = require('./htmlParser');
 
+// 国内的一些搜索引擎，因为谷歌和必应对异步的网址做了优化，所以忽略
+var spiderReg = /Baiduspider|HaoSouSpider|360spider|(Sogou\s*(web|inst)?\s*Spider)/i
+
 function BigPipe(name, options) {
 
     this.bigpipe = this;
@@ -410,6 +413,9 @@ BigPipe.prototype = {
             bigpipe: this
         });
 
+        // 客户端是否是蜘蛛抓取
+        this.isSpider = spiderReg.test(req.headers['user-agent']);
+
         return this;
 
     },
@@ -435,6 +441,10 @@ BigPipe.prototype = {
      * @return {Object} Promise
      */
     renderAsync: function() {
+        if(this.isSpider && BigPipe.optimizeForSeo) {
+            return this.renderSync.apply(this, arguments);
+        }
+
         var bigpipe = this;
         var layout = this._layout;
 
@@ -466,6 +476,9 @@ BigPipe.prototype = {
     },
 
     render: function() {
+        if(this.isSpider && BigPipe.optimizeForSeo) {
+            return this.renderSync.apply(this, arguments);
+        }
         return this.renderAsync.apply(this, arguments);
     },
 
@@ -763,6 +776,13 @@ BigPipe.create = (function() {
         return __instance[name];
     }
 })();
+
+/**
+ * 渲染是否真的seo做优化，即把bigpipe的异步渲染，转换成同步渲染，返回给spider
+ */
+BigPipe.setOptimizeForSeo = function(flag) {
+    BigPipe.optimizeForSeo = !!flag;
+};
 
 // pageletName
 
