@@ -13,10 +13,11 @@ var modA = require('../modules/home/modA');
 var modB = require('../modules/home/modB');
 var modC = require('../modules/home/modC');
 var modD = require('../modules/home/modD');
+var params = require('../modules/home/params')
 
 router.get('/', function(req, res, next) {
     return HomeAction
-            .pipe([modB, modD, modA])
+            .pipe([modB, modD, modA, params])
             .router(req, res, next)
             .render();
 });

@@ -11,6 +11,7 @@ var Pagelet = require('../../../../src/Pagelet');
 var serviceA = require('./service/testA');
 var modA_a =  require('./modA_a');
 var modA_b =  require('./modA_b');
+var layout = require('./layout');
 
 var _uid = 1;
 
@@ -49,7 +50,9 @@ module.exports = Pagelet.extend({
         console.log(this.name, '::', this.req.query, '::', _uid++);
         data = data.data;
         var modA_a = this.getStore('modA_a');
+        var layout = this.getStore('layout');
         data.msg = modA_a.msg;
+        data.layoutData = layout;
         return data;
     },
 

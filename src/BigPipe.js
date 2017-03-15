@@ -40,7 +40,7 @@ function BigPipe(name, options) {
     this.errorPagelet = options.errorPagelet || ErrorPagelet;
 
     // monitor key
-    this.qmonitor = options.qmonitor;
+    this.monitor = options.qmonitor || options.monitor || name;
 
     // 实例化的一级 first-class pagelets
     this._pagelets = [];
@@ -117,7 +117,7 @@ BigPipe.prototype = {
      */
     router: function(req, res, next) {
         logger.info('开始Bigpip, start router使用模块为['+ getPageletsName(this.pagelets) +']');
-        qmonitor.addCount(this.qmonitor + '_page_visit');
+        qmonitor.addCount(this.monitor + '_page_visit');
         this.clear();
 
         this.bootstrap(req, res, next);
@@ -460,7 +460,7 @@ BigPipe.prototype = {
             });
 
         }).catch(function(err) {
-            qmonitor.addCount(bigpipe.monitorKey + '_rendlayout_error');
+            qmonitor.addCount(bigpipe.monitor + '_rendlayout_error');
             bigpipe.catch(err);
         });
     },
@@ -503,7 +503,7 @@ BigPipe.prototype = {
                 });
             })
             .catch(function(err) {
-                qmonitor.addCount(bigpipe.monitorKey + '_rendlayout_error');
+                qmonitor.addCount(bigpipe.monitor + '_rendlayout_error');
                 bigpipe.catch(err);
             });
     },

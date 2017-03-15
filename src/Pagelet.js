@@ -90,6 +90,15 @@ Pagelet.prototype = {
     onCreated: function() {},
 
     /**
+     * beforeRender lifyCycle function
+     * @param  {Object} data the parsed data after onServiceDone
+     * @return {any}
+     */
+    onBeforeRender: function(data) {
+        return data;
+    },
+
+    /**
      * 钩子函数（hook function），获取 pagelet 的原始数据
      * 获取渲染的原始数据 可以被覆盖，默认是通过service取接口数据，返回promise
      * 支持返回同步数据或者Promise异步
@@ -272,7 +281,12 @@ Pagelet.prototype = {
     },
 
     renderSyncWithData: function (data) {
-        return qtemplate.renderSync(this.getTemplatePath(), data);
+        if(typeof this.onBeforeRender(data) === 'function') {
+            this.onBeforeRender(data);
+        }
+
+        var html = qtemplate.renderSync(this.getTemplatePath(), data);
+        return this.createChunk(html);
     },
 
     /**
@@ -325,6 +339,11 @@ Pagelet.prototype = {
 
         return this.get()
             .then(function(parsed) {
+
+                if(typeof pagelet.onBeforeRender(parsed) === 'function') {
+                    pagelet.onBeforeRender(parsed);
+                }
+
                 // 统一为渲染数据增加locals参数
                 return qtemplate.render(
                     pagelet.getTemplatePath(),

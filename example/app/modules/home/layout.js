@@ -10,6 +10,14 @@ var Layout = Pagelet.extend({
     name: 'layout',
 
     template: 'pages/home',
+
+    getService: function() {
+        return new Promise(function(resolve, reject) {
+            setTimeout(function() {
+                resolve('layout haha');
+            }, 300);
+        })
+    }
 });
 
 module.exports = Layout;
