@@ -1,5 +1,8 @@
 ## release
 
+### 1.3.5
+- fix sync render bug: pagelet data and pagelet scripts didn't work when renderSync
+
 ### 1.3.4
 - 增加SEO优化开关
 - Service 增加全局配置方法 $setProxy $setGlobal

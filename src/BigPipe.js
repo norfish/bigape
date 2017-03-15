@@ -104,14 +104,21 @@ BigPipe.prototype = {
      * @return {this}
      */
     usePagelets: function (pageletsArray) {
+        if(_.isPlainObject(pageletsArray)) {
+            var temp = [];
+            _.forEach(pageletsArray, function(value, key) {
+                temp.push(value);
+            });
+            pageletsArray = temp;
+        }
+
         this.pagelets = pageletsArray;
         return this;
     },
 
     // same with usePagelets
     pipe: function(pageletsArray) {
-        this.pagelets = pageletsArray;
-        return this;
+        return this.usePagelets.call(this, pageletsArray);
     },
 
     /**
@@ -496,9 +503,9 @@ BigPipe.prototype = {
 
                 return Promise.map(bigpipe._pagelets, function(pagelet) {
                     // render Promise
-                    return pagelet.getRenderHtml().then(function (html) {
-                        staticHtml.setPagelet(pagelet.domID, html);
-                        return html;
+                    return pagelet.getRenderChunk().then(function (chunk) {
+                        staticHtml.setPagelet(chunk.domID, chunk);
+                        return chunk.html;
 
                     }, function (errData) {
                         logger.error('render sync failed', errData);

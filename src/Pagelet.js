@@ -245,41 +245,6 @@ Pagelet.prototype = {
             });
     },
 
-    /**
-     * 渲染静态html
-     * @return {[type]} [description]
-     */
-    renderStaticHtml: function() {
-        var pagelet = this;
-
-        logger.info('开始渲染Pagelet模块['+ pagelet.name +']@', new Date());
-
-        if(renderData) {
-            this.setCache(renderData);
-        }
-
-        return this.getRenderHtml()
-            .then(function(source) {
-                pagelet.emit('active', sourceObj);
-
-                if(pagelet.isBootstrap) {
-                    return source;
-                }
-
-                return {
-                    domID: pagelet.domID,
-                    html: source
-                }
-            })
-            .catch(function(err) {
-                var msg = '系统繁忙，请稍后重试' + err.message;
-                logger.error('Pagelet render error::', err);
-                pagelet.catch(err);
-                pagelet.emit('active', msg);
-                return msg;
-            })
-    },
-
     renderSyncWithData: function (data) {
         if(typeof this.onBeforeRender(data) === 'function') {
             this.onBeforeRender(data);
@@ -366,6 +331,14 @@ Pagelet.prototype = {
             });
     },
 
+    getRenderChunk: function() {
+        var pagelet = this;
+        return this.getRenderHtml()
+            .then(function(html) {
+                return pagelet.composeChunkObj(html);
+            })
+    },
+
     getTemplatePath: function() {
         if(!this.template) {
             return 'index';
@@ -399,7 +372,23 @@ Pagelet.prototype = {
             return html;
         }
 
-        var chunkObj = {
+        var chunkObj = this.composeChunkObj(html);
+
+        return '<script>BigPipe.onArrive('+ JSON.stringify(chunkObj) +')</script>'
+    },
+
+    /**
+     * 拼接pagelet chunk Object
+     * @param  {string} html rendered html string
+     * @return {Object}      chunk
+     */
+    composeChunkObj: function(html) {
+        // 如果是主框架则直接返回
+        if(this.isBootstrap()) {
+            return html;
+        }
+
+        return {
             id: this.name,
             html: html,
             scripts: this.scripts,
@@ -412,8 +401,6 @@ Pagelet.prototype = {
             dataEventName: this.dataEventName || this.dataKey || this.name,
             pageletEventName: this.pageletEventName || this.domID || this.name
         };
-
-        return '<script>BigPipe.onArrive('+ JSON.stringify(chunkObj) +')</script>'
     },
 
     /**

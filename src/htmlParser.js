@@ -22,19 +22,25 @@ HtmlParser.prototype = {
         });
     },
 
-    setPagelet: function(domID, html) {
-        if(!this.dom || !domID) {
-            return;
-        }
-
+    setPagelet: function(domID, chunk) {
         if(!this.pageletLength) {
             return;
         }
 
         this.pageletLength = this.pageletLength - 1;
 
+        // 如果没有dom 数据或者没有 domID, 说明没有节点，那就没必要去做渲染
+        // TODO: 对pagelet其他模式的兼容
+        if(!this.dom || !domID) {
+            return;
+        }
+
         var $ = this.dom;
+        var html = chunk.html || '';
+        var script = '<script>BigPipe.onArrive('+ JSON.stringify(chunk) +')</script>';
+
         $('#' + domID).html(html || '');
+        $('html').append(script);
     },
 
     getHtml: function() {
