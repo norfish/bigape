@@ -751,6 +751,12 @@ BigPipe.prototype = {
     },
 
     renderError: function(error) {
+        if(this.isSpider && BigPipe.optimizeForSeo) {
+            // TODO 整体异常的时候能够同步渲染完整的页面
+            logger.error('终止pagelet end @ spider', error);
+            return;
+        }
+        
         logger.error('终止pagelet end', error);
         var html = this._errorPagelet.renderSyncWithData(error)
         this._errorPagelet.end(html, true);
