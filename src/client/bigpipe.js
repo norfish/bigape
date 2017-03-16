@@ -115,6 +115,8 @@
                             dom.innerHTML = html;
                             break;
                     }
+
+                    removeClass(dom, 'hide');
                 } else if(mode === 'layout') {
                     doc.innerHTML += html;
                 } else {
