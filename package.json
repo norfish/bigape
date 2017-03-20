@@ -4,7 +4,9 @@
   "description": "an bigpipe inpired node structure based on express",
   "main": "src/index.js",
   "scripts": {
-    "test": "npm test"
+    "test": "npm test",
+    "build": "uglifyjs src/client/bigpipe.js -m -c -o src/client/bigpipe.min.js",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
