@@ -20,6 +20,7 @@ var htmlParser = require('./htmlParser');
 
 // 国内的一些搜索引擎，因为谷歌和必应对异步的网址做了优化，所以忽略
 var spiderReg = /Baiduspider|HaoSouSpider|360spider|(Sogou\s*(web|inst)?\s*Spider)/i
+var CONFIG = {};
 
 function BigPipe(name, options) {
 
@@ -40,7 +41,7 @@ function BigPipe(name, options) {
     this.layout = options.layout || options.bootstrap || {};
 
     // 错误 module
-    this.errorPagelet = options.errorPagelet || ErrorPagelet;
+    this.errorPagelet = options.errorPagelet || CONFIG.errorPagelet || ErrorPagelet;
 
     // monitor key
     this.monitor = options.qmonitor || options.monitor || name;
@@ -93,6 +94,8 @@ BigPipe.prototype = {
             if(!bigpipe.hasOwnProperty(key)) {
                 bigpipe[key] = value;
                 // console.log('add props', key);
+            } else {
+                console.warn('新增实例方法[' + key + ']与Bigpipe原实例方法冲突');
             }
         });
         return this;
@@ -756,7 +759,7 @@ BigPipe.prototype = {
             logger.error('终止pagelet end @ spider', error);
             return;
         }
-        
+
         logger.error('终止pagelet end', error);
         var html = this._errorPagelet.renderSyncWithData(error)
         this._errorPagelet.end(html, true);
@@ -795,6 +798,28 @@ BigPipe.create = (function() {
  */
 BigPipe.setOptimizeForSeo = function(flag) {
     BigPipe.optimizeForSeo = !!flag;
+};
+
+// 全局开关等配置，目前支持的有
+// errorPagelet 全局错误模块
+// spiderReg 需要优化的搜索引擎 regexp
+// optimizeForSeo seo优化开关
+//
+/**
+ * 全局开关
+ * @param  {string} key   config key
+ * @param  {any} value config resource
+ * @return {any}       如果只传入key，则获取，如果有value则赋值
+ */
+BigPipe.config = function(key, value) {
+    if(!key || (typeof key !== 'string')) {
+        return CONFIG;
+    }
+    if(!value) {
+        return CONFIG[key];
+    }
+
+    CONFIG[key] = value;
 };
 
 // pageletName
