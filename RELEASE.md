@@ -1,5 +1,10 @@
 ## release
 
+### 1.3.9
+- add BigPipe.config method, that can config global. such as config the common
+errorPagelet
+- Service: proxy method can pickup qmonitor and retryTimes option
+
 ### 1.3.5
 - fix sync render bug: pagelet data and pagelet scripts didn't work when renderSync
 
