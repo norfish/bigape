@@ -143,7 +143,7 @@ module.exports = {
 
     // 接口代理
     proxy: function (req, res, options) {
-        options = _.pick(options || {}, ['url', 'params', 'method', 'timeout', 'validData']);
+        options = _.pick(options || {}, ['url', 'params', 'method', 'timeout', 'validData', 'qmonitor', 'retryTimes']);
         _.extend(this, options);
         return this.json(req, res);
     },
