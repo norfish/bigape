@@ -291,8 +291,8 @@ module.exports = {
             }
         }
         var json = {
-            status: error.code || 500,
-            message: error.code ? (error.message || '未获取到数据，请稍后重试') : '未获取到数据，请稍后重试',
+            status: error.code || error.status || 500,
+            message: error.message || '未获取到数据，请稍后重试',
             data: error.data || null
         }
 
