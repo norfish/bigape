@@ -134,7 +134,13 @@ Pagelet.prototype = {
      */
     get: function() {
         var pagelet = this;
-        return this.ready()
+
+        // 因为是异步，防止被多次调用，造成资源浪费
+        if(this._isGetting) {
+            return this._isGetting;
+        }
+
+        this._isGetting = this.ready()
             .then(function() {
                 return pagelet.getServiceData();
             })
@@ -152,6 +158,8 @@ Pagelet.prototype = {
                 logger.error('数据处理异常', error);
                 pagelet.catch(error);
             });
+
+        return this._isGetting;
     },
 
     /**
