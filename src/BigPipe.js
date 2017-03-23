@@ -201,7 +201,9 @@ BigPipe.prototype = {
      */
     waitFor: function(modName) {
         var bigpipe = this;
-        // 首先需要触发pagelet的start
+        // 首先需要触发pagelet的start why?
+        // 加上这个是因为有些依赖的模块，只存在依赖中，如果不手动调用，是没有调用的入口的
+        // 但是必须保证每个模块调用且只能调用一次，不可逆的
         bigpipe._pageletMap[modName].get();
 
         return new Promise(function(resolve, reject) {
