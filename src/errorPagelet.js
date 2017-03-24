@@ -10,7 +10,7 @@ var Pagelet = require('./Pagelet');
 module.exports = Pagelet.extend({
     name: 'error',
 
-    domID: 'mod-error',
+    domID: 'mod-pageError',
 
     template: 'error',
 

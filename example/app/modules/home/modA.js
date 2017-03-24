@@ -11,12 +11,15 @@ var Pagelet = require('../../../../src/Pagelet');
 var serviceA = require('./service/testA');
 var modA_a =  require('./modA_a');
 var modA_b =  require('./modA_b');
+var layout = require('./layout');
+
+var _uid = 1;
 
 var mockA = {
     ret: true,
     data: {
-        info: 'demo data 1',
-        message:' '
+        info: 'demo data 1 哈哈测试',
+        message:' 哈哈测试'
     }
 };
 
@@ -31,9 +34,10 @@ module.exports = Pagelet.extend({
 
     wait: [modA_a, modA_b],
 
-    // isErrorFatal: true,
+    isErrorFatal: true,
 
     getService: function() {
+        // throw new Error('test error');
         // return serviceA.load(this.req, this.res);
         return new Promise(function(resolve, reject) {
             setTimeout(function() {
@@ -43,9 +47,12 @@ module.exports = Pagelet.extend({
     },
 
     onServiceDone: function(data) {
+        console.log(this.name, '::', this.req.query, '::', _uid++);
         data = data.data;
         var modA_a = this.getStore('modA_a');
+        var layout = this.getStore('layout');
         data.msg = modA_a.msg;
+        data.layoutData = layout;
         return data;
     },
 

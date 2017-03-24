@@ -1,5 +1,24 @@
 ## release
 
+### 1.4.0
+- 升级 MINOR 版本，因为之前的特性新增版本升级有问题，应该直接升级 MINOR，但是实际上只升级了 PATCH version
+
+### 1.3.9
+- add BigPipe.config method, that can config global. such as config the common
+errorPagelet
+- Service: proxy method can pickup qmonitor and retryTimes option
+
+### 1.3.5
+- fix sync render bug: pagelet data and pagelet scripts didn't work when renderSync
+
+### 1.3.4
+- 增加SEO优化开关
+- Service 增加全局配置方法 $setProxy $setGlobal
+- 增加新的 lifeCycle 方法，onBeforeRender(parsedData)，可以通过此方法在渲染前加钩子，比如想根据处理数据更改模板
+
+### 1.3.3
+- 增加renderSync 方法，支持服务端渲染ssr
+
 ### 1.3.1
 - fixed: isErrorFatal 的时候异常没有捕获fixed
 - 正常render时候总是报write after end fixed

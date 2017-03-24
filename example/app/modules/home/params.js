@@ -1,32 +1,30 @@
 /**
- * @desc: modC
+ * @desc: modD
  * @authors: Yex
  * @date: 2016-09-12 19:49:42
  */
 
 
 var Pagelet = require('../../../../src/Pagelet');
-var _uid = 1;
 
 module.exports = Pagelet.extend({
-    name: 'modC',
-
-    domID: 'mod-c',
-
-    template: 'modC',
+    name: 'params',
 
     getService: function() {
         return new Promise(function(resolve, reject) {
             setTimeout(function() {
-                resolve('Async mod-C data');
+                resolve('Async mod-D data');
             }, 10)
         })
     },
 
     onServiceDone: function(data) {
-        console.log(this.name, '::', this.req.query, '::', _uid++);
         return {
-            msg: 'parsed mod-C'
+            msg: 'parsed mod-params'
         }
     },
+
+    getPipeData: function(modData) {
+        return modData;
+    }
 });

@@ -8,6 +8,7 @@
 var Pagelet = require('../../../../src/Pagelet');
 var modC = require('./modC');
 var modA = require('./modA');
+var _uid = 1;
 
 module.exports = Pagelet.extend({
     name: 'modB',
@@ -27,6 +28,7 @@ module.exports = Pagelet.extend({
     },
 
     onServiceDone: function(data) {
+        console.log(this.name, '::', this.req.query, '::', _uid++);
         var store = this.getStore();
         return {
             msg: 'parsed mod-b' + data.info,

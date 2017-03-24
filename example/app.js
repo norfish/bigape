@@ -54,6 +54,7 @@ app.use(function(req, res, next) {
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Expires', '0');
     res.setHeader('X-Powered-By', 'QXF');
+    res.setHeader('X-Accel-Buffering', 'no');
     next();
 });
 

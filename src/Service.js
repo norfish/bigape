@@ -45,6 +45,21 @@ module.exports = {
     // 接口代理地址
     proxySet: null,
 
+    // 为所有的service统一设置proxy代理
+    $setProxy: function(proxy) {
+        if(!proxy) return;
+        this.proxySet = proxy;
+    },
+
+    // service 原型统一开关
+    $setGlobal: function(key, value) {
+        if(!key || typeof value === 'undefined') {
+            return;
+        }
+
+        this[key] = value;
+    },
+
     /**
      * 接口请求前校验，如果失败则停止请求
      */
@@ -128,7 +143,7 @@ module.exports = {
 
     // 接口代理
     proxy: function (req, res, options) {
-        options = _.pick(options || {}, ['url', 'params', 'method', 'timeout', 'validData']);
+        options = _.pick(options || {}, ['url', 'params', 'method', 'timeout', 'validData', 'qmonitor', 'retryTimes']);
         _.extend(this, options);
         return this.json(req, res);
     },
@@ -276,8 +291,8 @@ module.exports = {
             }
         }
         var json = {
-            status: error.code || 500,
-            message: error.code ? (error.message || '未获取到数据，请稍后重试') : '未获取到数据，请稍后重试',
+            status: error.code || error.status || 500,
+            message: error.message || '未获取到数据，请稍后重试',
             data: error.data || null
         }
 

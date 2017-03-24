@@ -17,6 +17,11 @@ var Promise = require('bluebird');
 var Store = require('./Store');
 var ErrorPagelet = require('./errorPagelet');
 var util = require('./util');
+var htmlParser = require('./htmlParser');
+
+// 国内的一些搜索引擎，因为谷歌和必应对异步的网址做了优化，所以忽略
+var spiderReg = /Baiduspider|HaoSouSpider|360spider|(Sogou\s*(web|inst)?\s*Spider)/i
+var CONFIG = {};
 
 function BigPipe(name, options) {
 
@@ -37,10 +42,10 @@ function BigPipe(name, options) {
     this.layout = options.layout || options.bootstrap || {};
 
     // 错误 module
-    this.errorPagelet = options.errorPagelet || ErrorPagelet;
+    this.errorPagelet = options.errorPagelet || CONFIG.errorPagelet || ErrorPagelet;
 
     // monitor key
-    this.qmonitor = options.qmonitor;
+    this.monitor = options.qmonitor || options.monitor || name;
 
     // 实例化的一级 first-class pagelets
     this._pagelets = [];
@@ -90,6 +95,8 @@ BigPipe.prototype = {
             if(!bigpipe.hasOwnProperty(key)) {
                 bigpipe[key] = value;
                 // console.log('add props', key);
+            } else {
+                console.warn('新增实例方法[' + key + ']与Bigpipe原实例方法冲突');
             }
         });
         return this;
@@ -101,14 +108,21 @@ BigPipe.prototype = {
      * @return {this}
      */
     usePagelets: function (pageletsArray) {
+        if(_.isPlainObject(pageletsArray)) {
+            var temp = [];
+            _.forEach(pageletsArray, function(value, key) {
+                temp.push(value);
+            });
+            pageletsArray = temp;
+        }
+
         this.pagelets = pageletsArray;
         return this;
     },
 
     // same with usePagelets
     pipe: function(pageletsArray) {
-        this.pagelets = pageletsArray;
-        return this;
+        return this.usePagelets.call(this, pageletsArray);
     },
 
     /**
@@ -117,7 +131,7 @@ BigPipe.prototype = {
      */
     router: function(req, res, next) {
         logger.info('开始Bigpip, start router使用模块为['+ getPageletsName(this.pagelets) +']');
-        qmonitor.addCount(this.qmonitor + '_page_visit');
+        qmonitor.addCount(this.monitor + '_page_visit');
         this.clear();
 
         this.bootstrap(req, res, next);
@@ -188,7 +202,9 @@ BigPipe.prototype = {
      */
     waitFor: function(modName) {
         var bigpipe = this;
-        // 首先需要触发pagelet的start
+        // 首先需要触发pagelet的start why?
+        // 加上这个是因为有些依赖的模块，只存在依赖中，如果不手动调用，是没有调用的入口的
+        // 但是必须保证每个模块调用且只能调用一次，不可逆的
         bigpipe._pageletMap[modName].get();
 
         return new Promise(function(resolve, reject) {
@@ -410,6 +426,9 @@ BigPipe.prototype = {
             bigpipe: this
         });
 
+        // 客户端是否是蜘蛛抓取
+        this.isSpider = spiderReg.test(req.headers['user-agent']);
+
         return this;
 
     },
@@ -435,6 +454,10 @@ BigPipe.prototype = {
      * @return {Object} Promise
      */
     renderAsync: function() {
+        if(this.isSpider && BigPipe.optimizeForSeo) {
+            return this.renderSync.apply(this, arguments);
+        }
+
         var bigpipe = this;
         var layout = this._layout;
 
@@ -460,12 +483,15 @@ BigPipe.prototype = {
             });
 
         }).catch(function(err) {
-            qmonitor.addCount(bigpipe.monitorKey + '_rendlayout_error');
+            qmonitor.addCount(bigpipe.monitor + '_rendlayout_error');
             bigpipe.catch(err);
         });
     },
 
     render: function() {
+        if(this.isSpider && BigPipe.optimizeForSeo) {
+            return this.renderSync.apply(this, arguments);
+        }
         return this.renderAsync.apply(this, arguments);
     },
 
@@ -474,7 +500,38 @@ BigPipe.prototype = {
      * @return {[type]} [description]
      */
     renderSync: function() {
+        var bigpipe = this;
+        var staticHtml = this.staticHtml = htmlParser(this.length);
 
+        bigpipe._layout.getRenderHtml()
+            .then(function(html) {
+                staticHtml.setLayout(html);
+
+                return Promise.map(bigpipe._pagelets, function(pagelet) {
+                    // render Promise
+                    return pagelet.getRenderChunk().then(function (chunk) {
+                        staticHtml.setPagelet(chunk.domID, chunk);
+                        return chunk.html;
+
+                    }, function (errData) {
+                        logger.error('render sync failed', errData);
+                        throw errData;
+                    })
+                    .catch(function(error) {
+                        logger.error( 'render sync error', error);
+                        throw error;
+                    });
+
+                }).then(function(data) {
+                    bigpipe._layout.end(staticHtml.getHtml(), true);
+                }).catch(function(err) {
+                    return bigpipe.catch(err);
+                });
+            })
+            .catch(function(err) {
+                qmonitor.addCount(bigpipe.monitor + '_rendlayout_error');
+                bigpipe.catch(err);
+            });
     },
 
     /**
@@ -700,6 +757,12 @@ BigPipe.prototype = {
     },
 
     renderError: function(error) {
+        if(this.isSpider && BigPipe.optimizeForSeo) {
+            // TODO 整体异常的时候能够同步渲染完整的页面
+            logger.error('终止pagelet end @ spider', error);
+            return;
+        }
+
         logger.error('终止pagelet end', error);
         var html = this._errorPagelet.renderSyncWithData(error)
         this._errorPagelet.end(html, true);
@@ -732,6 +795,35 @@ BigPipe.create = (function() {
         return __instance[name];
     }
 })();
+
+/**
+ * 渲染是否真的seo做优化，即把bigpipe的异步渲染，转换成同步渲染，返回给spider
+ */
+BigPipe.setOptimizeForSeo = function(flag) {
+    BigPipe.optimizeForSeo = !!flag;
+};
+
+// 全局开关等配置，目前支持的有
+// errorPagelet 全局错误模块
+// spiderReg 需要优化的搜索引擎 regexp
+// optimizeForSeo seo优化开关
+//
+/**
+ * 全局开关
+ * @param  {string} key   config key
+ * @param  {any} value config resource
+ * @return {any}       如果只传入key，则获取，如果有value则赋值
+ */
+BigPipe.config = function(key, value) {
+    if(!key || (typeof key !== 'string')) {
+        return CONFIG;
+    }
+    if(!value) {
+        return CONFIG[key];
+    }
+
+    CONFIG[key] = value;
+};
 
 // pageletName
 

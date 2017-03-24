@@ -90,6 +90,15 @@ Pagelet.prototype = {
     onCreated: function() {},
 
     /**
+     * beforeRender lifyCycle function
+     * @param  {Object} data the parsed data after onServiceDone
+     * @return {any}
+     */
+    onBeforeRender: function(data) {
+        return data;
+    },
+
+    /**
      * 钩子函数（hook function），获取 pagelet 的原始数据
      * 获取渲染的原始数据 可以被覆盖，默认是通过service取接口数据，返回promise
      * 支持返回同步数据或者Promise异步
@@ -125,7 +134,13 @@ Pagelet.prototype = {
      */
     get: function() {
         var pagelet = this;
-        return this.ready()
+
+        // 因为是异步，防止被多次调用，造成资源浪费
+        if(this._isGetting) {
+            return this._isGetting;
+        }
+
+        this._isGetting = this.ready()
             .then(function() {
                 return pagelet.getServiceData();
             })
@@ -143,6 +158,8 @@ Pagelet.prototype = {
                 logger.error('数据处理异常', error);
                 pagelet.catch(error);
             });
+
+        return this._isGetting;
     },
 
     /**
@@ -237,7 +254,12 @@ Pagelet.prototype = {
     },
 
     renderSyncWithData: function (data) {
-        return qtemplate.renderSync(this.getTemplatePath(), data);
+        if(typeof this.onBeforeRender(data) === 'function') {
+            this.onBeforeRender(data);
+        }
+
+        var html = qtemplate.renderSync(this.getTemplatePath(), data);
+        return this.createChunk(html);
     },
 
     /**
@@ -290,6 +312,11 @@ Pagelet.prototype = {
 
         return this.get()
             .then(function(parsed) {
+
+                if(typeof pagelet.onBeforeRender(parsed) === 'function') {
+                    pagelet.onBeforeRender(parsed);
+                }
+
                 // 统一为渲染数据增加locals参数
                 return qtemplate.render(
                     pagelet.getTemplatePath(),
@@ -306,11 +333,18 @@ Pagelet.prototype = {
                 return pagelet.afterRender(html);
             })
             .catch(function(error) {
-                debugger
                 qmonitor.addCount('module_render_error');
                 logger.error('渲染pagelet异常', pagelet.name, error);
                 return qtemplate.render(pagelet.errorTemplate, pagelet.getErrObj(error));
             });
+    },
+
+    getRenderChunk: function() {
+        var pagelet = this;
+        return this.getRenderHtml()
+            .then(function(html) {
+                return pagelet.composeChunkObj(html);
+            })
     },
 
     getTemplatePath: function() {
@@ -346,7 +380,23 @@ Pagelet.prototype = {
             return html;
         }
 
-        var chunkObj = {
+        var chunkObj = this.composeChunkObj(html);
+
+        return '<script>BigPipe.onArrive('+ JSON.stringify(chunkObj) +')</script>'
+    },
+
+    /**
+     * 拼接pagelet chunk Object
+     * @param  {string} html rendered html string
+     * @return {Object}      chunk
+     */
+    composeChunkObj: function(html) {
+        // 如果是主框架则直接返回
+        if(this.isBootstrap()) {
+            return html;
+        }
+
+        return {
             id: this.name,
             html: html,
             scripts: this.scripts,
@@ -359,8 +409,6 @@ Pagelet.prototype = {
             dataEventName: this.dataEventName || this.dataKey || this.name,
             pageletEventName: this.pageletEventName || this.domID || this.name
         };
-
-        return '<script>BigPipe.onArrive('+ JSON.stringify(chunkObj) +')</script>'
     },
 
     /**
