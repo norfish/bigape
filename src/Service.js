@@ -210,7 +210,7 @@ module.exports = {
             openDomain: req.hostname,
             plat: 'touch',
             dist: cookies._plat_dist || 'h5', //分发渠道
-            entrance: cookies.entrance || 'h5', //入口
+            entrance: cookies._plat_entrance || 'h5', //入口
         }
     },
 
