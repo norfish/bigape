@@ -4,7 +4,7 @@
  * @date: 2016-08-03 21:08:11
  */
 
-var qRequest = require('@qnpm/q-request');
+var wrapRequest = require('./wrapRequest');
 var config = require('./config');
 var viewEngine = config.plugins('viewEngine'); //require('jnpm-template');
 var monitor = config.plugins('monitor'); //require('@qnpm/q-monitor');
@@ -128,11 +128,11 @@ module.exports = {
 
         // 有异步校验
         if(this.isPromise(beforeLoadValid)) {
-            console.log('进行请求前校验');
+            logger('进行请求前校验');
             return beforeLoadValid.then(function() {
                 return self._load(req, res);
             }).catch(function(error) {
-                console.log('请求接口前校验失败或数据异常', error);
+                logger('请求接口前校验失败或数据异常', error);
                 throw error;
             });
         }
@@ -172,7 +172,7 @@ module.exports = {
     _load: function(req, res){
         var self = this;
 
-        return qRequest(
+        return wrapRequest(
             this.getURL(req, res),
             {
                 data : this.getParams(req, res),
@@ -241,7 +241,7 @@ module.exports = {
             retriedTimes = cache.retriedTimes || 0;
 
         var qmonitorKey = this.getMonitor(req, res);
-        // console.log('重试次数: ', retryTimes, '已重试次数: ', retriedTimes);
+        // logger('重试次数: ', retryTimes, '已重试次数: ', retriedTimes);
 
         if(qmonitorKey){
             monitor.addCount(qmonitorKey + '-api-error');
