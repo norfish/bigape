@@ -16,10 +16,11 @@ var bigape = {
         }
         if(!options) {
             options = name;
+        } else {
+            options.name = name;
         }
-        options.name = name;
 
-        return Pagelet.extend.call(Pagelet, options);
+        return Pagelet.extend(options);
     },
 
     createService(options) {

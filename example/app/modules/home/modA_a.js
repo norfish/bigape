@@ -10,7 +10,7 @@ var modA_a_a = require('./modA_a_a');
 
 module.exports = bigape.createPagelet({
     name: 'modA_a',
-    template: 'modA',
+    template: 'modA.njk',
     wait: [modA_a_a],
     onServiceDone: function(data) {
         var modA_a_a = this.getStore('modA_a_a');

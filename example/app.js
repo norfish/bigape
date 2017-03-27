@@ -8,10 +8,12 @@ var compression = require('compression')
 
 var qversion = require('@qnpm/q-version');
 var healthcheck = require('@qnpm/q-healthcheck');
-var qtemplate = require('jnpm-template');
+// var qtemplate = require('jnpm-template');
 var logger = require('@qnpm/q-logger');
 var exception = require('@qnpm/q-exception');
 var config = require('./config');
+var nunjucks = require('nunjucks');
+var bigape = require('../src/index');
 
 // 路由
 var routes = require('./app/controllers/index');
@@ -23,10 +25,19 @@ var app = express();
 qversion.parse(path.join(__dirname, 'ref'));
 
 // 设置模板引擎
-qtemplate(app, {
-    views: __dirname + "/views", // 总模板目录
-    layouts: 'layouts', // layout模板目录，默认views/layouts
-    versions: qversion.versions()
+// qtemplate(app, {
+//     views: __dirname + "/views", // 总模板目录
+//     layouts: 'layouts', // layout模板目录，默认views/layouts
+//     versions: qversion.versions()
+// });
+//
+nunjucks.configure('views', {
+    autoescape: true,
+    express: app
+});
+
+bigape.config({
+    'viewEngine': nunjucks
 });
 
 exception.init(logger);

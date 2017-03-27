@@ -9,7 +9,7 @@ var bigape = require('../../../../src');
 
 module.exports = bigape.createPagelet({
     name: 'modA_a_a',
-    template: 'modA',
+    template: 'modA.njk',
     onServiceDone: function(data) {
         return {
             msg: 'parsed modA_a_a'

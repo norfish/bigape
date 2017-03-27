@@ -28,7 +28,7 @@ module.exports = bigape.createPagelet({
 
     domID: 'mod-a',
 
-    template: 'modA',
+    template: 'modA.njk',
 
     // noLog: true,
 

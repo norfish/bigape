@@ -15,7 +15,7 @@ module.exports = bigape.createPagelet({
 
     domID: 'mod-b',
 
-    template: 'modB',
+    template: 'modB.njk',
 
     wait: [modA, modC],
 

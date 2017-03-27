@@ -12,7 +12,7 @@ module.exports = bigape.createPagelet({
 
     domID: 'mod-d',
 
-    template: 'modD',
+    template: 'modD.njk',
 
     getService: function() {
         return new Promise(function(resolve, reject) {

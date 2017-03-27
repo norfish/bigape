@@ -9,7 +9,7 @@ var bigape = require('../../../../src');
 var Layout = bigape.createPagelet({
     name: 'layout',
 
-    template: 'pages/home',
+    template: 'pages/home.njk',
 
     getService: function() {
         return new Promise(function(resolve, reject) {

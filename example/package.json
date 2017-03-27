@@ -23,6 +23,7 @@
     "eventemitter3": "^2.0.0",
     "express": "~4.13.3",
     "jnpm-template": "^1.0.2",
+    "nunjucks": "^3.0.0",
     "serve-favicon": "~2.3.0"
   },
   "devDependencies": {

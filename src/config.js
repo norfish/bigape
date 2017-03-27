@@ -20,9 +20,9 @@
 
 var _ = require('lodash')
 
-const PLUGINS = {
+var PLUGINS = {
     viewEngine: {
-        module: 'jnpm-template'
+        module: 'nunjucks'
     },
     logger: {
         module: 'debug'
@@ -31,9 +31,9 @@ const PLUGINS = {
         module: 'debug'
     }
 };
-const CONFIG = {};
+var CONFIG = {};
 
-const plugins = function(key, cfg) {
+var plugins = function(key, cfg) {
     if(!key) {
         return null;
     }
@@ -43,7 +43,7 @@ const plugins = function(key, cfg) {
     }
 
     if(!cfg) {
-        let plugin = PLUGINS[key];
+        var plugin = PLUGINS[key];
         if(plugin.module) {
             return require(plugin.module);
         }
@@ -52,7 +52,7 @@ const plugins = function(key, cfg) {
     PLUGINS[key] = cfg;
 }
 
-const config = function(key, cfg) {
+var config = function(key, cfg) {
     if(!key) {
         return null;
     }
@@ -64,7 +64,7 @@ const config = function(key, cfg) {
     CONFIG[key] = cfg;
 }
 
-const configOrPlugins = function(opts) {
+var configOrPlugins = function(opts) {
     if(!_.isPlainObject(opts)) {
         return;
     }

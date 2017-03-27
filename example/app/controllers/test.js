@@ -16,6 +16,7 @@ var modD = require('../modules/home/modD');
 var params = require('../modules/home/params')
 
 router.get('/', function(req, res, next) {
+    // res.render('index.njk', {title: 'nunjucks'});
     return HomeAction
             .pipe([modB, modD, modA, params])
             .router(req, res, next)
@@ -33,7 +34,7 @@ router.get('/pipeline', function(req, res, next) {
 // 同步渲染，顺序输出到客户端
 router.get('/sync', function(req, res, next) {
     return HomeAction
-            .pipe([modA, modB, modC])
+            .pipe([modA])
             .router(req, res, next)
             .renderSync();
 });

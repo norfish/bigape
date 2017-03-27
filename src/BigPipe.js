@@ -12,7 +12,7 @@ var EventEmitter = require('events').EventEmitter;
 var Pagelet = require('./Pagelet');
 var config = require('./config');
 var monitor = config.plugins('monitor'); //require('@qnpm/q-monitor');
-var debug = config.plugins('logger'); //require('@qnpm/q-logger');
+var debug = require('debug'); //require('@qnpm/q-logger');
 var logger = debug('bigape');
 var errorLog = debug('bigape:error');
 

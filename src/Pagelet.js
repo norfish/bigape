@@ -11,9 +11,9 @@
 var EventEmitter = require('events').EventEmitter;
 var _ = require('lodash');
 var config = require('./config');
-var viewEngine = config.plugins('viewEngine'); //require('jnpm-template');
+var viewEngine = config.config('viewEngine'); //require('jnpm-template');
 var monitor = config.plugins('monitor'); //require('@qnpm/q-monitor');
-var debug = config.plugins('logger'); //require('@qnpm/q-logger');
+var debug = require('debug'); //require('@qnpm/q-logger');
 var logger = debug('bigape');
 var errorLog = debug('bigape:error');
 // TODO: when use bluebird, when write after end error occured, cpu will increase to 100%, use default promise will be ok
@@ -77,7 +77,7 @@ Pagelet.prototype = {
     isErrorFatal: false,
 
     // 发生错误时候渲染错误页面的模板
-    errorTemplate: 'partials/error',
+    errorTemplate: 'partials/error.njk',
 
     // 不输出该模块的logs，主要是数据logs
     noLog: false,
@@ -210,7 +210,6 @@ Pagelet.prototype = {
      */
     render: function(renderData) {
         var pagelet = this;
-
         logger('开始渲染Pagelet模块['+ pagelet.name +']@', new Date());
 
         if(renderData) {
@@ -219,6 +218,7 @@ Pagelet.prototype = {
 
         return this.getRenderHtml()
             .then(function(source) {
+                logger('xxx')
                 var chunk = pagelet.createChunk(source);
                 pagelet.emit('active', chunk);
                 return chunk;
@@ -260,7 +260,8 @@ Pagelet.prototype = {
             this.onBeforeRender(data);
         }
 
-        var html = viewEngine.renderSync(this.getTemplatePath(), data);
+        var viewEngine = config.config('viewEngine'); //require('jnpm-template');
+        var html = viewEngine.render(this.getTemplatePath(), data);
         return this.createChunk(html);
     },
 
@@ -311,10 +312,10 @@ Pagelet.prototype = {
      */
     getRenderHtml: function() {
         var pagelet = this;
+        var viewEngine = config.config('viewEngine'); //require('jnpm-template');
 
         return this.get()
             .then(function(parsed) {
-
                 if(typeof pagelet.onBeforeRender(parsed) === 'function') {
                     pagelet.onBeforeRender(parsed);
                 }
@@ -351,7 +352,7 @@ Pagelet.prototype = {
 
     getTemplatePath: function() {
         if(!this.template) {
-            return 'index';
+            return 'index.njk';
         }
 
         if(this.isBootstrap()) {

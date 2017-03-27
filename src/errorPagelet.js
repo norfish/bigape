@@ -12,7 +12,7 @@ module.exports = Pagelet.extend({
 
     domID: 'mod-pageError',
 
-    template: 'error',
+    template: 'error.njk',
 
     mode: 'layout'
 });
