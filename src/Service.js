@@ -209,8 +209,8 @@ module.exports = {
             frontHeadExt: cookies['_frontHeadExt'],
             openDomain: req.hostname,
             plat: 'touch',
-            dist: cookies._plat_dist || 'h5' //分发渠道，
-            entrance: cookies.entrance || 'h5' //入口
+            dist: cookies._plat_dist || 'h5', //分发渠道
+            entrance: cookies.entrance || 'h5', //入口
         }
     },
 
