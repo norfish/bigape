@@ -5,10 +5,10 @@
  */
 
 
-var Pagelet = require('../../../../src/Pagelet');
+var bigape = require('../../../../src');
 var modA_a_a = require('./modA_a_a');
 
-module.exports = Pagelet.extend({
+module.exports = bigape.createPagelet({
     name: 'modA_a',
     template: 'modA',
     wait: [modA_a_a],

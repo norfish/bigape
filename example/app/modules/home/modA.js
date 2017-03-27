@@ -5,7 +5,7 @@
  */
 
 
-var Pagelet = require('../../../../src/Pagelet');
+var bigape = require('../../../../src');
 //
 // var Pagelet = require('bigape').Pagelet;
 var serviceA = require('./service/testA');
@@ -23,7 +23,7 @@ var mockA = {
     }
 };
 
-module.exports = Pagelet.extend({
+module.exports = bigape.createPagelet({
     name: 'modA',
 
     domID: 'mod-a',

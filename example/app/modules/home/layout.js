@@ -4,9 +4,9 @@
  * @date: 2016-08-31 21:25:11
  */
 
-var Pagelet = require('../../../../src/Pagelet');
+var bigape = require('../../../../src');
 
-var Layout = Pagelet.extend({
+var Layout = bigape.createPagelet({
     name: 'layout',
 
     template: 'pages/home',

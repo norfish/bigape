@@ -11,7 +11,7 @@
     "@qnpm/q-healthcheck": "~1.0.0",
     "@qnpm/q-logger": "~1.1.5",
     "@qnpm/q-monitor": "~1.0.8",
-    "@qnpm/q-multiprocess": "~1.0.3",
+    "@qnpm/q-multiprocess": "^1.0.4",
     "@qnpm/q-request": "0.0.4",
     "@qnpm/q-version": "~1.0.2",
     "bluebird": "^3.4.6",

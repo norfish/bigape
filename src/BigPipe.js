@@ -10,8 +10,12 @@
 var _ = require('lodash');
 var EventEmitter = require('events').EventEmitter;
 var Pagelet = require('./Pagelet');
-var qmonitor = require('@qnpm/q-monitor');
-var logger = require('@qnpm/q-logger');
+var config = require('./config');
+var monitor = config.plugins('monitor'); //require('@qnpm/q-monitor');
+var debug = config.plugins('logger'); //require('@qnpm/q-logger');
+var logger = debug('bigape');
+var errorLog = debug('bigape:error');
+
 var Promise = require('bluebird');
 var Store = require('./Store');
 var ErrorPagelet = require('./errorPagelet');
@@ -129,8 +133,8 @@ BigPipe.prototype = {
      * @return {this}
      */
     router: function(req, res, next) {
-        logger.info('开始Bigpip, start router使用模块为['+ getPageletsName(this.pagelets) +']');
-        qmonitor.addCount(this.monitor + '_page_visit');
+        logger('开始Bigpip, start router使用模块为['+ getPageletsName(this.pagelets) +']');
+        // monitor.addCount(this.monitor + '_page_visit');
         this.clear();
 
         this.bootstrap(req, res, next);
@@ -161,7 +165,7 @@ BigPipe.prototype = {
         bigpipe._errorPagelet.ready('done');
 
         this.once('page:error', function(err) {
-            logger.info('出现错误, 需要终止页面渲染', err, '\n');
+            logger('出现错误, 需要终止页面渲染', err, '\n');
             bigpipe.renderError(err);
         });
     },
@@ -184,12 +188,12 @@ BigPipe.prototype = {
             return mod.prototype.name;
         });
 
-        logger.info('start analyze module', pagelet.name, '依赖模块['+ waitModNames.join("|") +']');
+        logger('start analyze module', pagelet.name, '依赖模块['+ waitModNames.join("|") +']');
 
         Promise.map(waitModNames, function(modName) {
             return bigpipe.waitFor(modName);
         }).then(function() {
-            logger.info('analyze module done', pagelet.name);
+            logger('analyze module done', pagelet.name);
             done.call(pagelet, pagelet);
         });
     },
@@ -271,7 +275,7 @@ BigPipe.prototype = {
 
         // 确保不会在 end 之后再 write chunk
         if(this._res.finished) {
-            logger.error('Response was closed, unable to flush content');
+            errorLog('Response was closed, unable to flush content');
             this.emit('end', new Error('Response was closed, unable to flush content'));
             return;
         }
@@ -282,7 +286,7 @@ BigPipe.prototype = {
         }).join('&');
 
         if(data.length) {
-            logger.record('info: flush pagelet ['+ pageletName +'] data {{', /*data.toString(),*/'暂不记录}}');
+            logger('info: flush pagelet ['+ pageletName +'] data {{', /*data.toString(),*/'暂不记录}}');
             this._res.write(
                 data,
                 true
@@ -392,7 +396,7 @@ BigPipe.prototype = {
             var pgClass = pagelet.prototype;
             // 已经解析过
             if(allPageletObj[pgClass.name]) {
-                // logger.info('捉到重名的pagelet一只，请注意::', pgClass.name);
+                // logger('捉到重名的pagelet一只，请注意::', pgClass.name);
                 return;
             }
 
@@ -440,10 +444,10 @@ BigPipe.prototype = {
         var bigpipe = this;
         bigpipe._layout.ready('ready');
         bigpipe.length++;
-        logger.info('开始渲染layout脚手架模块');
+        logger('开始渲染layout脚手架模块');
 
         return this._layout.render().then(function(chunk) {
-                logger.info('渲染layout脚手架模块完成');
+                logger('渲染layout脚手架模块完成');
                 return bigpipe._layout.write(chunk).flush();
             });
     },
@@ -467,11 +471,11 @@ BigPipe.prototype = {
                     pagelet.write(chunk).flush();
                     return chunk;
                 }, function (errData) {
-                    logger.error('render Async failed', errData);
+                    errorLog('render Async failed', errData);
                     throw errData;
                 })
                 .catch(function(error) {
-                    logger.error( 'render Async error', error);
+                    errorLog( 'render Async error', error);
                     throw error;
                 });
 
@@ -482,7 +486,7 @@ BigPipe.prototype = {
             });
 
         }).catch(function(err) {
-            qmonitor.addCount(bigpipe.monitor + '_rendlayout_error');
+            // monitor.addCount(bigpipe.monitor + '_rendlayout_error');
             bigpipe.catch(err);
         });
     },
@@ -513,11 +517,11 @@ BigPipe.prototype = {
                         return chunk.html;
 
                     }, function (errData) {
-                        logger.error('render sync failed', errData);
+                        errorLog('render sync failed', errData);
                         throw errData;
                     })
                     .catch(function(error) {
-                        logger.error( 'render sync error', error);
+                        errorLog( 'render sync error', error);
                         throw error;
                     });
 
@@ -528,7 +532,7 @@ BigPipe.prototype = {
                 });
             })
             .catch(function(err) {
-                qmonitor.addCount(bigpipe.monitor + '_rendlayout_error');
+                // monitor.addCount(bigpipe.monitor + '_rendlayout_error');
                 bigpipe.catch(err);
             });
     },
@@ -598,14 +602,14 @@ BigPipe.prototype = {
         var bigpipe = this;
         bigpipe.length = modules.length;
         if(!modules || !modules.length) {
-            logger.error('处理失败,没有传入需要处理的模块');
+            errorLog('处理失败,没有传入需要处理的模块');
             bigpipe._json({
                 status: 500,
                 message: '未获取到数据'
             });
         }
 
-        logger.info('开始处理JSON接口数据, 模块['+ modules.join(' | ') +']');
+        logger('开始处理JSON接口数据, 模块['+ modules.join(' | ') +']');
 
         Promise.map(modules, function(modName) {
 
@@ -623,12 +627,12 @@ BigPipe.prototype = {
 
 
         }).then(function(data) {
-            logger.record('获取API接口数据成功');
+            logger('获取API接口数据成功');
             bigpipe._json(data);
         }, function (data) {
-            logger.record('获取API接口数据失败');
+            logger('获取API接口数据失败');
         }).catch(function(error) {
-            logger.error('处理JSON数据接口错误', error);
+            errorLog('处理JSON数据接口错误', error);
             var errObj = bigpipe.getErrObj(error);
             bigpipe._json(errObj);
         });
@@ -640,7 +644,7 @@ BigPipe.prototype = {
         bigpipe.length = 1;
 
         if(!modName) {
-            logger.error('处理失败,没有传入需要处理的模块');
+            errorLog('处理失败,没有传入需要处理的模块');
             bigpipe._json({
                 status: 500,
                 message: '未获取到数据'
@@ -651,14 +655,14 @@ BigPipe.prototype = {
             modName = modName.prototype.name;
         }
 
-        logger.info('开始处理JSON接口数据, 模块['+ modName +']');
+        logger('开始处理JSON接口数据, 模块['+ modName +']');
 
         var mod = bigpipe._pageletMap[modName];
 
         return mod.get().then(function(data) {
             bigpipe._jsonSuc(data);
         }).catch(function(error) {
-            logger.error('处理JSON数据接口错误', error);
+            errorLog('处理JSON数据接口错误', error);
             var errObj = bigpipe.getErrObj(error);
             bigpipe._json(errObj);
         });
@@ -675,7 +679,7 @@ BigPipe.prototype = {
         bigpipe.length = 1;
 
         if(!moduleName) {
-            logger.error('处理失败,没有传入需要处理的模块');
+            errorLog('处理失败,没有传入需要处理的模块');
             this._json({
                 status: 500,
                 message: '未获取到数据'
@@ -686,16 +690,16 @@ BigPipe.prototype = {
             moduleName = moduleName.prototype.name;
         }
 
-        logger.info('开始处理html snippet接口数据, 模块['+ moduleName +']');
+        logger('开始处理html snippet接口数据, 模块['+ moduleName +']');
 
         var module = this._pageletMap[moduleName];
 
         // bigpipe._res.set('Content-Type', 'text/html; charset=utf-8');
         module.renderSnippet().then(function(snippet) {
-            logger.record('获取snippet成功，flush到客户端'/*, snippet*/);
+            logger('获取snippet成功，flush到客户端'/*, snippet*/);
             module.end(snippet);
         }).catch(function(error) {
-            logger.error('处理snippet数据错误', error);
+            errorLog('处理snippet数据错误', error);
             var errObj = bigpipe.getErrObj(error);
             bigpipe._json(errObj);
         });
@@ -751,18 +755,18 @@ BigPipe.prototype = {
         if(this.isErrorFatal) {
             this.bigpipe.emit('page:error', error);
         }
-        logger.error('catch error', error, '\n');
+        errorLog('catch error', error, '\n');
         return this.getErrObj(error);
     },
 
     renderError: function(error) {
         if(this.isSpider && BigPipe.optimizeForSeo) {
             // TODO 整体异常的时候能够同步渲染完整的页面
-            logger.error('终止pagelet end @ spider', error);
+            errorLog('终止pagelet end @ spider', error);
             return;
         }
 
-        logger.error('终止pagelet end', error);
+        errorLog('终止pagelet end', error);
         var html = this._errorPagelet.renderSyncWithData(error)
         this._errorPagelet.end(html, true);
     },

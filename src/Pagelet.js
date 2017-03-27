@@ -10,10 +10,12 @@
 
 var EventEmitter = require('events').EventEmitter;
 var _ = require('lodash');
-var co = require('co');
-var qtemplate = require('jnpm-template');
-var qmonitor = require('@qnpm/q-monitor');
-var logger = require('@qnpm/q-logger');
+var config = require('./config');
+var viewEngine = config.plugins('viewEngine'); //require('jnpm-template');
+var monitor = config.plugins('monitor'); //require('@qnpm/q-monitor');
+var debug = config.plugins('logger'); //require('@qnpm/q-logger');
+var logger = debug('bigape');
+var errorLog = debug('bigape:error');
 // TODO: when use bluebird, when write after end error occured, cpu will increase to 100%, use default promise will be ok
 // var Promise = require('bluebird');
 var util = require('./util');
@@ -47,7 +49,7 @@ function Pagelet(name, options) {
 Pagelet.prototype = {
     constructor: Pagelet,
 
-    qmonitor: '',
+    monitor: '',
 
     name: '',
 
@@ -147,7 +149,7 @@ Pagelet.prototype = {
             .then(function(data) {
                 data = pagelet.onServiceDone(data);
                 pagelet.setCache(data);
-                logger.info(
+                logger(
                     '数据处理成功，触发事件['+ pagelet.name +':done]',
                     pagelet.noLog ? '{noLog}' : JSON.stringify(data)
                 );
@@ -155,7 +157,7 @@ Pagelet.prototype = {
                 return data;
             })
             .catch(function(error) {
-                logger.error('数据处理异常', error);
+                errorLog('数据处理异常', error);
                 pagelet.catch(error);
             });
 
@@ -209,7 +211,7 @@ Pagelet.prototype = {
     render: function(renderData) {
         var pagelet = this;
 
-        logger.info('开始渲染Pagelet模块['+ pagelet.name +']@', new Date());
+        logger('开始渲染Pagelet模块['+ pagelet.name +']@', new Date());
 
         if(renderData) {
             this.setCache(renderData);
@@ -223,7 +225,7 @@ Pagelet.prototype = {
             })
             .catch(function(err) {
                 var msg = '系统繁忙，请稍后重试' + err.message;
-                logger.error('Pagelet render error::', err);
+                errorLog('Pagelet render error::', err);
                 pagelet.catch(err);
                 pagelet.emit('active', msg);
                 return msg;
@@ -248,7 +250,7 @@ Pagelet.prototype = {
             })
             // handle error
             .catch(function(err) {
-                logger.error('Pagelet render snippet error::', err);
+                errorLog('Pagelet render snippet error::', err);
                 return pagelet.catch(err);
             });
     },
@@ -258,7 +260,7 @@ Pagelet.prototype = {
             this.onBeforeRender(data);
         }
 
-        var html = qtemplate.renderSync(this.getTemplatePath(), data);
+        var html = viewEngine.renderSync(this.getTemplatePath(), data);
         return this.createChunk(html);
     },
 
@@ -269,13 +271,13 @@ Pagelet.prototype = {
     getServiceData: function() {
         var pagelet = this;
 
-        // logger.info('开始获取数据['+ pagelet.name +']');
+        // logger('开始获取数据['+ pagelet.name +']');
 
         // 优先使用缓存数据
         // 避免重复获取数据
         var _cache = this.getCache();
         if(_cache) {
-            logger.info('使用数据缓存['+ pagelet.name +']'/*, _cache*/);
+            logger('使用数据缓存['+ pagelet.name +']'/*, _cache*/);
             return Promise.resolve(_cache);
         }
 
@@ -283,22 +285,22 @@ Pagelet.prototype = {
 
         // 如果数据可以同步, 直接返回同步数据
         if(!util.isPromise(getOriginData)) {
-            // logger.info('使用同步方式获取数据['+ pagelet.name +']');
-            logger.record('获取模块数据成功['+ pagelet.name +']');
+            // logger('使用同步方式获取数据['+ pagelet.name +']');
+            logger('获取模块数据成功['+ pagelet.name +']');
             getOriginData = Promise.resolve(getOriginData);
         }
 
         return getOriginData.then(function(json) {
-            logger.record('获取模块数据成功['+ pagelet.name +']');
+            logger('获取模块数据成功['+ pagelet.name +']');
             return json;
 
         }, function(error) {
-            logger.error('获取pagelet数据失败', pagelet.name, error);
+            errorLog('获取pagelet数据失败', pagelet.name, error);
             return pagelet.catch(error);
 
         }).catch(function(error) {
-            qmonitor.addCount('module_handler_error');
-            logger.error('获取pagelet数据异常', pagelet.name, error);
+            // monitor.addCount('module_handler_error');
+            errorLog('获取pagelet数据异常', pagelet.name, error);
             return pagelet.catch(error);
         });
     },
@@ -318,24 +320,24 @@ Pagelet.prototype = {
                 }
 
                 // 统一为渲染数据增加locals参数
-                return qtemplate.render(
+                return viewEngine.render(
                     pagelet.getTemplatePath(),
                     pagelet.getActRenderData(parsed)
                 );
 
             // 模板渲染reject时候，渲染错误信息
             }, function(error) {
-                logger.error('渲染pagelet失败', pagelet.name, error);
+                errorLog('渲染pagelet失败', pagelet.name, error);
                 var errorObj = pagelet.getErrObj(error);
-                return qtemplate.render(pagelet.errorTemplate, errorObj);
+                return viewEngine.render(pagelet.errorTemplate, errorObj);
             })
             .then(function(html) {
                 return pagelet.afterRender(html);
             })
             .catch(function(error) {
-                qmonitor.addCount('module_render_error');
-                logger.error('渲染pagelet异常', pagelet.name, error);
-                return qtemplate.render(pagelet.errorTemplate, pagelet.getErrObj(error));
+                // monitor.addCount('module_render_error');
+                errorLog('渲染pagelet异常', pagelet.name, error);
+                return viewEngine.render(pagelet.errorTemplate, pagelet.getErrObj(error));
             });
     },
 
@@ -475,7 +477,7 @@ Pagelet.prototype = {
         //
         this.bigpipe.flush(function close(error) {
             if (error) return pagelet.catch(error, true);
-            logger.info('Bigpipe end @', new Date());
+            logger('Bigpipe end @', new Date());
             pagelet.res.end('</html>');
         });
 
@@ -504,7 +506,7 @@ Pagelet.prototype = {
         if(this.isErrorFatal) {
             this.bigpipe.emit('page:error', error);
         }
-        logger.error('catch error', error, '\n');
+        errorLog('catch error', error, '\n');
         return this.getErrObj(error);
     },
 

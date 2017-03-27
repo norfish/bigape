@@ -5,8 +5,12 @@
  */
 
 var qRequest = require('@qnpm/q-request');
-var qMonitor = require('@qnpm/q-monitor');
-var logger = require('@qnpm/q-logger');
+var config = require('./config');
+var viewEngine = config.plugins('viewEngine'); //require('jnpm-template');
+var monitor = config.plugins('monitor'); //require('@qnpm/q-monitor');
+var debug = config.plugins('logger'); //require('@qnpm/q-logger');
+var logger = debug('bigape');
+var errorLog = debug('bigape:error');
 var _ = require('lodash');
 
 module.exports = {
@@ -23,7 +27,7 @@ module.exports = {
     /**
      * 监控名称
      */
-    qmonitor: '',
+    monitor: '',
 
     /**
      * 接口请求失败后的重试次数, 如果不为0, 后端接口返回异常会重新请求接口
@@ -113,7 +117,7 @@ module.exports = {
      * @param res
      * @returns {string}
      */
-    getQMonitor: function(req, res){
+    getMonitor: function(req, res){
         return this.qmonitor;
     },
 
@@ -172,7 +176,7 @@ module.exports = {
             this.getURL(req, res),
             {
                 data : this.getParams(req, res),
-                qmonitor: this.getQMonitor(req, res),
+                qmonitor: this.getMonitor(req, res),
                 method: this.method,
                 postType: 'json',
                 proxy: this.proxySet, //'http://127.0.0.1:8888',
@@ -236,18 +240,18 @@ module.exports = {
             retryTimes = this.retryTimes,
             retriedTimes = cache.retriedTimes || 0;
 
-        var qmonitorKey = this.getQMonitor(req, res);
+        var qmonitorKey = this.getMonitor(req, res);
         // console.log('重试次数: ', retryTimes, '已重试次数: ', retriedTimes);
 
         if(qmonitorKey){
-            qMonitor.addCount(qmonitorKey + '-api-error');
+            monitor.addCount(qmonitorKey + '-api-error');
         }
 
         if(retryTimes > 0 && retriedTimes < retryTimes){
             cache.retriedTimes = retriedTimes + 1;
             // console.log('重新请求接口');
             if(qmonitorKey){
-                qMonitor.addCount(qmonitorKey + '-api-retry');
+                monitor.addCount(qmonitorKey + '-api-retry');
             }
             return this.load(req, res)
         }else{

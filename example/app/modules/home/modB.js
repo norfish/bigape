@@ -5,12 +5,12 @@
  */
 
 
-var Pagelet = require('../../../../src/Pagelet');
+var bigape = require('../../../../src');
 var modC = require('./modC');
 var modA = require('./modA');
 var _uid = 1;
 
-module.exports = Pagelet.extend({
+module.exports = bigape.createPagelet({
     name: 'modB',
 
     domID: 'mod-b',

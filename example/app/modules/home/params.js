@@ -5,9 +5,9 @@
  */
 
 
-var Pagelet = require('../../../../src/Pagelet');
+var bigape = require('../../../../src');
 
-module.exports = Pagelet.extend({
+module.exports = bigape.createPagelet({
     name: 'params',
 
     getService: function() {
