@@ -18,25 +18,25 @@ var params = require('../modules/home/params')
 router.get('/', function(req, res, next) {
     // res.render('index.njk', {title: 'nunjucks'});
     return HomeAction
-            .pipe([modB, modD, modA, params])
-            .router(req, res, next)
-            .render();
+        .pipe([modB, modD, modA, params])
+        .router(req, res, next)
+        .render();
 });
 
 // 异步渲染，顺序输出到客户端
 router.get('/pipeline', function(req, res, next) {
     return HomeAction
-            .pipe([modA, modB, modC])
-            .router(req, res, next)
-            .renderPipeline();
+        .pipe([modA, modB, modC])
+        .router(req, res, next)
+        .renderPipeline();
 });
 
 // 同步渲染，顺序输出到客户端
 router.get('/sync', function(req, res, next) {
     return HomeAction
-            .pipe([modA])
-            .router(req, res, next)
-            .renderSync();
+        .pipe([modA])
+        .router(req, res, next)
+        .renderSync();
 });
 
 router.get('/api', function(req, res, next) {
