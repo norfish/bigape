@@ -6,13 +6,12 @@
 
 var Pagelet = require('./Pagelet');
 
-
 module.exports = Pagelet.extend({
-    name: 'error',
+  name: 'error',
 
-    domID: 'mod-pageError',
+  domID: 'mod-pageError',
 
-    template: 'error.njk',
+  template: 'error.njk',
 
-    mode: 'layout'
+  mode: 'layout'
 });

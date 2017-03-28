@@ -4,7 +4,6 @@
 
 - beforeRender
 
-
 - render:
 render = renderAsync
 renderJSON

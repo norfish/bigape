@@ -21,57 +21,59 @@ var qs = require('qs');
  *                                             									默认根据 status 或 ret 判断
  */
 function qRequest(url, options) {
+  options = getOptions(url, options);
 
-    options = getOptions(url, options);
+  // var qmonitorKey = options.qmonitor;
 
-    // var qmonitorKey = options.qmonitor;
+  // var qmonitorErrKey = qmonitorKey + '_error';
 
-    // var qmonitorErrKey = qmonitorKey + '_error';
+  var deferred = q.defer();
 
-    var deferred = q.defer();
+  // var startTime = Date.now();
 
-    // var startTime = Date.now();
+  var convertedOptions = convertOptions(options);
 
-    var convertedOptions = convertOptions(options);
+  request(convertedOptions, function(err, response, body) {
+    // qmonitor.addCount(qmonitorKey);
 
-    request(convertedOptions, function(err, response, body) {
+    var errMesssage = checkError(err, response, body);
 
-        // qmonitor.addCount(qmonitorKey);
+    if (options.responseDataType === 'json') {
+      var res = parseJSONStr(errMesssage, body);
+      body = res.data;
+      if (res.parseErr) {
+        // qmonitor.addCount(qmonitorErrKey);
+        deferred.reject(body);
+        return deferred.promise;
+      }
+    }
 
-        var errMesssage = checkError(err, response, body);
+    if (errMesssage) {
+      // qmonitor.addCount(qmonitorErrKey);
+      logForFailure(options, errMesssage);
+      deferred.reject(body);
+    } else {
+      // qmonitor.addTime(qmonitorKey, Date.now() - startTime);
 
-        if (options.responseDataType === 'json') {
-            var res = parseJSONStr(errMesssage, body);
-            body = res.data;
-            if (res.parseErr) {
-                // qmonitor.addCount(qmonitorErrKey);
-                deferred.reject(body);
-                return deferred.promise;
-            }
-        }
+      if (options.responseDataType === 'json' && !options.jsonValid(body)) {
+        logForSuccess(options, body);
+        // qmonitor.addCount(qmonitorErrKey);
+        debug(
+          '后端接口数据异常 ' +
+            '返回数据:' +
+            JSON.stringify(body) +
+            ' 请求参数:' +
+            JSON.stringify(options)
+        );
+        deferred.reject(body);
+      } else {
+        logForSuccess(options, body);
+        deferred.resolve(body);
+      }
+    }
+  });
 
-        if (errMesssage) {
-            // qmonitor.addCount(qmonitorErrKey);
-            logForFailure(options, errMesssage);
-            deferred.reject(body);
-        } else {
-
-            // qmonitor.addTime(qmonitorKey, Date.now() - startTime);
-
-            if ( options.responseDataType === 'json' && !options.jsonValid(body) ) {
-                logForSuccess(options, body);
-                // qmonitor.addCount(qmonitorErrKey);
-                debug('后端接口数据异常 ' + '返回数据:' + JSON.stringify(body) +
-                    ' 请求参数:' + JSON.stringify(options));
-                deferred.reject(body);
-            } else {
-                logForSuccess(options, body);
-                deferred.resolve(body);
-            }
-        }
-    });
-
-    return deferred.promise;
+  return deferred.promise;
 }
 
 /**
@@ -81,151 +83,158 @@ function qRequest(url, options) {
  * @return {Boolean}      检验结果 成功|true
  */
 var jsonValid = function(json) {
-    var ret = typeof json.status !== 'undefined' && json.status == 0 ||
-                typeof json.ret !== 'undefined' && json.ret != true;
+  var ret = (typeof json.status !== 'undefined' && json.status == 0) ||
+    (typeof json.ret !== 'undefined' && json.ret != true);
 
-    return ret;
+  return ret;
 };
 
-var DEFAULT_OPTIONS  = {
-    method: 'GET',
-    responseDataType: 'json',
-    timeout: 5000,
-    jsonValid: jsonValid
+var DEFAULT_OPTIONS = {
+  method: 'GET',
+  responseDataType: 'json',
+  timeout: 5000,
+  jsonValid: jsonValid
 };
 
 var POST_DEFAULT_OPTIONS = {
-    postType: 'urlencoded'
+  postType: 'urlencoded'
 };
 
 var OPTION_KEYS = {
-    data: 1,
-    qmonitor: 1,
-    method: 1,
-    responseDataType: 1,
-    postType: 1,
-    proxy: 1,
-    timeout: 1,
-    headers: 1,
-    jsonValid: 1
+  data: 1,
+  qmonitor: 1,
+  method: 1,
+  responseDataType: 1,
+  postType: 1,
+  proxy: 1,
+  timeout: 1,
+  headers: 1,
+  jsonValid: 1
 };
 
 var parseJSONStr = (function() {
+  var jsonFailure = {
+    status: 1,
+    message: '服务器繁忙，请稍后再试'
+  };
 
-    var jsonFailure = {
-        status: 1,
-        message: '服务器繁忙，请稍后再试'
-    };
+  return function(err, jsonStr) {
+    var json = null;
+    var parseErr = false;
 
-    return function(err, jsonStr) {
-
-        var json = null;
-        var parseErr = false;
-
-        if (err) {
-            json = jsonFailure;
-        } else {
-            try {
-                json = JSON.parse(jsonStr);
-            } catch (e) {
-                debug('解析json字符串失败\n' + jsonStr);
-                parseErr = true;
-                json = jsonFailure;
-            }
-        }
-
-        return {
-            parseErr: parseErr,
-            data: json
-        };
+    if (err) {
+      json = jsonFailure;
+    } else {
+      try {
+        json = JSON.parse(jsonStr);
+      } catch (e) {
+        debug('解析json字符串失败\n' + jsonStr);
+        parseErr = true;
+        json = jsonFailure;
+      }
     }
+
+    return {
+      parseErr: parseErr,
+      data: json
+    };
+  };
 })();
 
 function getOptions(url, originalOptions) {
-
-    var opt = _.extend({
-        url: url
-    }, DEFAULT_OPTIONS, originalOptions.method === 'POST' ? POST_DEFAULT_OPTIONS : {},
+  var opt = _.extend(
+    {
+      url: url
+    },
+    DEFAULT_OPTIONS,
+    originalOptions.method === 'POST' ? POST_DEFAULT_OPTIONS : {},
     _.pick(originalOptions, function(value, key) {
-        return OPTION_KEYS.hasOwnProperty(key);
-    }));
+      return OPTION_KEYS.hasOwnProperty(key);
+    })
+  );
 
-    //console.log('===opt===');
-    //console.log(opt);
-    return opt;
+  //console.log('===opt===');
+  //console.log(opt);
+  return opt;
 }
 
 function convertOptions(options) {
+  var opt = {
+    url: options.url,
+    method: options.method,
+    timeout: options.timeout
+  };
 
-    var opt = {
-        url: options.url,
-        method: options.method,
-        timeout: options.timeout
-    };
+  if (options.proxy) {
+    opt.proxy = options.proxy;
+  }
 
-    if (options.proxy) {
-        opt.proxy = options.proxy;
+  if (options.headers) {
+    opt.headers = options.headers;
+  }
+
+  if (options.method === 'GET') {
+    opt.qs = typeof options.data === 'string'
+      ? qs.parse(options.data)
+      : options.data;
+  } else if (options.method === 'POST') {
+    if (options.postType === 'urlencoded') {
+      opt.form = typeof options.data === 'string'
+        ? options.data
+        : qs.stringify(options.data);
+    } else if (options.postType === 'json') {
+      opt.body = JSON.stringify(options.data);
+
+      if (opt.headers) {
+        opt.headers['Content-type'] = 'application/json';
+      } else {
+        opt.headers = {
+          'Content-type': 'application/json'
+        };
+      }
     }
+  }
 
-    if (options.headers) {
-        opt.headers =  options.headers;
-    }
+  //console.log('转换后options');
+  //console.log(opt);
 
-    if (options.method === 'GET') {
-        opt.qs = typeof options.data === 'string' ? qs.parse(options.data) : options.data;
-    } else if (options.method === 'POST') {
+  //todo output debug info
 
-        if (options.postType === 'urlencoded') {
-            opt.form = typeof options.data === 'string' ? options.data : qs.stringify(options.data);
-        } else if (options.postType === 'json') {
-            opt.body = JSON.stringify(options.data);
-
-            if (opt.headers) {
-                opt.headers['Content-type'] = 'application/json';
-            } else {
-                opt.headers = {
-                    'Content-type': 'application/json'
-                };
-            }
-        }
-    }
-
-
-    //console.log('转换后options');
-    //console.log(opt);
-
-    //todo output debug info
-
-    return opt;
+  return opt;
 }
 
 function logForFailure(requestOptions, errroMessage) {
-    debug('http请求失败:' + errroMessage + '  请求参数:' + JSON.stringify(requestOptions));
+  debug(
+    'http请求失败:' + errroMessage + '  请求参数:' + JSON.stringify(requestOptions)
+  );
 }
 
 function logForSuccess(requestOptions, data) {
-    debug('http请求成功: 请求参数:' + JSON.stringify(requestOptions) + '  返回数据:' + JSON.stringify(data));
+  debug(
+    'http请求成功: 请求参数:' +
+      JSON.stringify(requestOptions) +
+      '  返回数据:' +
+      JSON.stringify(data)
+  );
 }
 
 function checkError(err, response, body) {
+  if (err) {
+    //DNS resolution, TCP level errors, timeout, or actual HTTP parse errors
+    return '错误:' + err.message;
+  }
 
-    if (err) {
-        //DNS resolution, TCP level errors, timeout, or actual HTTP parse errors
-        return '错误:' + err.message;
-    }
+  if (response.statusCode < 200 || response.statusCode >= 300) {
+    //404 500
+    return 'http状态码:' + response.statusCode + '  响应实体:' + body;
+  }
 
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-        //404 500
-        return 'http状态码:' + response.statusCode + '  响应实体:' + body;
-    }
-
-    if (!body) {
-        return '错误:响应实体为空';
-    }
+  if (!body) {
+    return '错误:响应实体为空';
+  }
 }
 
 module.exports = qRequest;
-
 
 /*
  failure

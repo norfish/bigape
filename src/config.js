@@ -18,68 +18,68 @@
  * }
  */
 
-var _ = require('lodash')
+var _ = require('lodash');
 
 var PLUGINS = {
-    viewEngine: {
-        module: 'nunjucks'
-    },
-    logger: {
-        module: 'debug'
-    },
-    monitor: {
-        module: 'debug'
-    }
-}
-var CONFIG = {}
+  viewEngine: {
+    module: 'nunjucks'
+  },
+  logger: {
+    module: 'debug'
+  },
+  monitor: {
+    module: 'debug'
+  }
+};
+var CONFIG = {};
 
 var plugins = function(key, cfg) {
-    if(!key) {
-        return null;
-    }
+  if (!key) {
+    return null;
+  }
 
-    if(_.isPlainObject(key)) {
-        return Object.assign(PLUGINS, key);
-    }
+  if (_.isPlainObject(key)) {
+    return Object.assign(PLUGINS, key);
+  }
 
-    if(!cfg) {
-        var plugin = PLUGINS[key];
-        if(plugin.module) {
-            return require(plugin.module);
-        }
+  if (!cfg) {
+    var plugin = PLUGINS[key];
+    if (plugin.module) {
+      return require(plugin.module);
     }
+  }
 
-    PLUGINS[key] = cfg;
-}
+  PLUGINS[key] = cfg;
+};
 
 var config = function(key, cfg) {
-    if(!key) {
-        return null;
-    }
+  if (!key) {
+    return null;
+  }
 
-    if(!cfg) {
-        return CONFIG[key];
-    }
+  if (!cfg) {
+    return CONFIG[key];
+  }
 
-    CONFIG[key] = cfg;
-}
+  CONFIG[key] = cfg;
+};
 
 var configOrPlugins = function(opts) {
-    if(!_.isPlainObject(opts)) {
-        return;
-    }
+  if (!_.isPlainObject(opts)) {
+    return;
+  }
 
-    _.forIn(opts, function(value, key) {
-        if(key === 'plugins') {
-            plugins(value);
-        } else {
-            config(key, value);
-        }
-    });
-}
+  _.forIn(opts, function(value, key) {
+    if (key === 'plugins') {
+      plugins(value);
+    } else {
+      config(key, value);
+    }
+  });
+};
 
 module.exports = {
-    options: configOrPlugins,
-    config,
-    plugins
+  options: configOrPlugins,
+  config,
+  plugins
 };
