@@ -64,12 +64,21 @@ module.exports = {
 
   /**
    * 接口请求前校验，如果失败则停止请求
+   * @param  {Object} req request
+   * @param  {Object} res response
+   * @return {Boolean}    if it checked
    */
-  queryValid: function(req, res) {
+  queryValid: function() {
     return true;
   },
 
-  beforeQueryValid: function(req, res) {
+  /**
+   * 接口请求前校验，如果失败则停止请求
+   * @param  {Object} req request
+   * @param  {Object} res response
+   * @return {Boolean}    if it checked
+   */
+  beforeQueryValid: function() {
     return true;
   },
 
@@ -86,7 +95,7 @@ module.exports = {
    * @param res
    * @returns {string}
    */
-  getParams: function(req, res) {
+  getParams: function(req) {
     if (this.params) {
       return this.params;
     }
@@ -105,7 +114,7 @@ module.exports = {
    * @param res
    * @returns {string}
    */
-  getURL: function(req, res) {
+  getURL: function() {
     return this.url;
   },
 
@@ -115,7 +124,7 @@ module.exports = {
    * @param res
    * @returns {string}
    */
-  getMonitor: function(req, res) {
+  getMonitor: function() {
     return this.qmonitor;
   },
 
@@ -201,7 +210,13 @@ module.exports = {
     );
   },
 
-  getHeaders: function(req, res) {
+  /**
+   * request headers
+   * @param  {Object} req request
+   * @param  {Object} res response
+   * @return {Object}     headers set
+   */
+  getHeaders: function(req) {
     var cookies = req.cookies, headers = req.headers;
 
     var sourceObj;
@@ -268,8 +283,11 @@ module.exports = {
 
   /**
    * 直接返回json数据
+   * @param  {Object}   req  request
+   * @param  {Object}   res  response
+   * @param  {Function} next next
    */
-  process: function(req, res, next) {
+  process: function(req, res) {
     var self = this;
     this.load(req, res)
       .then(function(data) {
@@ -323,9 +341,11 @@ module.exports = {
   /**
    * 自定义 request 响应数据校验
    * @param  {Object} data  返回数据
+   * @param  {Object} req   request
+   * @param  {Object} res   response
    * @return {Boolean}      flag
    */
-  validData: function(data, req, res) {
+  validData: function(data) {
     // success ret
     var ret = (typeof data.status !== 'undefined' && data.status == 0) ||
       (typeof data.code !== 'undefined' &&
