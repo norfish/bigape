@@ -14,7 +14,6 @@ var EventEmitter = require('events').EventEmitter;
 var debug = require('debug'); //require('@qnpm/q-logger');
 var logger = debug('bigape');
 var errorLog = debug('bigape:error');
-
 var Promise = require('bluebird');
 var Store = require('./Store');
 var ErrorPagelet = require('./errorPagelet');
@@ -105,10 +104,10 @@ BigPipe.prototype = {
   },
 
   /**
-     * 覆盖bigpipe的pagelet模块
-     * @param  {Array} pageletsArray 模块map
-     * @return {this}
-     */
+  * 覆盖bigpipe的pagelet模块
+  * @param  {Array} pageletsArray 模块map
+  * @return {this}
+  */
   usePagelets: function(pageletsArray) {
     if (_.isPlainObject(pageletsArray)) {
       var temp = [];
@@ -128,9 +127,9 @@ BigPipe.prototype = {
   },
 
   /**
-     * route 请求，每次处理新请求，需要更新bigpipe和对于模块的req,res,next
-     * @return {this}
-     */
+   * route 请求，每次处理新请求，需要更新bigpipe和对于模块的req,res,next
+   * @return {this}
+   */
   router: function(req, res, next) {
     logger(
       '开始Bigpip, start router使用模块为[' + getPageletsName(this.pagelets) + ']'
@@ -172,11 +171,11 @@ BigPipe.prototype = {
   },
 
   /**
-     * [function description]
-     * @param  {Object}   需要处理的の pagelet 实例
-     * @param  {Function} done    处理好依赖之后的回调
-     * @return {Object}           Promise
-     */
+   * [function description]
+   * @param  {Object}   需要处理的の pagelet 实例
+   * @param  {Function} done    处理好依赖之后的回调
+   * @return {Object}           Promise
+   */
   analyze: function(pagelet, done) {
     var bigpipe = this;
     var waitMods = pagelet.wait || [];
@@ -203,10 +202,10 @@ BigPipe.prototype = {
   },
 
   /**
-     * 等待依赖模块ready
-     * @param  {string} modName 模块名字
-     * @return {Object}         Promise
-     */
+   * 等待依赖模块ready
+   * @param  {string} modName 模块名字
+   * @return {Object}         Promise
+   */
   waitFor: function(modName) {
     var bigpipe = this;
     // 首先需要触发pagelet的start why?
@@ -236,11 +235,11 @@ BigPipe.prototype = {
   },
 
   /**
-     * 将 render 之后的 pagelet push 到队列中
-     * @param  {string} name  pagelet name
-     * @param  {Object} chunk pagelet chunk
-     * @return {this}       this
-     */
+   * 将 render 之后的 pagelet push 到队列中
+   * @param  {string} name  pagelet name
+   * @param  {Object} chunk pagelet chunk
+   * @return {this}       this
+   */
   queue: function(name, chunk) {
     this.length--;
 
@@ -253,17 +252,17 @@ BigPipe.prototype = {
   },
 
   /**
-     * 清空队列
-     */
+   * 清空队列
+   */
   clearQueue: function() {
     this._queue = [];
   },
 
   /**
-     * flush chunk
-     * @param  {Function} done flush 完成之后的callback
-     * @return {[type]}        [description]
-     */
+   * flush chunk
+   * @param  {Function} done flush 完成之后的callback
+   * @return {[type]}        [description]
+   */
   flush: function(done) {
     if (typeof done !== 'function') {
       done = NOOP;
@@ -317,9 +316,9 @@ BigPipe.prototype = {
   },
 
   /**
-     * 合并chunk
-     * @return {String} 合并后的chunk
-     */
+   * 合并chunk
+   * @return {String} 合并后的chunk
+   */
   join: function() {
     var result = this._queue.map(function(item) {
       // return item.data;
@@ -330,10 +329,10 @@ BigPipe.prototype = {
   },
 
   /**
-     * 实例化 pagelets
-     * @param  {} pagelets [description]
-     * @return {[type]}          [description]
-     */
+   * 实例化 pagelets
+   * @param  {} pagelets [description]
+   * @return {[type]}          [description]
+   */
   createPagelets: function() {
     var bigpipe = this;
     var _pageletList = this._pageletList;
@@ -370,10 +369,10 @@ BigPipe.prototype = {
   },
 
   /**
-     * 获取pagelet and name
-     * pagelet的名字如果没有指定的话则使用声明时候的name，如果在使用的时候有指定则覆盖
-     * @return {Object} {pageletName: pageletClass}
-     */
+   * 获取pagelet and name
+   * pagelet的名字如果没有指定的话则使用声明时候的name，如果在使用的时候有指定则覆盖
+   * @return {Object} {pageletName: pageletClass}
+   */
   _getAllPagelets: function() {
     var pagelets = this.pagelets;
 
@@ -418,12 +417,12 @@ BigPipe.prototype = {
   },
 
   /**
-     * render layout
-     * @param  {[type]}   req  [description]
-     * @param  {[type]}   res  [description]
-     * @param  {Function} next [description]
-     * @return {[type]}        [description]
-     */
+   * render layout
+   * @param  {[type]}   req  [description]
+   * @param  {[type]}   res  [description]
+   * @param  {Function} next [description]
+   * @return {[type]}        [description]
+   */
   bootstrap: function(req, res, next) {
     this._req = req;
     this._res = res;
@@ -443,9 +442,9 @@ BigPipe.prototype = {
   },
 
   /**
-     * 渲染layout页面
-     * @return {Promise}
-     */
+   * 渲染layout页面
+   * @return {Promise}
+   */
   renderLayout: function() {
     var bigpipe = this;
     bigpipe._layout.ready('ready');
@@ -459,9 +458,9 @@ BigPipe.prototype = {
   },
 
   /**
-     * 异步渲染pagelets, flush chunk to client as soon as possible without order
-     * @return {Object} Promise
-     */
+   * 异步渲染pagelets, flush chunk to client as soon as possible without order
+   * @return {Object} Promise
+   */
   renderAsync: function() {
     if (this.isSpider && BigPipe.optimizeForSeo) {
       return this.renderSync.apply(this, arguments);
@@ -512,9 +511,9 @@ BigPipe.prototype = {
   },
 
   /**
-     * 同步渲染 pagelet 模块
-     * @return {[type]} [description]
-     */
+   * 同步渲染 pagelet 模块
+   * @return {[type]} [description]
+   */
   renderSync: function() {
     var bigpipe = this;
     var staticHtml = (this.staticHtml = htmlParser(this.length));
@@ -557,9 +556,9 @@ BigPipe.prototype = {
   },
 
   /**
-     * 按照指定的pagelet的顺序输出到客户端，异步渲染，flush chunk to client as soon as possible with order
-     * @return {} [description]
-     */
+   * 按照指定的pagelet的顺序输出到客户端，异步渲染，flush chunk to client as soon as possible with order
+   * @return {} [description]
+   */
   renderPipeline: function() {
     var bigpipe = this;
     var layout = this._layout;
@@ -610,10 +609,10 @@ BigPipe.prototype = {
   },
 
   /**
-     * 渲染模块的json数据
-     * @param  {Array} modules 需要渲染的模块名称数组
-     * @return {Promise}         获取json数据并返回到客户端
-     */
+   * 渲染模块的json数据
+   * @param  {Array} modules 需要渲染的模块名称数组
+   * @return {Promise}         获取json数据并返回到客户端
+   */
   renderJSON: function(modules) {
     var bigpipe = this;
     bigpipe.length = modules.length;
@@ -634,8 +633,8 @@ BigPipe.prototype = {
 
       var mod = bigpipe._pageletMap[modName];
       /**
-             * [{key1: '..'}, {key1: '..'}]
-             */
+       * [{key1: '..'}, {key1: '..'}]
+       */
       return mod.get().then(function(data) {
         return { [mod.name]: data };
       });
@@ -689,10 +688,10 @@ BigPipe.prototype = {
   },
 
   /**
-     * 渲染html片段
-     * @param  {string} moduleName 需要渲染的模块名称
-     * @return {Promise}            [description]
-     */
+   * 渲染html片段
+   * @param  {string} moduleName 需要渲染的模块名称
+   * @return {Promise}            [description]
+   */
   renderSnippet: function(moduleName) {
     var bigpipe = this;
     bigpipe.length = 1;
@@ -736,9 +735,9 @@ BigPipe.prototype = {
   },
 
   /**
-     * response json data to the client
-     * @param  {Object|Array} data 需要render的原始数据，数组会被处理成Object
-     */
+   * response json data to the client
+   * @param  {Object|Array} data 需要render的原始数据，数组会被处理成Object
+   */
   _json: function(data) {
     if (!data || _.isPlainObject(data)) {
       return this._res.json(data);
@@ -759,10 +758,10 @@ BigPipe.prototype = {
   },
 
   /**
-     * 根据error Object 获取error json
-     * @param  {Object} error error stack 或者Object
-     * @return {Object}       error json
-     */
+   * 根据error Object 获取error json
+   * @param  {Object} error error stack 或者Object
+   * @return {Object}       error json
+   */
   getErrObj: function(error) {
     return {
       status: error.status || 502,
@@ -773,10 +772,10 @@ BigPipe.prototype = {
   },
 
   /**
-     * catch error
-     * @param  {[type]} error [description]
-     * @return {[type]}       [description]
-     */
+   * catch error
+   * @param  {[type]} error [description]
+   * @return {[type]}       [description]
+   */
   catch: function(error) {
     if (this.isErrorFatal) {
       this.bigpipe.emit('page:error', error);

@@ -110,8 +110,8 @@ Pagelet.prototype = {
   },
 
   /**
-     * 适配器，为了兼容老的(1.0.x)api
-     */
+   * 适配器，为了兼容老的(1.0.x)api
+   */
   adapt: function() {
     this.dataKey = this.pageletDataKey || this.dataKey;
     this.getService = this.getRenderData || this.getService;
@@ -132,9 +132,9 @@ Pagelet.prototype = {
   },
 
   /**
-     * 通用的获取本模块的pagelet数据的方法，返回Promise
-     * @return {Object} Promise
-     */
+   * 通用的获取本模块的pagelet数据的方法，返回Promise
+   * @return {Object} Promise
+   */
   get: function() {
     var pagelet = this;
 
@@ -166,10 +166,10 @@ Pagelet.prototype = {
   },
 
   /**
-     * 依赖数据已经ready，本模块可以正常render
-     * @param  {string} done 是否已经ready
-     * @return {Object}        Promise
-     */
+   * 依赖数据已经ready，本模块可以正常render
+   * @param  {string} done 是否已经ready
+   * @return {Object}        Promise
+   */
   ready: function(done) {
     if (!this._ready) {
       this._ready = new Promise(
@@ -189,28 +189,28 @@ Pagelet.prototype = {
   },
 
   /**
-     * 生命周期，获取原始数据成功之后，一般用来处理原始数据，并返回
-     * 处理通过getService获取的原始数据
-     * @param  {Object} json 原始数据
-     * @return {Object}      处理之后的数据
-     */
+   * 生命周期，获取原始数据成功之后，一般用来处理原始数据，并返回
+   * 处理通过getService获取的原始数据
+   * @param  {Object} json 原始数据
+   * @return {Object}      处理之后的数据
+   */
   onServiceDone: function(json) {
     return json;
   },
 
   /**
-     * 生命周期函数，渲染 html 片段完成之后
-     * @param  {string} html html string
-     * @return {string}      html string
-     */
+   * 生命周期函数，渲染 html 片段完成之后
+   * @param  {string} html html string
+   * @return {string}      html string
+   */
   afterRender: function(html) {
     return html;
   },
 
   /**
-     * 执行pagelet的渲染,
-     * @param {Object} renderData 可选,如果传入则直接使用该数据渲染,否则通过service调用获取数据
-     */
+   * 执行pagelet的渲染,
+   * @param {Object} renderData 可选,如果传入则直接使用该数据渲染,否则通过service调用获取数据
+   */
   render: function(renderData) {
     var pagelet = this;
     logger('开始渲染Pagelet模块[' + pagelet.name + ']@', new Date());
@@ -236,10 +236,10 @@ Pagelet.prototype = {
   },
 
   /**
-     * 渲染html-fragment 片段
-     * @param  {String} html render result
-     * @return {String}      处理之后的数据
-     */
+   * 渲染html-fragment 片段
+   * @param  {String} html render result
+   * @return {String}      处理之后的数据
+   */
   renderSnippet: function(renderData) {
     var pagelet = this;
 
@@ -271,9 +271,9 @@ Pagelet.prototype = {
   },
 
   /**
-     * 暴露出的获取本pagelet数据的函数  readonly
-     * @return {Object} parsed pagelet data {name: data}  function(data){}
-     */
+   * 暴露出的获取本pagelet数据的函数  readonly
+   * @return {Object} parsed pagelet data {name: data}  function(data){}
+   */
   getServiceData: function() {
     var pagelet = this;
 
@@ -315,9 +315,9 @@ Pagelet.prototype = {
   },
 
   /**
-     * 获取 html 片段渲染结果
-     * @return {Object} Promise   function(html){};
-     */
+   * 获取 html 片段渲染结果
+   * @return {Object} Promise   function(html){};
+   */
   getRenderHtml: function() {
     var pagelet = this;
     var viewEngine = config.config('viewEngine'); //require('jnpm-template');
@@ -387,9 +387,9 @@ Pagelet.prototype = {
   },
 
   /**
-     * 生成数据块
-     * @param {String} html
-     */
+   * 生成数据块
+   * @param {String} html
+   */
   createChunk: function(html) {
     // 如果是主框架则直接返回
     if (this.isBootstrap()) {
@@ -404,10 +404,10 @@ Pagelet.prototype = {
   },
 
   /**
-     * 拼接pagelet chunk Object
-     * @param  {string} html rendered html string
-     * @return {Object}      chunk
-     */
+   * 拼接pagelet chunk Object
+   * @param  {string} html rendered html string
+   * @return {Object}      chunk
+   */
   composeChunkObj: function(html) {
     // 如果是主框架则直接返回
     if (this.isBootstrap()) {
@@ -430,36 +430,36 @@ Pagelet.prototype = {
   },
 
   /**
-     * 钩子函数（hook function），获取传递给客户端的数据，默认返回空
-     * @param  {Object} modData 本模块的数据
-     * @return {*}     返回给客户端的数据
-     */
+   * 钩子函数（hook function），获取传递给客户端的数据，默认返回空
+   * @param  {Object} modData 本模块的数据
+   * @return {*}     返回给客户端的数据
+   */
   getPipeData: function() {
     return null;
   },
 
   /**
-     * 是否是基础模块
-     * @return {Boolean}
-     */
+   * 是否是基础模块
+   * @return {Boolean}
+   */
   isBootstrap: function() {
     return this.name == 'layout' || this.name == 'bootstrap';
   },
 
   /**
-     * flush
-     * @return {[type]} [description]
-     */
+   * flush
+   * @return {[type]} [description]
+   */
   flush: function() {
     this.bigpipe.flush();
   },
 
   /**
-     * flush
-     * @param  {[type]} name  [description]
-     * @param  {[type]} chunk [description]
-     * @return {[type]}       [description]
-     */
+   * flush
+   * @param  {[type]} name  [description]
+   * @param  {[type]} chunk [description]
+   * @return {[type]}       [description]
+   */
   write: function(name, chunk) {
     if (!chunk) {
       chunk = name;
@@ -470,11 +470,11 @@ Pagelet.prototype = {
   },
 
   /**
-     * end flush
-     * @param  {[type]} chunk [description]
-     * @param  {Boolean} force 是否强制结束
-     * @return {[type]}       [description]
-     */
+   * end flush
+   * @param  {[type]} chunk [description]
+   * @param  {Boolean} force 是否强制结束
+   * @return {[type]}       [description]
+   */
   end: function(chunk, force) {
     var pagelet = this;
 
@@ -500,10 +500,10 @@ Pagelet.prototype = {
   },
 
   /**
-     * 根据error Object 获取error json
-     * @param  {Object} error error stack 或者Object
-     * @return {Object}       error json
-     */
+   * 根据error Object 获取error json
+   * @param  {Object} error error stack 或者Object
+   * @return {Object}       error json
+   */
   getErrObj: function(error) {
     return {
       status: error.status || error.code || 502,
@@ -514,10 +514,10 @@ Pagelet.prototype = {
   },
 
   /**
-     * catch error
-     * @param  {[type]} error [description]
-     * @return {[type]}       [description]
-     */
+   * catch error
+   * @param  {[type]} error [description]
+   * @return {[type]}       [description]
+   */
   catch: function(error) {
     if (this.isErrorFatal) {
       this.bigpipe.emit('page:error', error);

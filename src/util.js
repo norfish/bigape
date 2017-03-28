@@ -10,12 +10,12 @@ var util = {
   },
 
   /**
-     * extend
-     * @param  {Object} props  子类属性
-     *                 constructor: 构造器属性
-     *                 static: 静态属性
-     * @return {Object}        子类
-     */
+   * extend
+   * @param  {Object} props  子类属性
+   *                 constructor: 构造器属性
+   *                 static: 静态属性
+   * @return {Object}        子类
+   */
   extend: function(props) {
     var parent = this;
     var child;

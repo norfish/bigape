@@ -13,35 +13,35 @@ var _ = require('lodash');
 
 module.exports = {
   /**
-     * 请求地址
-     */
+   * 请求地址
+   */
   url: '',
 
   /**
-     * 请求参数
-     */
+   * 请求参数
+   */
   params: '',
 
   /**
-     * 监控名称
-     */
+   * 监控名称
+   */
   monitor: '',
 
   /**
-     * 接口请求失败后的重试次数, 如果不为0, 后端接口返回异常会重新请求接口
-     */
+   * 接口请求失败后的重试次数, 如果不为0, 后端接口返回异常会重新请求接口
+   */
   retryTimes: 0,
 
   /**
-     * 接口请求方式，默认是GET
-     * @type {String}
-     */
+   * 接口请求方式，默认是GET
+   * @type {String}
+   */
   method: 'GET',
 
   /**
-     * 超时时间
-     * @type {Number}
-     */
+   * 超时时间
+   * @type {Number}
+   */
   timeout: 30000,
 
   // 接口代理地址
@@ -63,8 +63,8 @@ module.exports = {
   },
 
   /**
-     * 接口请求前校验，如果失败则停止请求
-     */
+   * 接口请求前校验，如果失败则停止请求
+   */
   queryValid: function(req, res) {
     return true;
   },
@@ -74,18 +74,18 @@ module.exports = {
   },
 
   /**
-     * 初始化
-     */
+   * 初始化
+   */
   init: function() {
     return this;
   },
 
   /**
-     * 获取参数
-     * @param req
-     * @param res
-     * @returns {string}
-     */
+   * 获取参数
+   * @param req
+   * @param res
+   * @returns {string}
+   */
   getParams: function(req, res) {
     if (this.params) {
       return this.params;
@@ -100,21 +100,21 @@ module.exports = {
   },
 
   /**
-     * 获取请求url
-     * @param req
-     * @param res
-     * @returns {string}
-     */
+   * 获取请求url
+   * @param req
+   * @param res
+   * @returns {string}
+   */
   getURL: function(req, res) {
     return this.url;
   },
 
   /**
-     * 获取监控名称
-     * @param req
-     * @param res
-     * @returns {string}
-     */
+   * 获取监控名称
+   * @param req
+   * @param res
+   * @returns {string}
+   */
   getMonitor: function(req, res) {
     return this.qmonitor;
   },
@@ -172,11 +172,11 @@ module.exports = {
   },
 
   /**
-     * 从后端加载数据
-     * @param req
-     * @param res
-     * @returns {*}
-     */
+   * 从后端加载数据
+   * @param req
+   * @param res
+   * @returns {*}
+   */
   _load: function(req, res) {
     var self = this;
 
@@ -267,8 +267,8 @@ module.exports = {
   },
 
   /**
-     * 直接返回json数据
-     */
+   * 直接返回json数据
+   */
   process: function(req, res, next) {
     var self = this;
     this.load(req, res)
@@ -282,19 +282,19 @@ module.exports = {
   },
 
   /**
-     * 数据处理，process 时候才会调用，否则不对数据做处理
-     * @param  {Object} data 原始数据
-     * @return {Object}      处理之后的数据
-     */
+   * 数据处理，process 时候才会调用，否则不对数据做处理
+   * @param  {Object} data 原始数据
+   * @return {Object}      处理之后的数据
+   */
   parse: function(data) {
     return data;
   },
 
   /**
-     * 获错误的返回数据
-     * @param  {Object} error error Object
-     * @return {Object}       error json
-     */
+   * 获错误的返回数据
+   * @param  {Object} error error Object
+   * @return {Object}       error json
+   */
   _getErrorJson: function(error) {
     if (error.bstatus) {
       error = {
@@ -321,10 +321,10 @@ module.exports = {
   },
 
   /**
-     * 自定义 request 响应数据校验
-     * @param  {Object} data  返回数据
-     * @return {Boolean}      flag
-     */
+   * 自定义 request 响应数据校验
+   * @param  {Object} data  返回数据
+   * @return {Boolean}      flag
+   */
   validData: function(data, req, res) {
     // success ret
     var ret = (typeof data.status !== 'undefined' && data.status == 0) ||
@@ -339,11 +339,11 @@ module.exports = {
   },
 
   /**
-     * isPromise - 判断是否为`Promise`对象
-     *
-     * @param  {type} obj description
-     * @return {type}     description
-     */
+   * isPromise - 判断是否为`Promise`对象
+   *
+   * @param  {type} obj description
+   * @return {type}     description
+   */
   isPromise: function(obj) {
     return typeof obj.then === 'function';
   }
