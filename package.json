@@ -23,7 +23,6 @@
     "server render"
   ],
   "dependencies": {
-    "@qnpm/q-request": "0.0.4",
     "bluebird": "^3.4.1",
     "cheerio": "^0.22.0",
     "co": "^4.6.0",
