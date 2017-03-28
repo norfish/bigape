@@ -1,4 +1,3 @@
-var logger = require('@qnpm/q-logger');
 var debug = require('debug')('bigape:service');
 var request = require('request');
 var q = require('q');
@@ -23,15 +22,15 @@ var qs = require('qs');
  */
 function qRequest(url, options) {
 
-    var options = getOptions(url, options);
+    options = getOptions(url, options);
 
-    var qmonitorKey = options.qmonitor;
+    // var qmonitorKey = options.qmonitor;
 
-    var qmonitorErrKey = qmonitorKey + '_error';
+    // var qmonitorErrKey = qmonitorKey + '_error';
 
     var deferred = q.defer();
 
-    var startTime = Date.now();
+    // var startTime = Date.now();
 
     var convertedOptions = convertOptions(options);
 
@@ -145,11 +144,11 @@ var parseJSONStr = (function() {
 function getOptions(url, originalOptions) {
 
     var opt = _.extend({
-            url: url
-        }, DEFAULT_OPTIONS, originalOptions.method === 'POST' ? POST_DEFAULT_OPTIONS : {},
-        _.pick(originalOptions, function(value, key, object) {
-            return OPTION_KEYS.hasOwnProperty(key);
-        }));
+        url: url
+    }, DEFAULT_OPTIONS, originalOptions.method === 'POST' ? POST_DEFAULT_OPTIONS : {},
+    _.pick(originalOptions, function(value, key) {
+        return OPTION_KEYS.hasOwnProperty(key);
+    }));
 
     //console.log('===opt===');
     //console.log(opt);

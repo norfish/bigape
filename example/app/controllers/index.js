@@ -7,7 +7,7 @@
 var express = require('express');
 var router = express.Router();
 
-var test = require('./test');
+var test = require('./demo');
 
 
 /* GET home page. */

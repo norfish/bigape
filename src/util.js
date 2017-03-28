@@ -4,7 +4,6 @@
  * @date: 2016-10-24 20:45:02
  */
 
-var logger = require('@qnpm/q-logger');
 
 var util = {
 
@@ -42,7 +41,7 @@ var util = {
         if(props && props.hasOwnProperty('static')) {
             Object.assign(child, props.static);
             delete props.static;
-        };
+        }
 
         // extend
         child.prototype = Object.create(this.prototype);

@@ -6,7 +6,7 @@
 
 var _ = require('lodash');
 
-var Store = function(prefix, initModel) {
+var Store = function() {
     this._store = {};
 };
 

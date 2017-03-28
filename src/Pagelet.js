@@ -11,8 +11,7 @@
 var EventEmitter = require('events').EventEmitter;
 var _ = require('lodash');
 var config = require('./config');
-var viewEngine = config.config('viewEngine'); //require('jnpm-template');
-var monitor = config.plugins('monitor'); //require('@qnpm/q-monitor');
+// var monitor = config.plugins('monitor'); //require('@qnpm/q-monitor');
 var debug = require('debug'); //require('@qnpm/q-logger');
 var logger = debug('bigape');
 var errorLog = debug('bigape:error');
@@ -171,7 +170,7 @@ Pagelet.prototype = {
      */
     ready: function(done) {
         if(!this._ready) {
-            this._ready = new Promise(function(resolve, reject) {
+            this._ready = new Promise(function(resolve) {
                 this.once('ready', function() {
                     resolve(null);
                 });
@@ -419,7 +418,7 @@ Pagelet.prototype = {
      * @param  {Object} modData 本模块的数据
      * @return {*}     返回给客户端的数据
      */
-    getPipeData: function (modData) {
+    getPipeData: function () {
         return null;
     },
 
@@ -494,7 +493,7 @@ Pagelet.prototype = {
         return {
             status: error.status || error.code || 502,
             message: (error.status || error.code) ?
-                (error.message || '系统繁忙,请稍后重试') : '系统繁忙,请稍后重试',
+                (error.message || '系统繁忙,请稍后重试') : '系统繁忙,请稍后重试'
         }
     },
 

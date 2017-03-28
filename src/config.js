@@ -30,8 +30,8 @@ var PLUGINS = {
     monitor: {
         module: 'debug'
     }
-};
-var CONFIG = {};
+}
+var CONFIG = {}
 
 var plugins = function(key, cfg) {
     if(!key) {

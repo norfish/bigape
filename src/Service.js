@@ -6,11 +6,9 @@
 
 var wrapRequest = require('./wrapRequest');
 var config = require('./config');
-var viewEngine = config.plugins('viewEngine'); //require('jnpm-template');
 var monitor = config.plugins('monitor'); //require('@qnpm/q-monitor');
 var debug = require('debug'); //require('@qnpm/q-logger');
 var logger = debug('bigape');
-var errorLog = debug('bigape:error');
 var _ = require('lodash');
 
 module.exports = {
@@ -142,7 +140,6 @@ module.exports = {
         }
 
         throw beforeLoadValid;
-        return;
     },
 
     // 接口代理
@@ -336,5 +333,5 @@ module.exports = {
      */
     isPromise: function(obj){
         return typeof obj.then === 'function'
-    },
+    }
 };

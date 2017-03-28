@@ -9,9 +9,8 @@
 
 var _ = require('lodash');
 var EventEmitter = require('events').EventEmitter;
-var Pagelet = require('./Pagelet');
-var config = require('./config');
-var monitor = config.plugins('monitor'); //require('@qnpm/q-monitor');
+// var config = require('./config');
+// var monitor = config.plugins('monitor'); //require('@qnpm/q-monitor');
 var debug = require('debug'); //require('@qnpm/q-logger');
 var logger = debug('bigape');
 var errorLog = debug('bigape:error');
@@ -19,7 +18,6 @@ var errorLog = debug('bigape:error');
 var Promise = require('bluebird');
 var Store = require('./Store');
 var ErrorPagelet = require('./errorPagelet');
-var util = require('./util');
 var htmlParser = require('./htmlParser');
 
 // 国内的一些搜索引擎，因为谷歌和必应对异步的网址做了优化，所以忽略
@@ -99,7 +97,7 @@ BigPipe.prototype = {
                 bigpipe[key] = value;
                 // console.log('add props', key);
             } else {
-                console.warn('新增实例方法[' + key + ']与Bigpipe原实例方法冲突');
+                console.info('新增实例方法[' + key + ']与Bigpipe原实例方法冲突');
             }
         });
         return this;
@@ -113,7 +111,7 @@ BigPipe.prototype = {
     usePagelets: function (pageletsArray) {
         if(_.isPlainObject(pageletsArray)) {
             var temp = [];
-            _.forEach(pageletsArray, function(value, key) {
+            _.forEach(pageletsArray, function(value) {
                 temp.push(value);
             });
             pageletsArray = temp;
@@ -155,7 +153,7 @@ BigPipe.prototype = {
     start: function() {
         var bigpipe = this;
 
-        bigpipe._pageletList.forEach(function(pagelet, i) {
+        bigpipe._pageletList.forEach(function(pagelet) {
             bigpipe.analyze(pagelet, function () {
                 pagelet.ready('ready');
             });
@@ -188,7 +186,7 @@ BigPipe.prototype = {
             return mod.prototype.name;
         });
 
-        logger('start analyze module', pagelet.name, '依赖模块['+ waitModNames.join("|") +']');
+        logger('start analyze module', pagelet.name, '依赖模块['+ waitModNames.join('|') +']');
 
         Promise.map(waitModNames, function(modName) {
             return bigpipe.waitFor(modName);
@@ -373,15 +371,15 @@ BigPipe.prototype = {
         var allPageletObj = {};
 
         // TODO 为了兼容之前（1.0.x）的API，需要后期统一成数组
-        if(_.isPlainObject(this.pagelets)) {
-               var temp = [];
-               _.forIn(this.pagelets, function(pagelet){
-                   temp.push(pagelet);
-               });
-               this.pagelets = pagelets = temp;
+        if(_.isPlainObject(pagelets)) {
+            var temp = [];
+            _.forIn(pagelets, function(pagelet){
+                temp.push(pagelet);
+            });
+            this.pagelets = temp;
         }
 
-        this.pagelets.forEach(function(pagelet) {
+        pagelets.forEach(function(pagelet) {
             getDepends(pagelet);
         });
 
@@ -446,7 +444,9 @@ BigPipe.prototype = {
         bigpipe.length++;
         logger('开始渲染layout脚手架模块');
 
-        return this._layout.render().then(function(chunk) {
+        return this._layout
+            .render()
+            .then(function(chunk) {
                 logger('渲染layout脚手架模块完成');
                 return bigpipe._layout.write(chunk).flush();
             });
@@ -479,7 +479,7 @@ BigPipe.prototype = {
                     throw error;
                 });
 
-            }).then(function(data) {
+            }).then(function() {
                 layout.end();
             }).catch(function(err) {
                 return bigpipe.catch(err);
@@ -525,7 +525,7 @@ BigPipe.prototype = {
                         throw error;
                     });
 
-                }).then(function(data) {
+                }).then(function() {
                     bigpipe._layout.end(staticHtml.getHtml(), true);
                 }).catch(function(err) {
                     return bigpipe.catch(err);
@@ -629,7 +629,7 @@ BigPipe.prototype = {
         }).then(function(data) {
             logger('获取API接口数据成功');
             bigpipe._json(data);
-        }, function (data) {
+        }, function () {
             logger('获取API接口数据失败');
         }).catch(function(error) {
             errorLog('处理JSON数据接口错误', error);
@@ -769,12 +769,6 @@ BigPipe.prototype = {
         errorLog('终止pagelet end', error);
         var html = this._errorPagelet.renderSyncWithData(error)
         this._errorPagelet.end(html, true);
-    },
-
-    destroy: function() {
-        for(var k in this) {
-            this.k = null;
-        }
     }
 };
 
@@ -836,7 +830,7 @@ function getPageletsName(pagelets) {
     }
 
     if(_.isArray(pagelets)) {
-        return pagelets.map(function (pre, cur) {
+        return pagelets.map(function (pre) {
             return pre.prototype.name;
         }).join('|');
     }
