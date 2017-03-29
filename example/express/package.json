@@ -1,0 +1,16 @@
+{
+  "name": "bigape-express-example",
+  "version": "1.0.0",
+  "description": "bigape-express-example",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "DEBUG=bigape,bigape:service,bigape:error node app.js"
+  },
+  "author": "nofish <easumlee@gmail.com> (http://jspie.com/)",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.2",
+    "nunjucks": "^3.0.0"
+  }
+}

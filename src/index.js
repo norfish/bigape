@@ -33,8 +33,9 @@ var bigape = {
     }
     if (!options) {
       options = name;
+    } else {
+      options.name = name;
     }
-    options.name = name;
 
     return BigPipe.create.call(BigPipe, options);
   },

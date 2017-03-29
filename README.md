@@ -1,7 +1,5 @@
 [![Build Status](https://travis-ci.org/norfish/bigape.svg?branch=master)](https://travis-ci.org/norfish/bigape)
-
 [![Coverage Status](https://coveralls.io/repos/github/norfish/bigape/badge.svg?branch=master)](https://coveralls.io/github/norfish/bigape?branch=master)
-
 [![npm version](https://badge.fury.io/js/bigape.svg)](https://badge.fury.io/js/bigape)
 
 
