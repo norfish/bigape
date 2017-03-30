@@ -10,9 +10,16 @@ nunjucks.configure('views', {
   express: app
 })
 
+// config viewEngine
 bigape.config({
   'viewEngine': nunjucks
 });
+
+app.use(function(req, res, next) {
+  // set no buffer to avoid buffer when trunk size is too small
+  res.setHeader('X-Accel-Buffering', 'no')
+  next()
+})
 
 app.use('/', routes)
 
