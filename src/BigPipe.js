@@ -522,6 +522,7 @@ BigPipe.prototype = {
       .getRenderHtml()
       .then(function(html) {
         staticHtml.setLayout(html);
+        logger('start render sync - html parser')
 
         return Promise.map(bigpipe._pagelets, function(pagelet) {
           // render Promise
@@ -615,7 +616,14 @@ BigPipe.prototype = {
    */
   renderJSON: function(modules) {
     var bigpipe = this;
+
+    // default all pagelets
+    if(!modules) {
+      modules = this._pagelets.map(p => p.name);
+    }
+    // reset actural bigpipe length
     bigpipe.length = modules.length;
+
     if (!modules || !modules.length) {
       errorLog('处理失败,没有传入需要处理的模块');
       bigpipe._json({
