@@ -10,6 +10,7 @@
   "author": "nofish <easumlee@gmail.com> (http://jspie.com/)",
   "license": "ISC",
   "dependencies": {
+    "bigape": "^2.0.0-alpha.1",
     "express": "^4.15.2",
     "nunjucks": "^3.0.0"
   }

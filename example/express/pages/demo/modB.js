@@ -2,6 +2,7 @@
  * modB
  */
 
+// var bigape = require('bigape')
 var bigape = require('../../../../src')
 
 var pl = bigape.createPagelet({

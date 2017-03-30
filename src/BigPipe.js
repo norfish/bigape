@@ -724,8 +724,8 @@ BigPipe.prototype = {
     module
       .renderSnippet()
       .then(function(snippet) {
-        logger('获取snippet成功，flush到客户端' /*, snippet*/);
-        module.end(snippet);
+        logger('获取snippet成功，flush到客户端', snippet);
+        module.endOnce(snippet);
       })
       .catch(function(error) {
         errorLog('处理snippet数据错误', error);
