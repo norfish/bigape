@@ -7,7 +7,7 @@
 ## usage
 
 
-### create bigPipe 
+### create bigPipe
 ```
 var bigape = require('bigape');
 var layout = require('./layout');
@@ -189,4 +189,11 @@ exports.renderSnippet = function(req, res, next) {
     .renderSnippet('modC');
 };
 
+```
+
+### PS
+one more thing, you should turn off the server's buffer when you want the benifit of bigpipe
+
+```
+  res.setHeader('X-Accel-Buffering', 'no')
 ```

@@ -12,10 +12,14 @@ var pl = bigape.createPagelet({
 	template: 'mod.njk',
 
 	getService() {
-		return {
-			status: 200,
-			message: 'this is modA'
-		}
+		return new Promise(function(resolve, reject) {
+			setTimeout(function() {
+				resolve({
+					status: 200,
+					message: 'this is modA'
+				})
+			}, 500)
+		})
 	}
 })
 
