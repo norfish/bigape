@@ -1,7 +1,10 @@
 ## release
 
+
 ### 1.4.0
 - 升级 MINOR 版本，因为之前的特性新增版本升级有问题，应该直接升级 MINOR，但是实际上只升级了 PATCH version
+- getHeaders 默认增加 entrance 参数
+- fixed: Service.proxy 参数会覆盖别的请求
 
 ### 1.3.9
 - add BigPipe.config method, that can config global. such as config the common

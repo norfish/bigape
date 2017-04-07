@@ -144,8 +144,8 @@ module.exports = {
     // 接口代理
     proxy: function (req, res, options) {
         options = _.pick(options || {}, ['url', 'params', 'method', 'timeout', 'validData', 'qmonitor', 'retryTimes']);
-        _.extend(this, options);
-        return this.json(req, res);
+        var server = this.create(options);
+        return server.json(req, res);
     },
 
     json: function (req, res) {

@@ -219,7 +219,7 @@ BigPipe.prototype = {
             // pagelet处理数据失败
             bigpipe.once(modName + ':fail', function(data) {
                 bigpipe.store.set(modName, data);
-                reject({
+                resolve({
                     name: modName,
                     data: data
                 });
