@@ -37,6 +37,9 @@ function BigPipe(name, options) {
   // first-class pagelet module list
   this.pagelets = options.pagelets || [];
 
+  // just cache
+  this._originalPagelets = options.pagelets || [];
+
   // layout bootstrap
   this.layout = options.layout || options.bootstrap || {};
 
@@ -89,12 +92,12 @@ BigPipe.prototype = {
   initialize: function(options) {
     if (!options) return this;
 
-    var initProps = options.init || {};
+    var actions = options.actions || {};
 
     var bigpipe = this;
-    _.forIn(initProps, function(value, key) {
+    _.forIn(actions, function(value, key) {
       if (!bigpipe.hasOwnProperty(key)) {
-        bigpipe[key] = value;
+        bigpipe['$' + key] = value;
         // console.log('add props', key);
       } else {
         console.info('新增实例方法[' + key + ']与Bigpipe原实例方法冲突');
@@ -296,9 +299,10 @@ BigPipe.prototype = {
     if (data.length) {
       logger(
         'info: flush pagelet [' + pageletName + '] data {{',
-        /*data.toString(),*/ '暂不记录}}'
+        data.toString() 
+        // '暂不记录}}'
       );
-      this._res.write(data, true);
+      this._res.write(data, true, done);
     }
 
     // response.write(chunk[, encoding][, callback])
@@ -522,6 +526,7 @@ BigPipe.prototype = {
       .getRenderHtml()
       .then(function(html) {
         staticHtml.setLayout(html);
+
         logger('start render sync - html parser')
 
         return Promise.map(bigpipe._pagelets, function(pagelet) {
@@ -544,7 +549,10 @@ BigPipe.prototype = {
             });
         })
           .then(function() {
-            bigpipe._layout.end(staticHtml.getHtml(), true);
+            logger('render sync flush to client')
+            var html = staticHtml.getHtml() || '';
+            html = html.replace(/<\/html>$/, '');
+            bigpipe._layout.end(html, true);
           })
           .catch(function(err) {
             return bigpipe.catch(err);
@@ -621,6 +629,11 @@ BigPipe.prototype = {
     if(!modules) {
       modules = this._pagelets.map(p => p.name);
     }
+
+    if(!_.isArray(modules)) {
+      return this.renderSingleJSON(modules);
+    }
+
     // reset actural bigpipe length
     bigpipe.length = modules.length;
 

@@ -6,22 +6,22 @@
 var bigape = require('../../../../src')
 
 var pl = bigape.createPagelet({
-	name: 'modA',
+  name: 'modA',
 
-	domID: 'modA',
+  domID: 'modA',
 
-	template: 'mod.njk',
+  template: 'mod.njk',
 
-	getService() {
-		return new Promise(function(resolve, reject) {
-			setTimeout(function() {
-				resolve({
-					status: 200,
-					message: 'this is modA'
-				})
-			}, 500)
-		})
-	}
+  getService() {
+    return new Promise(function(resolve, reject) {
+      setTimeout(function() {
+        resolve({
+          status: 200,
+          message: 'this is modA'
+        })
+      }, 500)
+    })
+  }
 })
 
 module.exports = pl;

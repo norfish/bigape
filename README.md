@@ -6,8 +6,11 @@
 
 ## usage
 
+> 注意： 1.x 版本依赖一些私有源的包，不适合使用，2.x 之后是公开版
+> attention: 1.x is private usage, 2.x is for public
 
-### create bigPipe
+
+### create bigPipe and controllers
 ```
 var bigape = require('bigape');
 var layout = require('./layout');
@@ -33,7 +36,23 @@ var HomeAction = bigape.create('home', {
      * default is partials/error.njk
      * default append mode is layout(append to body)
      */
-    // errorPagelet: errorPagelet
+    // errorPagelet: errorPagelet,
+
+    // you can define controllers in bigape actions, and then you can call these method with `$` prefixed, like: homeAction.render(req, res, next)
+    // or you can write controllers in a stand file as follow
+    actions: {
+      render(req, res, next) {
+        return this.router(req, res, next).renderAsync()
+      },
+
+      renderSync(req, res, next) {
+        return this.router(req, res, next).pipe([modA, modB, modC]).renderSync()
+      },
+
+      renderPipeline(req, res, next) {
+        return this.router(req, res, next).renderPipeLine()
+      },
+    }
 });
 
 module.exports = HomeAction;
