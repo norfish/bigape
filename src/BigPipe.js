@@ -80,7 +80,7 @@ function BigPipe(name, options) {
   this.initialize.call(this, options);
 
   // emitter
-  this.setMaxListeners(100);
+  this.setMaxListeners(0);
 }
 
 BigPipe.prototype = {

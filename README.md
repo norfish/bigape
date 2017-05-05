@@ -12,6 +12,10 @@
 
 > attention: 1.x is private usage, 2.x is for public
 
+### install
+```
+npm install bigape --save
+```
 
 ### create bigPipe and controllers
 ```

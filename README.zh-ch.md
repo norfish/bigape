@@ -214,7 +214,7 @@ exports.renderSnippet = function(req, res, next) {
 ```
 
 ### PS
-one more thing, you should turn off the server's buffer when you want the benifit of bigpipe
+另外还有比较重要的一点，如果是通过nginx做的转发，那么在nginx层默认是会对代码片段做缓存的。导致最终多个pagelet同时返回到客户端，也就达不到我们分块传输的目的了，所以如果是有这种情况，请手动关闭`accel-buffering`
 
 ```
   res.setHeader('X-Accel-Buffering', 'no')
