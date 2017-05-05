@@ -10,7 +10,6 @@
 
 ## usage
 
-> 注意： 1.x 版本依赖一些私有源的包，不适合使用，2.x 之后是公开版
 > attention: 1.x is private usage, 2.x is for public
 
 
@@ -32,9 +31,6 @@ var HomeAction = bigape.create('home', {
     // pagelets
     pagelets: [modA, modB, modC],
 
-    // 可以指定出现异常时候的错误模块,默认的template是 partials/error
-    // 发生全局错误需要立刻终止的时候才会使用
-    // 默认mode是layout,即插入到body中,不需要指定domid
     /**
      * you can specify the template when page error occured
      * default is partials/error.njk
@@ -82,21 +78,18 @@ module.exports = bigape.createPagelet({
     // default is pagelet.name
     dataKey: 'modA',
 
-    // 默认path  发生模块处理异常的时候的模板
     // error template path
     errorTemplate: 'partials/error',
 
-    // 渲染模式 append html prepend layout remove, 默认html即innerHtml
     // the mode that how pagelet append to the body in client
     // default is html document.querySelector('#domId').innerHtml
     // [html prepend layout remove]
     mode: 'html',
 
-    // 脚本x`x``
     scripts: '',
 
     /**
-     * 样式
+     * styles
      * @type {String}
      */
     styles: '',
@@ -108,10 +101,8 @@ module.exports = bigape.createPagelet({
     wait: ['modB'],
 
     /**
-     * 获取渲染的原始数据 可以被覆盖，默认是通过service取接口数据，返回promise
-     * 支持返回同步数据或者Promise异步
      * lifyCycle: get raw data
-     * return the raw data, promise is also supported
+     * return the raw data, all promise 
      * @return {[type]} [description]
      */
     getService: function() {
@@ -123,15 +114,15 @@ module.exports = bigape.createPagelet({
     },
 
     /**
-     * 处理通过getService获取的原始数据
      * lifyCycle after getService, parse the raw data
      * @param  {Object} json raw data
      * @return {Object}      parsed data
      */
     onServiceDone: function(data) {
 
-      // 获取全量的依赖数据
+      // get all pagelet data
       var store = this.getStore();
+      // get modB's data
       var modB = this.getStore('modB');
       var modData = this.getCache() || this.getStore('modA');
 
@@ -146,20 +137,9 @@ module.exports = bigape.createPagelet({
       }
     },
 
-    // 返回给客户端的数据，默认为null
     // the data flushed to client, default is null
     getPipeData: function(modData) {
       return modData;
-    },
-
-    // 内部方法不可改
-    // 渲染模板
-    //
-    // 数据是以本模块的名字为key的对象  类似
-    // {modA: something}
-    //
-    [renderHtml]: function(path, data) {
-        return html;
     }
 });
 
