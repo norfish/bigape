@@ -5,7 +5,7 @@
 
 =============================================================================
 
-[中文文档](https://github.com/norfish/bigape/blob/master/README.zh-cn.md)
+[中文文档](https://github.com/norfish/bigape/blob/master/README.zh-ch.md)
 
 
 ## usage
