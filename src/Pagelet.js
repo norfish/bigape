@@ -500,6 +500,14 @@ Pagelet.prototype = {
   },
 
   /**
+   * don't do anything, just end the response whit given chund
+   * @param  {Object} chunk  chunk data
+   */
+  endOnce: function(chunk) {
+    this.res.end(chunk);
+  },
+
+  /**
    * 根据error Object 获取error json
    * @param  {Object} error error stack 或者Object
    * @return {Object}       error json
