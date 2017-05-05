@@ -3,15 +3,10 @@
 [![npm version](https://badge.fury.io/js/bigape.svg)](https://badge.fury.io/js/bigape)
 
 
-=============================================================================
-
-[中文文档](https://github.com/norfish/bigape/blob/master/README.zh-cn.md)
-
 
 ## usage
 
 > 注意： 1.x 版本依赖一些私有源的包，不适合使用，2.x 之后是公开版
-> attention: 1.x is private usage, 2.x is for public
 
 
 ### create bigPipe and controllers
@@ -32,25 +27,29 @@ var HomeAction = bigape.create('home', {
     // pagelets
     pagelets: [modA, modB, modC],
 
-    // 可以指定出现异常时候的错误模块,默认的template是 partials/error
-    // 发生全局错误需要立刻终止的时候才会使用
-    // 默认mode是layout,即插入到body中,不需要指定domid
-    /**
-     * you can specify the template when page error occured
-     * default is partials/error.njk
-     * default append mode is layout(append to body)
-     */
+    /** 
+     * 可以指定出现异常时候的错误模块,默认的template是 partials/error
+     * 发生全局错误需要立刻终止的时候才会使用
+     * 默认mode是layout,即插入到body中,不需要指定domid
+     **/
     // errorPagelet: errorPagelet,
 
-    // you can define controllers in bigape actions, and then you can call these method with `$` prefixed, like: homeAction.render(req, res, next)
-    // or you can write controllers in a stand file as follow
+    /**
+     * 在actions 里可以定义 controllers， 使用的时候会为 bigpipe 实例增加以 「$」 为前缀的方法
+     */
     actions: {
       render(req, res, next) {
         return this.router(req, res, next).renderAsync()
       },
 
       renderSync(req, res, next) {
-        return this.router(req, res, next).pipe([modA, modB, modC]).renderSync()
+        return this
+          // 必须先把req, res, next 传入
+          .router(req, res, next)
+          // pipe 方法可以覆盖原有的 pagelets 属性定义的模块，如果不调用，则使用 pagelets 声明的模块
+          .pipe([modA, modB, modC])
+          // 指定以何种方式渲染
+          .renderSync()
       },
 
       renderPipeline(req, res, next) {
@@ -78,7 +77,7 @@ module.exports = bigape.createPagelet({
     // monitor key
     monitor: '',
 
-    // you can specify the data key (the data flushed to client)
+    // 返回到客户端的数据 key， 通过 BigPipe.getData('key') 获取
     // default is pagelet.name
     dataKey: 'modA',
 
@@ -101,10 +100,10 @@ module.exports = bigape.createPagelet({
      */
     styles: '',
 
-    // should the end the response when error occured, default is false
+    // 如果该模块出现错误，是否需要立即终止pagelet响应，直接返回错误模块
     isErrorFatal: false,
 
-    // depended modules
+    // 依赖的模块，可以传入模块名字或者模块类
     wait: ['modB'],
 
     /**
@@ -146,7 +145,7 @@ module.exports = bigape.createPagelet({
       }
     },
 
-    // 返回给客户端的数据，默认为null
+    // 返回给客户端的数据，如果未声明该方法，则不返回客户端数据
     // the data flushed to client, default is null
     getPipeData: function(modData) {
       return modData;
