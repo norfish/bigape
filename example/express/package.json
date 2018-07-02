@@ -12,6 +12,7 @@
   "dependencies": {
     "bigape": "^2.0.0-alpha.2",
     "express": "^4.15.2",
-    "nunjucks": "^3.0.0"
+    "nunjucks": "^3.0.0",
+    "q": "^1.5.1"
   }
 }

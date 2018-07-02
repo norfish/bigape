@@ -6,7 +6,6 @@
   "scripts": {
     "test": "jest",
     "build": "uglifyjs src/client/bigpipe.js -m -c -o src/client/bigpipe.min.js",
-    "prepublish": "npm run build",
     "lint": "eslint src/*.js",
     "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
@@ -28,7 +27,8 @@
     "cheerio": "^0.22.0",
     "co": "^4.6.0",
     "debug": "~2.2.0",
-    "lodash": "^4.14.0"
+    "lodash": "^4.14.0",
+    "q": "^1.5.1"
   },
   "author": "norfish <easumlee@gmail.com> (http://jspie.com/)",
   "license": "MIT",
