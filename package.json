@@ -7,7 +7,9 @@
     "test": "jest",
     "build": "uglifyjs src/client/bigpipe.js -m -c -o src/client/bigpipe.min.js",
     "lint": "eslint src/*.js",
-    "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
+    "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -28,7 +30,8 @@
     "co": "^4.6.0",
     "debug": "~2.2.0",
     "lodash": "^4.14.0",
-    "q": "^1.5.1"
+    "q": "^1.5.1",
+    "snyk": "^1.317.0"
   },
   "author": "norfish <easumlee@gmail.com> (http://jspie.com/)",
   "license": "MIT",
@@ -45,5 +48,6 @@
   },
   "jest": {
     "verbose": true
-  }
+  },
+  "snyk": true
 }
